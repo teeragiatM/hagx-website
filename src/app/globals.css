@@ -2,11 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
-
 :root {
-  --font-inter: 'Inter', sans-serif;
-  --font-playfair: 'Playfair Display', serif;
+  --color-bg: 255 255 255;
+  --color-surface: 248 250 252;
+  --color-content: 15 23 42;
+  --color-muted: 100 116 139;
+  --color-border: 226 232 240;
+}
+
+.dark {
+  --color-bg: 9 9 11;
+  --color-surface: 24 24 27;
+  --color-content: 248 250 252;
+  --color-muted: 148 163 184;
+  --color-border: 39 39 42;
 }
 
 * {
@@ -20,11 +29,12 @@ html {
 }
 
 body {
-  font-family: var(--font-inter);
-  background-color: #0f172a;
-  color: #f8fafc;
+  font-family: var(--font-inter), system-ui, sans-serif;
+  background-color: rgb(var(--color-bg));
+  color: rgb(var(--color-content));
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 ::selection {
@@ -33,30 +43,31 @@ body {
 }
 
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 5px;
 }
 ::-webkit-scrollbar-track {
-  background: #0f172a;
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #D4AF37;
-  border-radius: 3px;
+  background: rgb(var(--color-border));
+  border-radius: 99px;
 }
 
 .gold-gradient {
-  background: linear-gradient(135deg, #D4AF37 0%, #f5e06a 50%, #D4AF37 100%);
+  background: linear-gradient(135deg, #D4AF37 0%, #f0d060 50%, #D4AF37 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .glass-card {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(212, 175, 55, 0.15);
+  background: rgb(var(--color-surface));
+  border: 1px solid rgb(var(--color-border));
+  border-radius: 16px;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .section-divider {
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.4), transparent);
+  background: rgb(var(--color-border));
 }

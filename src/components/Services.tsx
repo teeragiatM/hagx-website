@@ -44,45 +44,32 @@ const services = [
 
 export default function Services() {
   return (
-    <section id="services" className="relative py-28 bg-slate-950" aria-labelledby="services-heading">
+    <section id="services" className="py-28 bg-bg" aria-labelledby="services-heading">
       <div className="max-w-7xl mx-auto px-6">
-        {/* Section header */}
-        <ScrollReveal className="text-center mb-20">
-          <span className="inline-flex items-center gap-2 text-[11px] tracking-[0.35em] uppercase text-gold-400 font-medium mb-4">
-            <span className="w-6 h-px bg-gold-400" />
+        <ScrollReveal className="text-center mb-16">
+          <span className="inline-flex items-center gap-2 text-[11px] tracking-[0.25em] uppercase text-gold-400 font-medium mb-4">
             What We Do
-            <span className="w-6 h-px bg-gold-400" />
           </span>
-          <h2
-            id="services-heading"
-            className="font-display text-4xl md:text-5xl font-bold text-white"
-          >
+          <h2 id="services-heading" className="text-4xl md:text-5xl font-bold text-content tracking-tight">
             Precision-Engineered{" "}
             <span className="gold-gradient">Solutions</span>
           </h2>
-          <p className="mt-4 text-slate-400 max-w-xl mx-auto text-base leading-relaxed">
-            From concept to completion, every system we design and install is
-            built to perform — and built to last.
+          <p className="mt-4 text-muted max-w-xl mx-auto text-base leading-relaxed">
+            From concept to completion, every system we design and install is built to perform — and built to last.
           </p>
         </ScrollReveal>
 
-        {/* Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-gold-400/10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {services.map((service, i) => {
             const Icon = service.icon;
             return (
-              <ScrollReveal key={service.title} delay={i * 0.08}>
-                <article className="glass-card p-8 h-full group hover:bg-white/[0.06] transition-colors duration-400 cursor-default">
-                  <div className="mb-5 inline-flex p-3 border border-gold-400/20 text-gold-400 group-hover:bg-gold-400/10 transition-colors duration-300">
-                    <Icon size={22} strokeWidth={1.5} />
+              <ScrollReveal key={service.title} delay={i * 0.07}>
+                <article className="glass-card p-7 h-full group hover:border-gold-400/30 transition-all duration-300 cursor-default">
+                  <div className="mb-5 inline-flex p-2.5 rounded-xl bg-gold-400/10 text-gold-400 group-hover:bg-gold-400/20 transition-colors duration-200">
+                    <Icon size={20} strokeWidth={1.5} />
                   </div>
-                  <h3 className="font-display text-lg font-semibold text-white mb-3">
-                    {service.title}
-                  </h3>
-                  <p className="text-slate-400 text-sm leading-relaxed">
-                    {service.description}
-                  </p>
-                  <div className="mt-6 w-8 h-px bg-gold-400/40 group-hover:w-16 transition-all duration-500" />
+                  <h3 className="text-base font-semibold text-content mb-2.5">{service.title}</h3>
+                  <p className="text-muted text-sm leading-relaxed">{service.description}</p>
                 </article>
               </ScrollReveal>
             );

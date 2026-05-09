@@ -6,16 +6,18 @@ const config: Config = {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  darkMode: "class",
   theme: {
     extend: {
       fontFamily: {
         sans: ["var(--font-inter)", "system-ui", "sans-serif"],
-        display: ["var(--font-playfair)", "Georgia", "serif"],
       },
       colors: {
-        slate: {
-          950: "#020617",
-        },
+        bg: "rgb(var(--color-bg) / <alpha-value>)",
+        surface: "rgb(var(--color-surface) / <alpha-value>)",
+        content: "rgb(var(--color-content) / <alpha-value>)",
+        muted: "rgb(var(--color-muted) / <alpha-value>)",
+        border: "rgb(var(--color-border) / <alpha-value>)",
         gold: {
           400: "#D4AF37",
           500: "#B8941E",
@@ -23,16 +25,11 @@ const config: Config = {
       },
       animation: {
         "fade-up": "fadeUp 0.6s ease-out forwards",
-        shimmer: "shimmer 2s linear infinite",
       },
       keyframes: {
         fadeUp: {
           "0%": { opacity: "0", transform: "translateY(24px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
-        },
-        shimmer: {
-          "0%": { backgroundPosition: "-200% 0" },
-          "100%": { backgroundPosition: "200% 0" },
         },
       },
     },
