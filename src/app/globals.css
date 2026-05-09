@@ -1,14 +1,9 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-:root {
-  --color-bg: 255 255 255;
-  --color-soft: 249 249 249;
-  --color-ink: 15 23 42;
-  --color-muted: 100 116 139;
-  --color-line: 226 232 240;
-  --color-gold: 180 140 60;
+@theme {
+  --font-family-sans: var(--font-inter), system-ui, sans-serif;
+  --color-soft: #F9F9F9;
+  --color-ink: #0F172A;
 }
 
 * {
@@ -22,7 +17,7 @@ html {
 }
 
 body {
-  font-family: var(--font-inter), system-ui, sans-serif;
+  font-family: var(--font-family-sans);
   background-color: #ffffff;
   color: #0f172a;
   -webkit-font-smoothing: antialiased;
