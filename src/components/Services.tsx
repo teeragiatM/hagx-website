@@ -1,79 +1,88 @@
 "use client";
 
-import { Building2, Layers, Sun, LayoutGrid, Shield, Wrench } from "lucide-react";
+import Image from "next/image";
 import ScrollReveal from "./ScrollReveal";
 
 const services = [
   {
-    icon: Building2,
-    title: "Curtain Wall Systems",
-    description:
-      "Engineered unitised and stick-built curtain wall façades offering superior thermal performance, weather resistance, and structural integrity.",
+    title: "Curtain Wall",
+    subtitle: "ผนังกระจกโครงสร้าง",
+    img: "https://images.unsplash.com/photo-1511818966892-d7d671e672a2?w=900&q=85",
+    size: "lg",
   },
   {
-    icon: Sun,
-    title: "Skylight & Roof Glazing",
-    description:
-      "Bespoke overhead glazing solutions — from feature atriums to expansive barrel vaults — flooding interiors with natural light.",
+    title: "Skylight",
+    subtitle: "หลังคากระจก",
+    img: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=700&q=85",
+    size: "sm",
   },
   {
-    icon: Layers,
     title: "Structural Glazing",
-    description:
-      "Seamless all-glass facades with spider fittings and point-fixed systems delivering minimal framing and maximum visual impact.",
+    subtitle: "กระจกโครงสร้าง",
+    img: "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=700&q=85",
+    size: "sm",
   },
   {
-    icon: LayoutGrid,
-    title: "Glass Partitions",
-    description:
-      "Frameless and framed internal partitioning systems with acoustic performance, ideal for high-end commercial and hospitality spaces.",
+    title: "Glass Partition",
+    subtitle: "ฉากกั้นกระจก",
+    img: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=900&q=85",
+    size: "lg",
   },
   {
-    icon: Shield,
-    title: "Security Glazing",
-    description:
-      "Laminated, toughened, and blast-resistant glass assemblies engineered to meet the most demanding safety and security specifications.",
-  },
-  {
-    icon: Wrench,
     title: "Aluminium Cladding",
-    description:
-      "Precision-fabricated aluminium rainscreen cladding and composite panel systems with unlimited finish options and concealed fixing.",
+    subtitle: "หุ้มผนังอลูมิเนียม",
+    img: "https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=700&q=85",
+    size: "sm",
+  },
+  {
+    title: "Security Glazing",
+    subtitle: "กระจกนิรภัย",
+    img: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=700&q=85",
+    size: "sm",
   },
 ];
 
 export default function Services() {
   return (
-    <section id="services" className="py-28 bg-bg" aria-labelledby="services-heading">
-      <div className="max-w-7xl mx-auto px-6">
-        <ScrollReveal className="text-center mb-16">
-          <span className="inline-flex items-center gap-2 text-[11px] tracking-[0.25em] uppercase text-gold-400 font-medium mb-4">
-            What We Do
-          </span>
-          <h2 id="services-heading" className="text-4xl md:text-5xl font-bold text-content tracking-tight">
-            Precision-Engineered{" "}
-            <span className="gold-gradient">Solutions</span>
+    <section id="services" className="py-28 bg-white" aria-labelledby="services-heading">
+      <div className="max-w-7xl mx-auto px-8">
+        <ScrollReveal className="mb-20">
+          <p className="text-[10px] tracking-[0.3em] uppercase text-slate-400 font-light mb-4">Our Services</p>
+          <h2 id="services-heading" className="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight max-w-lg leading-tight">
+            บริการของเรา
           </h2>
-          <p className="mt-4 text-muted max-w-xl mx-auto text-base leading-relaxed">
-            From concept to completion, every system we design and install is built to perform — and built to last.
-          </p>
         </ScrollReveal>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {services.map((service, i) => {
-            const Icon = service.icon;
-            return (
-              <ScrollReveal key={service.title} delay={i * 0.07}>
-                <article className="glass-card p-7 h-full group hover:border-gold-400/30 transition-all duration-300 cursor-default">
-                  <div className="mb-5 inline-flex p-2.5 rounded-xl bg-gold-400/10 text-gold-400 group-hover:bg-gold-400/20 transition-colors duration-200">
-                    <Icon size={20} strokeWidth={1.5} />
-                  </div>
-                  <h3 className="text-base font-semibold text-content mb-2.5">{service.title}</h3>
-                  <p className="text-muted text-sm leading-relaxed">{service.description}</p>
-                </article>
-              </ScrollReveal>
-            );
-          })}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+          {services.map((s, i) => (
+            <ScrollReveal
+              key={s.title}
+              delay={i * 0.07}
+              className={`group relative overflow-hidden cursor-pointer ${
+                s.size === "lg" ? "md:col-span-2 aspect-[16/9]" : "aspect-square"
+              }`}
+            >
+              <Image
+                src={s.img}
+                alt={s.subtitle}
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-105"
+                sizes="(max-width: 768px) 50vw, (max-width: 1280px) 33vw, 400px"
+              />
+              <div className="absolute inset-0 bg-slate-900/0 group-hover:bg-slate-900/50 transition-all duration-500" />
+              <div className="absolute bottom-0 left-0 right-0 p-5 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-400">
+                <p className="text-[9px] tracking-[0.25em] uppercase text-white/60 font-light mb-1">
+                  {s.title}
+                </p>
+                <h3 className="text-base font-semibold text-white">{s.subtitle}</h3>
+              </div>
+              <div className="absolute top-4 left-4">
+                <p className="text-[9px] tracking-[0.25em] uppercase text-white/40 font-light group-hover:opacity-0 transition-opacity duration-300">
+                  {s.title}
+                </p>
+              </div>
+            </ScrollReveal>
+          ))}
         </div>
       </div>
     </section>

@@ -6,31 +6,17 @@ const config: Config = {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
-  darkMode: "class",
   theme: {
     extend: {
       fontFamily: {
         sans: ["var(--font-inter)", "system-ui", "sans-serif"],
       },
       colors: {
-        bg: "rgb(var(--color-bg) / <alpha-value>)",
-        surface: "rgb(var(--color-surface) / <alpha-value>)",
-        content: "rgb(var(--color-content) / <alpha-value>)",
-        muted: "rgb(var(--color-muted) / <alpha-value>)",
-        border: "rgb(var(--color-border) / <alpha-value>)",
-        gold: {
-          400: "#D4AF37",
-          500: "#B8941E",
-        },
+        soft: "#F9F9F9",
+        ink: "#0F172A",
       },
-      animation: {
-        "fade-up": "fadeUp 0.6s ease-out forwards",
-      },
-      keyframes: {
-        fadeUp: {
-          "0%": { opacity: "0", transform: "translateY(24px)" },
-          "100%": { opacity: "1", transform: "translateY(0)" },
-        },
+      letterSpacing: {
+        widest2: "0.25em",
       },
     },
   },

@@ -4,18 +4,11 @@
 
 :root {
   --color-bg: 255 255 255;
-  --color-surface: 248 250 252;
-  --color-content: 15 23 42;
+  --color-soft: 249 249 249;
+  --color-ink: 15 23 42;
   --color-muted: 100 116 139;
-  --color-border: 226 232 240;
-}
-
-.dark {
-  --color-bg: 9 9 11;
-  --color-surface: 24 24 27;
-  --color-content: 248 250 252;
-  --color-muted: 148 163 184;
-  --color-border: 39 39 42;
+  --color-line: 226 232 240;
+  --color-gold: 180 140 60;
 }
 
 * {
@@ -30,44 +23,45 @@ html {
 
 body {
   font-family: var(--font-inter), system-ui, sans-serif;
-  background-color: rgb(var(--color-bg));
-  color: rgb(var(--color-content));
+  background-color: #ffffff;
+  color: #0f172a;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 ::selection {
-  background: #D4AF37;
-  color: #0f172a;
+  background: #0f172a;
+  color: #ffffff;
 }
 
 ::-webkit-scrollbar {
-  width: 5px;
+  width: 4px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgb(var(--color-border));
+  background: #cbd5e1;
   border-radius: 99px;
 }
 
-.gold-gradient {
-  background: linear-gradient(135deg, #D4AF37 0%, #f0d060 50%, #D4AF37 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+.underline-input {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #cbd5e1;
+  outline: none;
+  width: 100%;
+  padding: 10px 0;
+  font-size: 0.875rem;
+  color: #0f172a;
+  font-family: inherit;
+  transition: border-color 0.2s;
 }
 
-.glass-card {
-  background: rgb(var(--color-surface));
-  border: 1px solid rgb(var(--color-border));
-  border-radius: 16px;
-  transition: background-color 0.3s ease, border-color 0.3s ease;
+.underline-input::placeholder {
+  color: #94a3b8;
 }
 
-.section-divider {
-  height: 1px;
-  background: rgb(var(--color-border));
+.underline-input:focus {
+  border-bottom-color: #0f172a;
 }

@@ -1,86 +1,60 @@
 "use client";
 
-import { ClipboardList, Ruler, Cog, Truck, CheckCircle2 } from "lucide-react";
 import ScrollReveal from "./ScrollReveal";
 
 const steps = [
   {
-    icon: ClipboardList,
     number: "01",
-    title: "Discovery & Briefing",
+    en: "Survey",
+    th: "สำรวจ",
     description:
-      "We engage with architects, developers, and contractors to understand the vision, technical requirements, and site-specific constraints.",
+      "ทีมงานของเราลงพื้นที่สำรวจหน้างาน วัดขนาด และทำความเข้าใจความต้องการของลูกค้าและสถาปนิก เพื่อวางแผนการออกแบบที่แม่นยำ",
   },
   {
-    icon: Ruler,
     number: "02",
-    title: "Design & Engineering",
+    en: "Craft",
+    th: "ผลิต",
     description:
-      "Our in-house engineers develop detailed shop drawings, thermal calculations, and 3D models — fully coordinated with the project BIM environment.",
+      "ผลิตชิ้นส่วนอลูมิเนียมและกระจกทุกชิ้นในโรงงานที่ได้มาตรฐาน ISO ด้วยเครื่องจักรที่มีความเที่ยงตรงระดับมิลลิเมตร",
   },
   {
-    icon: Cog,
     number: "03",
-    title: "Precision Fabrication",
+    en: "Install",
+    th: "ติดตั้ง",
     description:
-      "Every aluminium extrusion and glass unit is manufactured to micron-level tolerances in our ISO-certified production facility.",
-  },
-  {
-    icon: Truck,
-    number: "04",
-    title: "Logistics & Delivery",
-    description:
-      "Sequenced, just-in-time delivery programmes keep your construction programme on track with zero material waste.",
-  },
-  {
-    icon: CheckCircle2,
-    number: "05",
-    title: "Installation & Sign-off",
-    description:
-      "Our specialist installation crews complete each project to CWCT and EN standards, with full commissioning and handover documentation.",
+      "ทีมช่างผู้เชี่ยวชาญติดตั้งตามมาตรฐาน CWCT พร้อมส่งมอบงานพร้อมเอกสารครบถ้วน และรับประกันคุณภาพงาน",
   },
 ];
 
 export default function Process() {
   return (
-    <section id="process" className="py-28 bg-bg" aria-labelledby="process-heading">
-      <div className="section-divider" />
-
-      <div className="max-w-7xl mx-auto px-6 pt-28">
-        <ScrollReveal className="text-center mb-16">
-          <span className="inline-flex items-center gap-2 text-[11px] tracking-[0.25em] uppercase text-gold-400 font-medium mb-4">
-            How We Work
-          </span>
-          <h2 id="process-heading" className="text-4xl md:text-5xl font-bold text-content tracking-tight">
-            Our <span className="gold-gradient">Process</span>
+    <section id="process" className="py-28 bg-white" aria-labelledby="process-heading">
+      <div className="max-w-7xl mx-auto px-8">
+        <ScrollReveal className="mb-24">
+          <p className="text-[10px] tracking-[0.3em] uppercase text-slate-400 font-light mb-4">Our Process</p>
+          <h2 id="process-heading" className="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight max-w-lg leading-tight">
+            ขั้นตอนการทำงาน
           </h2>
-          <p className="mt-4 text-muted max-w-xl mx-auto text-base leading-relaxed">
-            A rigorous five-stage methodology that guarantees quality at every phase of your project.
-          </p>
         </ScrollReveal>
 
-        <div className="flex flex-col gap-4 max-w-2xl mx-auto">
-          {steps.map((step, i) => {
-            const Icon = step.icon;
-            return (
-              <ScrollReveal key={step.number} delay={i * 0.08}>
-                <div className="glass-card p-6 flex items-start gap-5 hover:border-gold-400/30 transition-all duration-300">
-                  <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-gold-400/10 flex items-center justify-center text-gold-400">
-                    <Icon size={18} strokeWidth={1.5} />
+        <div className="relative">
+          <div className="hidden md:block absolute top-6 left-0 right-0 h-px bg-slate-200" />
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
+            {steps.map((step, i) => (
+              <ScrollReveal key={step.number} delay={i * 0.12}>
+                <div className="relative">
+                  <div className="flex items-center gap-4 mb-8">
+                    <span className="text-[10px] tracking-[0.2em] text-slate-300 font-light">{step.number}</span>
+                    <div className="w-3 h-3 rounded-full border border-slate-900 bg-white relative z-10" />
+                    <span className="text-[10px] tracking-[0.25em] uppercase text-slate-400 font-light">{step.en}</span>
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-3 mb-1.5">
-                      <span className="text-[10px] font-semibold tracking-widest text-gold-400/60 uppercase">
-                        {step.number}
-                      </span>
-                      <h3 className="text-sm font-semibold text-content">{step.title}</h3>
-                    </div>
-                    <p className="text-muted text-sm leading-relaxed">{step.description}</p>
-                  </div>
+                  <h3 className="text-2xl font-bold text-slate-900 tracking-tight mb-4">{step.th}</h3>
+                  <p className="text-sm text-slate-500 leading-relaxed font-light">{step.description}</p>
                 </div>
               </ScrollReveal>
-            );
-          })}
+            ))}
+          </div>
         </div>
       </div>
     </section>
