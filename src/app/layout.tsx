@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Anuphan } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({
-  subsets: ["latin"],
+const anuphan = Anuphan({
+  subsets: ["latin", "thai"],
   variable: "--font-inter",
   display: "swap",
   weight: ["300", "400", "500", "600", "700"],
@@ -27,7 +27,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="th" className="scroll-smooth" suppressHydrationWarning>
-      <body className={`${inter.variable} bg-white text-slate-900 antialiased`}>
+      <body className={`${anuphan.variable} bg-white text-slate-900 antialiased`}>
         {children}
       </body>
     </html>
