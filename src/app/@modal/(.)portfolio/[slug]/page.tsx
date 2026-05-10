@@ -1,36 +1,38 @@
-"use client";
-
-import { useRouter } from "next/navigation";
+import { notFound } from "next/navigation";
 import ModalShell from "@/components/ModalShell";
-import { useI18n } from "@/i18n/useI18n";
-import { projects, typeOptions } from "@/lib/projects";
+import { getPortfolioItemBySlug, getPortfolioItems } from "@/lib/getPortfolioItems";
+import { typeOptions } from "@/lib/projects";
 
-export default function ProjectModal({ params }: { params: { slug: string } }) {
-  const router = useRouter();
-  const { t } = useI18n("portfolio");
+// Server Component — no "use client" needed; ModalShell handles all client state
+export default async function ProjectModal({ params }: { params: { slug: string } }) {
+  const [item, allItems] = await Promise.all([
+    getPortfolioItemBySlug(params.slug, "th"),
+    getPortfolioItems("th"),
+  ]);
 
-  const p = projects.find((p) => p.slug === params.slug);
-  if (!p) { router.back(); return null; }
+  if (!item) notFound();
 
-  const typeLabel = typeOptions.find((opt) => opt.value === p.type)?.label ?? p.type;
-  const tagged = projects.filter((r) => r.type === p.type && r.slug !== p.slug);
+  const typeLabel = typeOptions.find((t) => t.value === item.type)?.label ?? item.type;
+  const tagged    = allItems
+    .filter((r) => r.type === item.type && r.slug !== item.slug)
+    .slice(0, 6);
 
   return (
     <ModalShell
       eyebrow={typeLabel}
-      title={p.title}
+      title={item.title}
       details={[
-        { label: t("modal.description"), value: p.desc },
-        { label: t("modal.location"),    value: p.location },
-        { label: t("modal.year"),        value: p.year },
-        { label: t("modal.scope"),       value: p.scope },
-        { label: t("modal.highlights"),  value: p.highlights.join(" · ") },
+        { label: "Description", value: item.description          },
+        { label: "Location",    value: item.location             },
+        { label: "Year",        value: item.year                 },
+        { label: "Scope",       value: item.scope                },
+        { label: "Highlights",  value: item.highlights.join(" · ") },
       ]}
-      gallery={p.images.map((src) => ({ src, alt: p.title }))}
+      gallery={item.gallery.map((src) => ({ src, alt: item.title }))}
       tags={tagged.map((r) => ({ label: r.title, slug: r.slug, href: `/portfolio/${r.slug}` }))}
-      tagsLabel={t("modal.same_type")}
-      cta={{ href: "/contact", label: t("modal.ask_cta") }}
-      closeLabel={t("modal.close")}
+      tagsLabel="งานประเภทเดียวกัน"
+      cta={{ href: "/contact", label: "สอบถามโครงการลักษณะนี้" }}
+      closeLabel="Close"
     />
   );
 }
