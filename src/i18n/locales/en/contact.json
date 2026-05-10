@@ -1,0 +1,25 @@
+{
+  "eyebrow": "Contact Us",
+  "title": "Ready to Design\nYour Space?",
+  "desc": "Our team will assess your approach, materials, and preliminary budget — free of charge.",
+  "testimonial": "The HAGX team managed the project from start to finish, delivered on time, and the result exceeded our expectations.",
+  "form": {
+    "first_name": "First Name",
+    "last_name": "Last Name",
+    "email": "Work Email",
+    "industry": "Industry",
+    "company": "Company Name",
+    "phone": "Contact No.",
+    "topic": "Topic of Inquiry",
+    "details": "Project Details",
+    "details_placeholder": "Enter your project details (location, size, goals, timeline, budget, etc.)",
+    "submit": "Send Your Inquiry",
+    "select": "Select an option",
+    "industry_placeholder": "Your company's industry"
+  },
+  "success": {
+    "title": "Inquiry Sent",
+    "desc": "The HAGX team will get back to you within 1 business day.",
+    "back": "Back to Home"
+  }
+}

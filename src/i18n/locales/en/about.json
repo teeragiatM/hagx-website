@@ -1,0 +1,18 @@
+{
+  "eyebrow": "About HAGX",
+  "hero_title": "Building Better Spaces\nWith Better Materials",
+  "hero_sub": "A specialist team in architectural glass and aluminium — designing, fabricating, and installing to standards you can trust.",
+  "stats": {
+    "years": "Years of Experience",
+    "projects": "Projects Completed",
+    "clients": "Corporate Clients",
+    "standard": "One Standard"
+  },
+  "pillars_title": "Principles We Believe In",
+  "pillars": {
+    "precision": { "title": "Precision", "sub": "Every detail matters", "body": "Every cut, every joint, every detail — inspected before delivery, every time." },
+    "reliability": { "title": "Reliability", "sub": "On time, every time", "body": "On time, on budget, to spec — because your project has deadlines that cannot move." },
+    "innovation": { "title": "Innovation", "sub": "Always evolving", "body": "We track new facade systems and materials continuously to offer the best options for every project." }
+  },
+  "cta": "Contact the HAGX Team"
+}

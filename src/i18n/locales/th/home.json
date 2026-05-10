@@ -1,0 +1,35 @@
+{
+  "hero": {
+    "eyebrow": "Premium Aluminium & Glass · Bangkok",
+    "title": "งานกระจกและอลูมิเนียม\nระดับสถาปัตยกรรม",
+    "subtitle": "ออกแบบ ผลิต และติดตั้ง — พร้อมระบบสั่งซื้อและคำนวณราคาออนไลน์",
+    "cta_primary": "ขอใบเสนอราคา",
+    "cta_secondary": "เกี่ยวกับ HAGX"
+  },
+  "whatwedo": {
+    "eyebrow": "สิ่งที่เราทำ",
+    "title": "Precision Glass & Aluminium,\nFrom Survey to Handover",
+    "desc": "HAGX ให้บริการครบวงจรตั้งแต่สำรวจหน้างาน ออกแบบ ผลิต และติดตั้ง — พร้อมจำหน่ายวัสดุพรีเมียมสำหรับทีมที่ต้องการสั่งซื้อแยก"
+  },
+  "strategy": {
+    "title": "Bold Design.\nClear Strategy.\nDependable Results.",
+    "desc": "HAGX ก่อตั้งขึ้นจากความเชื่อว่างานกระจกและอลูมิเนียมที่ดีต้องมาจากทีมเดียว ที่เข้าใจทั้งวัสดุ โครงสร้าง และหน้างาน",
+    "p1": "ออกแบบอย่างสมบูรณ์",
+    "p2": "วางแผนอย่างรอบคอบ",
+    "p3": "ดำเนินการอย่างชาญฉลาด"
+  },
+  "projects": {
+    "eyebrow": "hagx",
+    "title": "ผลงานที่สะท้อน\nความเป็นเรา",
+    "view": "ดูโปรเจกต์"
+  },
+  "partnership": {
+    "title": "Trusted\nPartnership",
+    "see_all": "ดูผลงานทั้งหมด"
+  },
+  "cta": {
+    "title": "Bring Your Vision to Life —\nConnect with HAGX Today",
+    "desc": "ส่งข้อมูลโครงการเพื่อให้ทีม HAGX ประเมินแนวทาง วัสดุ และงบประมาณเบื้องต้น",
+    "button": "ส่งคำถาม"
+  }
+}

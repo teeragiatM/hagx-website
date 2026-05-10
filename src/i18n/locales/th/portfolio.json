@@ -1,0 +1,30 @@
+{
+  "eyebrow": "ผลงาน",
+  "title": "ผลงานที่สะท้อนความเป็นเรา",
+  "subtitle": "โครงการทั่วประเทศไทย — ตั้งแต่ Curtain Wall ระดับอาคารสูงถึงงาน Facade บ้านพักอาศัย",
+  "filter_type": "ประเภทงาน",
+  "filter_category": "หมวด",
+  "filter_location": "พื้นที่",
+  "filter_clear": "ล้างทั้งหมด ×",
+  "showing": "แสดง",
+  "of": "/",
+  "items": "รายการ",
+  "no_results": "ไม่พบโครงการที่ตรงกับ Filter ที่เลือก",
+  "clear_filter": "ล้าง Filter",
+  "related_type": "งานประเภทเดียวกัน",
+  "ask_similar": "สอบถามโครงการลักษณะนี้",
+  "cta_title": "มีโครงการในใจแล้ว?\nมาคุยกับทีม HAGX",
+  "cta_desc": "ประเมินแนวทาง วัสดุ และงบประมาณเบื้องต้น โดยไม่มีค่าใช้จ่าย",
+  "start_project": "เริ่มต้นโครงการ",
+  "view_materials": "ดูวัสดุ",
+  "modal": {
+    "close": "Close",
+    "description": "Description",
+    "location": "Location",
+    "year": "Year",
+    "scope": "Scope",
+    "highlights": "Highlights",
+    "same_type": "งานประเภทเดียวกัน",
+    "ask_cta": "สอบถามโครงการลักษณะนี้"
+  }
+}

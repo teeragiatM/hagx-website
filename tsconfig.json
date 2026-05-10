@@ -18,9 +18,27 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
-    }
+      "@/*": ["./src/*"],
+      "@/components/ui/*": [
+        "./src/components/ui/core/*",
+        "./src/components/ui/custom/*",
+        "./src/components/ui/*"
+      ],
+      "@ui": ["./src/components/ui/index.ts"],
+      "@ui/app": ["./src/components/ui/app.ts"],
+      "@ui/custom": ["./src/components/ui/custom/index.ts"],
+      "@components/*": ["./src/components/*"],
+      "@contexts/*": ["./src/contexts/*"],
+      "@assets/*": ["./src/assets/*"],
+      "@styles/*": ["./src/styles/*"],
+      "@lib/*": ["./src/lib/*"]
+    },
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": [
+    "next-env.d.ts",
+    "src/app/**/*.ts",
+    "src/app/**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
   "exclude": ["node_modules", "vite-components"]
 }

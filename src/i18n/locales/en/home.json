@@ -1,0 +1,35 @@
+{
+  "hero": {
+    "eyebrow": "Premium Aluminium & Glass · Bangkok",
+    "title": "Architectural Glass &\nAluminium Systems",
+    "subtitle": "Design, fabrication, and installation — with online ordering and real-time pricing.",
+    "cta_primary": "Get a Quote",
+    "cta_secondary": "About HAGX"
+  },
+  "whatwedo": {
+    "eyebrow": "What We Do",
+    "title": "Precision Glass & Aluminium,\nFrom Survey to Handover",
+    "desc": "HAGX offers end-to-end services from site survey, design, fabrication, and installation — plus premium material supply for teams who need individual orders."
+  },
+  "strategy": {
+    "title": "Bold Design.\nClear Strategy.\nDependable Results.",
+    "desc": "HAGX was built on the belief that great glass and aluminium work comes from a single team that understands materials, structure, and the job site.",
+    "p1": "Perfectly Designed",
+    "p2": "Carefully Planned",
+    "p3": "Smartly Executed"
+  },
+  "projects": {
+    "eyebrow": "hagx",
+    "title": "Projects That Define\nOur Craft",
+    "view": "View Project"
+  },
+  "partnership": {
+    "title": "Trusted\nPartnership",
+    "see_all": "See all Works"
+  },
+  "cta": {
+    "title": "Bring Your Vision to Life —\nConnect with HAGX Today",
+    "desc": "Send us your project details and our team will assess the approach, materials, and budget — at no cost.",
+    "button": "Send Your Inquiry"
+  }
+}

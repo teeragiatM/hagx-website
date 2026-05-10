@@ -1,0 +1,30 @@
+{
+  "eyebrow": "Portfolio",
+  "title": "Projects That Define Our Craft",
+  "subtitle": "Projects across Thailand — from high-rise Curtain Wall to residential Glass Facade.",
+  "filter_type": "Work Type",
+  "filter_category": "Category",
+  "filter_location": "Location",
+  "filter_clear": "Clear all ×",
+  "showing": "Showing",
+  "of": "/",
+  "items": "items",
+  "no_results": "No projects match the selected filters",
+  "clear_filter": "Clear filters",
+  "related_type": "Same work type",
+  "ask_similar": "Enquire about a similar project",
+  "cta_title": "Have a project in mind?\nLet's talk with HAGX",
+  "cta_desc": "We'll assess the approach, materials, and budget — free of charge.",
+  "start_project": "Start a Project",
+  "view_materials": "View Materials",
+  "modal": {
+    "close": "Close",
+    "description": "Description",
+    "location": "Location",
+    "year": "Year",
+    "scope": "Scope",
+    "highlights": "Highlights",
+    "same_type": "Same work type",
+    "ask_cta": "Enquire about this project"
+  }
+}
