@@ -539,7 +539,7 @@ export default function HomePage() {
             {
               n: "03",
               title: "FABRICATION",
-              image: "https://images.unsplash.com/photo-1558618047-f4e62b98e9b5?w=1400&q=90",
+              image: "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=1400&q=90",
               items: ["In-house Aluminium Fabrication", "Tempered & Laminated Glass Cutting", "Quality Control Before Delivery"],
               flip: false,
             },
@@ -752,7 +752,7 @@ export default function HomePage() {
               <Image src="https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=800&q=80" alt="" fill className="object-cover opacity-55" sizes="240px" />
             </div>
             <div className="absolute bottom-[10%] right-[3%] h-40 w-56 -rotate-4 overflow-hidden border border-white/10 shadow-2xl sm:h-48 sm:w-64">
-              <Image src="https://images.unsplash.com/photo-1558618047-f4e62b98e9b5?w=800&q=80" alt="" fill className="object-cover opacity-55" sizes="260px" />
+              <Image src="https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=800&q=80" alt="" fill className="object-cover opacity-55" sizes="260px" />
             </div>
           </div>
 

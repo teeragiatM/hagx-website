@@ -32,7 +32,7 @@ const installation = [
     sub: "ผลิตในโรงงานของ HAGX",
     desc: "ผลิตชิ้นงานอลูมิเนียมและกระจกในโรงงานของ HAGX เอง ควบคุมคุณภาพทุกชิ้นก่อนส่งหน้างาน ไม่ใช้ Outsource",
     items: ["Aluminium Profile Fabrication", "Tempered & Laminated Glass Cutting", "CNC Precision Machining", "QC Before Delivery"],
-    image: "https://images.unsplash.com/photo-1558618047-f4e62b98e9b5?w=900&q=80",
+    image: "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=900&q=80",
   },
   {
     n: "04",
@@ -159,7 +159,7 @@ export default function ServicesPage() {
               { transform: "rotateY(90deg)  translateZ(90px)", img: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=300&q=70" },
               { transform: "rotateY(180deg) translateZ(90px)", img: "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=300&q=70" },
               { transform: "rotateY(270deg) translateZ(90px)", img: "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=300&q=70" },
-              { transform: "rotateX(90deg)  translateZ(90px)", img: "https://images.unsplash.com/photo-1558618047-f4e62b98e9b5?w=300&q=70" },
+              { transform: "rotateX(90deg)  translateZ(90px)", img: "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=300&q=70" },
               { transform: "rotateX(-90deg) translateZ(90px)", img: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&q=70" },
             ].map((face, i) => (
               <div

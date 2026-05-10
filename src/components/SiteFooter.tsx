@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 
 const cols = [
@@ -42,7 +41,13 @@ export default function SiteFooter() {
           {/* brand */}
           <div>
             <Link href="/" aria-label="HAGX">
-              <Image src="/images/hagx-logo.svg" alt="HAGX" width={80} height={32} />
+              <img
+                src="/images/hagx-logo.svg"
+                alt="HAGX"
+                width="80"
+                height="20"
+                className="h-5 w-20"
+              />
             </Link>
             <p className="mt-6 max-w-xs text-xs font-light leading-6 text-white/30">
               Premium Aluminium &amp; Glass Solutions for Modern Architecture.

@@ -1,15 +1,16 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import ModalShell from "@/components/ModalShell";
 import { useI18n } from "@/i18n/useI18n";
 import { products, categories } from "@/lib/products";
 
-export default function ProductModal({ params }: { params: { slug: string } }) {
+export default function ProductModal() {
   const router = useRouter();
+  const { slug } = useParams<{ slug: string }>();
   const { t } = useI18n("shop");
 
-  const p = products.find((p) => p.slug === params.slug);
+  const p = products.find((p) => p.slug === slug);
   if (!p) { router.back(); return null; }
 
   const cat = categories.find((c) => c.value === p.category);

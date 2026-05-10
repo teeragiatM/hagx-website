@@ -77,8 +77,8 @@ export const products: Product[] = [
     ],
     priceFrom: "1200",
     unit: "ตร.ม.",
-    image: "https://images.unsplash.com/photo-1558618047-f4e62b98e9b5?w=900&q=80",
-    images: ["https://images.unsplash.com/photo-1558618047-f4e62b98e9b5?w=900&q=80"],
+    image: "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=900&q=80",
+    images: ["https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=900&q=80"],
     inStock: true,
   },
   {

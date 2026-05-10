@@ -1,11 +1,15 @@
+import SiteFooter from "@/components/SiteFooter";
+import SiteNav from "@/components/SiteNav";
+import {
+  getPortfolioItemBySlug,
+  getPortfolioItems,
+  getPortfolioSlugs,
+} from "@/lib/getPortfolioItems";
+import { typeOptions } from "@/lib/projects";
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import type { Metadata } from "next";
-import SiteNav from "@/components/SiteNav";
-import SiteFooter from "@/components/SiteFooter";
-import { getPortfolioItemBySlug, getPortfolioItems, getPortfolioSlugs } from "@/lib/getPortfolioItems";
-import { typeOptions } from "@/lib/projects";
 
 export const revalidate = 60;
 
@@ -20,18 +24,21 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const item = await getPortfolioItemBySlug(params.slug, "th");
+  const { slug } = await params;
+  const item = await getPortfolioItemBySlug(slug, "th");
   if (!item) return {};
 
   return {
     title: `${item.title} | HAGX Portfolio`,
     description: item.description,
     openGraph: {
-      title: `${item.title} — HAGX`,
+      title: `${item.title} | HAGX`,
       description: item.description,
-      images: [{ url: item.cover_image, width: 800, height: 600, alt: item.title }],
+      images: [
+        { url: item.cover_image, width: 800, height: 600, alt: item.title },
+      ],
       type: "website",
     },
   };
@@ -42,17 +49,20 @@ export async function generateMetadata({
 export default async function ProjectPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
+  const { slug } = await params;
   const [item, allItems] = await Promise.all([
-    getPortfolioItemBySlug(params.slug, "th"),
+    getPortfolioItemBySlug(slug, "th"),
     getPortfolioItems("th"),
   ]);
 
   if (!item) notFound();
 
-  const typeLabel = typeOptions.find((t) => t.value === item.type)?.label ?? item.type;
-  const related   = allItems
+  const typeLabel =
+    typeOptions.find((t) => t.value === item.type)?.label ??
+    item.type;
+  const related = allItems
     .filter((r) => r.type === item.type && r.slug !== item.slug)
     .slice(0, 3);
 
@@ -64,7 +74,12 @@ export default async function ProjectPage({
       <div className="border-b border-white/[0.06] px-8 pt-28 pb-5 sm:px-14">
         <div className="mx-auto max-w-[1500px]">
           <nav className="flex items-center gap-2 text-[10px] font-light uppercase tracking-widest text-white/25">
-            <Link href="/portfolio" className="transition-colors hover:text-white">Projects</Link>
+            <Link
+              href="/portfolio"
+              className="transition-colors hover:text-white"
+            >
+              Projects
+            </Link>
             <span>/</span>
             <span className="text-white/40">{typeLabel}</span>
             <span>/</span>
@@ -87,7 +102,9 @@ export default async function ProjectPage({
         <div className="absolute bottom-0 left-0 right-0 px-8 pb-12 sm:px-14">
           <div className="mx-auto max-w-[1500px]">
             <p className="eyebrow mb-3">{typeLabel}</p>
-            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">{item.title}</h1>
+            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
+              {item.title}
+            </h1>
           </div>
         </div>
       </div>
@@ -96,10 +113,11 @@ export default async function ProjectPage({
       <section className="px-8 py-16 sm:px-14">
         <div className="mx-auto max-w-[1500px]">
           <div className="grid gap-16 lg:grid-cols-3">
-
             {/* Main */}
             <div className="space-y-10 lg:col-span-2">
-              <p className="max-w-2xl text-sm font-light leading-8 text-white/55">{item.description}</p>
+              <p className="max-w-2xl text-sm font-light leading-8 text-white/55">
+                {item.description}
+              </p>
 
               {item.highlights.length > 0 && (
                 <div>
@@ -108,9 +126,14 @@ export default async function ProjectPage({
                   </p>
                   <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
                     {item.highlights.map((h) => (
-                      <div key={h} className="border border-white/[0.07] bg-[#0c0c0c] p-4">
+                      <div
+                        key={h}
+                        className="border border-white/[0.07] bg-[#0c0c0c] p-4"
+                      >
                         <span className="mb-1 block h-0.5 w-6 bg-[#ff8a00]" />
-                        <p className="text-xs font-light leading-5 text-white/60">{h}</p>
+                        <p className="text-xs font-light leading-5 text-white/60">
+                          {h}
+                        </p>
                       </div>
                     ))}
                   </div>
@@ -121,7 +144,10 @@ export default async function ProjectPage({
               {item.gallery.length > 1 && (
                 <div className="grid gap-3 sm:grid-cols-2">
                   {item.gallery.slice(1).map((src, i) => (
-                    <div key={i} className="relative aspect-[16/10] overflow-hidden border border-white/[0.07]">
+                    <div
+                      key={i}
+                      className="relative aspect-[16/10] overflow-hidden border border-white/[0.07]"
+                    >
                       <Image
                         src={src}
                         alt={`${item.title} ${i + 2}`}
@@ -143,22 +169,44 @@ export default async function ProjectPage({
                 </p>
                 {[
                   { label: "Location", value: item.location },
-                  { label: "Year",     value: item.year     },
-                  { label: "Category", value: item.category === "installation" ? "Installation Work" : "Supply & Sales" },
-                  { label: "Scope",    value: item.scope    },
+                  { label: "Year", value: item.year },
+                  {
+                    label: "Category",
+                    value:
+                      item.category === "installation"
+                        ? "Installation Work"
+                        : "Supply & Sales",
+                  },
+                  {
+                    label: "Scope",
+                    value: item.scope,
+                  },
                 ].map((d) => (
-                  <div key={d.label} className="border-t border-white/[0.06] pt-3">
-                    <p className="mb-1 text-[9px] font-light uppercase tracking-widest text-white/20">{d.label}</p>
-                    <p className="text-sm font-light text-white/70">{d.value}</p>
+                  <div
+                    key={d.label}
+                    className="border-t border-white/[0.06] pt-3"
+                  >
+                    <p className="mb-1 text-[9px] font-light uppercase tracking-widest text-white/20">
+                      {d.label}
+                    </p>
+                    <p className="text-sm font-light text-white/70">
+                      {d.value}
+                    </p>
                   </div>
                 ))}
               </div>
 
               <div className="space-y-3">
-                <Link href="/contact"   className="btn btn-primary block w-full text-center">
+                <Link
+                  href="/contact"
+                  className="btn btn-primary block w-full text-center"
+                >
                   สอบถามโครงการลักษณะนี้
                 </Link>
-                <Link href="/portfolio" className="btn btn-secondary block w-full text-center">
+                <Link
+                  href="/portfolio"
+                  className="btn btn-secondary block w-full text-center"
+                >
                   ← ดูผลงานทั้งหมด
                 </Link>
               </div>
@@ -172,7 +220,9 @@ export default async function ProjectPage({
         <section className="border-t border-white/[0.06] px-8 py-16 sm:px-14">
           <div className="mx-auto max-w-[1500px]">
             <p className="eyebrow mb-3">โครงการในประเภทเดียวกัน</p>
-            <h2 className="mb-10 text-2xl font-bold tracking-tight">Related Projects</h2>
+            <h2 className="mb-10 text-2xl font-bold tracking-tight">
+              Related Projects
+            </h2>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {related.map((r) => (
                 <Link
@@ -192,9 +242,11 @@ export default async function ProjectPage({
                   </div>
                   <div className="p-5">
                     <p className="mb-1 text-[9px] font-light uppercase tracking-widest text-white/25">
-                      {r.location} · {r.year}
+                      {r.location} / {r.year}
                     </p>
-                    <h3 className="text-sm font-semibold text-white">{r.title}</h3>
+                    <h3 className="text-sm font-semibold text-white">
+                      {r.title}
+                    </h3>
                   </div>
                 </Link>
               ))}

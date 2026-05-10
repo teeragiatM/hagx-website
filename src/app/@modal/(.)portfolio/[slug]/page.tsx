@@ -4,9 +4,10 @@ import { getPortfolioItemBySlug, getPortfolioItems } from "@/lib/getPortfolioIte
 import { typeOptions } from "@/lib/projects";
 
 // Server Component — no "use client" needed; ModalShell handles all client state
-export default async function ProjectModal({ params }: { params: { slug: string } }) {
+export default async function ProjectModal({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
   const [item, allItems] = await Promise.all([
-    getPortfolioItemBySlug(params.slug, "th"),
+    getPortfolioItemBySlug(slug, "th"),
     getPortfolioItems("th"),
   ]);
 
@@ -22,11 +23,11 @@ export default async function ProjectModal({ params }: { params: { slug: string 
       eyebrow={typeLabel}
       title={item.title}
       details={[
-        { label: "Description", value: item.description          },
-        { label: "Location",    value: item.location             },
+        { label: "Description", value: item.description       },
+        { label: "Location",    value: item.location          },
         { label: "Year",        value: item.year                 },
         { label: "Scope",       value: item.scope                },
-        { label: "Highlights",  value: item.highlights.join(" · ") },
+        { label: "Highlights",  value: item.highlights.join(" | ") },
       ]}
       gallery={item.gallery.map((src) => ({ src, alt: item.title }))}
       tags={tagged.map((r) => ({ label: r.title, slug: r.slug, href: `/portfolio/${r.slug}` }))}

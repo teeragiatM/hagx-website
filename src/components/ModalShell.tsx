@@ -75,7 +75,8 @@ export default function ModalShell({
   // Prevent wheel events on backdrop from reaching body
   const stopPropagation = (e: React.WheelEvent) => e.stopPropagation();
 
-  const imgs = gallery.length > 1 ? gallery : [gallery[0], gallery[0]];
+  const validGallery = gallery.filter((img) => img.src);
+  const imgs = validGallery.length > 1 ? validGallery : validGallery.length === 1 ? [validGallery[0], validGallery[0]] : [];
 
   return (
     <div
@@ -193,6 +194,7 @@ export default function ModalShell({
           {/* Main image */}
           <div className="relative flex-1 overflow-hidden bg-[#080808]">
             <AnimatePresence mode="wait">
+              {imgs.length > 0 && (
               <motion.div
                 key={imgIdx}
                 className="absolute inset-0"
@@ -210,6 +212,7 @@ export default function ModalShell({
                   className="object-cover"
                 />
               </motion.div>
+              )}
             </AnimatePresence>
 
             {/* Arrow nav */}

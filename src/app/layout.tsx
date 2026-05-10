@@ -21,6 +21,24 @@ export const metadata: Metadata = {
   creator: "HAGX",
   metadataBase: new URL("https://hagx.co"),
   robots: { index: true, follow: true },
+  keywords: ["อลูมิเนียม", "กระจก", "สถาปัตยกรรม", "aluminium", "glass", "architecture", "HAGX"],
+  openGraph: {
+    type: "website",
+    locale: "th_TH",
+    url: "https://hagx.co",
+    siteName: "HAGX",
+    title: "HAGX | Premium Aluminium & Glass",
+    description:
+      "HAGX ผู้เชี่ยวชาญด้านงานอลูมิเนียมและกระจกสถาปัตยกรรม ออกแบบ ผลิต และติดตั้งด้วยความแม่นยำระดับอุตสาหกรรม",
+    images: [{ url: "/images/hagx-logo.svg", width: 1200, height: 630, alt: "HAGX" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "HAGX | Premium Aluminium & Glass",
+    description:
+      "HAGX ผู้เชี่ยวชาญด้านงานอลูมิเนียมและกระจกสถาปัตยกรรม ออกแบบ ผลิต และติดตั้งด้วยความแม่นยำระดับอุตสาหกรรม",
+    images: ["/images/hagx-logo.svg"],
+  },
 };
 
 export default function RootLayout({

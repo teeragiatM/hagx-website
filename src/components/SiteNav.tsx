@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
@@ -58,7 +57,13 @@ export default function SiteNav() {
 
           {/* Logo */}
           <Link href="/" aria-label="HAGX" onClick={() => setOpen(false)}>
-            <Image src="/images/hagx-logo.svg" alt="HAGX" width={76} height={30} priority />
+            <img
+              src="/images/hagx-logo.svg"
+              alt="HAGX"
+              width="76"
+              height="19"
+              className="h-[19px] w-[76px]"
+            />
           </Link>
 
           {/* Desktop nav */}
@@ -123,7 +128,13 @@ export default function SiteNav() {
             {/* top bar inside overlay */}
             <div className="flex h-[68px] shrink-0 items-center justify-between border-b border-white/[0.06] px-6 sm:px-10">
               <Link href="/" onClick={() => setOpen(false)}>
-                <Image src="/images/hagx-logo.svg" alt="HAGX" width={76} height={30} />
+                <img
+                  src="/images/hagx-logo.svg"
+                  alt="HAGX"
+                  width="76"
+                  height="19"
+                  className="h-[19px] w-[76px]"
+                />
               </Link>
               <button
                 onClick={() => setOpen(false)}

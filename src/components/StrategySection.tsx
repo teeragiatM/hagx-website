@@ -1,8 +1,8 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
 import { useI18n } from "@/i18n/useI18n";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 
 const pillars = [
   {
@@ -51,7 +51,7 @@ export default function StrategySection() {
     <div
       ref={containerRef}
       className="relative border-t border-white/[0.06]"
-      style={{ height: `${N * 100 + 20}vh` }}
+      style={{ height: `${N * 100 + 20}vh`, position: "relative" }}
     >
       <div className="sticky top-0 h-screen overflow-hidden bg-[#080808]">
         <div className="grid h-full lg:grid-cols-[380px_1fr]">
@@ -108,9 +108,9 @@ function PillarTab({
 }) {
   const [s, e] = [i / N, (i + 1) / N];
 
-  const isActive_opacity = useTransform(progress, [s - 0.01, s, e, e + 0.01], [0.28, 1, 1, 0.28]);
+  const isActive_opacity = useTransform(progress, [Math.max(0, s - 0.01), s, e, Math.min(1, e + 0.01)], [0.28, 1, 1, 0.28]);
   const barScaleY = useTransform(progress, [s, e], [0, 1]);
-  const numColor = useTransform(progress, [s - 0.01, s, e, e + 0.01], ["rgba(255,255,255,0.2)", "rgba(255,138,0,1)", "rgba(255,138,0,1)", "rgba(255,255,255,0.2)"]);
+  const numColor = useTransform(progress, [Math.max(0, s - 0.01), s, e, Math.min(1, e + 0.01)], ["rgba(255,255,255,0.2)", "rgba(255,138,0,1)", "rgba(255,138,0,1)", "rgba(255,255,255,0.2)"]);
 
   return (
     <motion.div
@@ -157,10 +157,10 @@ function ContentPanel({
 }) {
   const [s, e] = [i / N, (i + 1) / N];
 
-  const opacity = useTransform(progress, [s - 0.04, s, e - 0.06, e], [0, 1, 1, 0]);
+  const opacity = useTransform(progress, [Math.max(0, s - 0.04), s, Math.max(0, e - 0.06), e], [0, 1, 1, 0]);
 
-  const titleY = useTransform(progress, [s - 0.04, s, e - 0.06, e], ["40px", "0px", "0px", "-30px"]);
-  const descY = useTransform(progress, [s, s + 0.06, e - 0.06, e], ["24px", "0px", "0px", "-16px"]);
+  const titleY = useTransform(progress, [Math.max(0, s - 0.04), s, Math.max(0, e - 0.06), e], ["40px", "0px", "0px", "-30px"]);
+  const descY = useTransform(progress, [s, Math.min(1, s + 0.06), Math.max(0, e - 0.06), e], ["24px", "0px", "0px", "-16px"]);
 
   return (
     <motion.div
