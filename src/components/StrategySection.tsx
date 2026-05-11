@@ -111,8 +111,8 @@ function OrbitRings({ progress }: { progress: MotionValue<number> }) {
     progress,
     [0, 0.02, PHASES[0][1], PHASES[0][2], PHASES[0][3],
      PHASES[1][1], PHASES[1][2], PHASES[1][3],
-     PHASES[2][1], PHASES[2][2], PHASES[2][3], FINAL_OVERVIEW_START, 1],
-    [1, 1, 0.12, 0.12, 1, 0.12, 0.12, 1, 0.12, 0.12, 1, 1, 1]
+     PHASES[2][1], PHASES[2][2], PHASES[2][3], 1],
+    [1, 1, 0.12, 0.12, 1, 0.12, 0.12, 1, 0.12, 0.12, 1, 1]
   );
   return (
     <motion.div style={{ rotate, opacity }} className="pointer-events-none absolute inset-0" aria-hidden>
