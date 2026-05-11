@@ -4,22 +4,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ComposableMap, Geographies, Geography, Marker } from "react-simple-maps";
 import type { LocalizedPortfolioItem } from "@/lib/localizePortfolio";
 import { typeOptions, categoryOptions } from "@/lib/projects";
 
 // ── Map constants ─────────────────────────────────────────────────────────────
 
-const GEO_URL = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
-
 const MAP_PINS = [
-  { name: "กรุงเทพฯ",       coords: [100.5018, 13.7563] as [number, number], count: 68 },
-  { name: "ชลบุรี / พัทยา", coords: [100.9925, 13.3611] as [number, number], count: 12 },
-  { name: "เชียงใหม่",       coords: [98.9817,  18.7953] as [number, number], count: 8  },
-  { name: "หัวหิน",          coords: [99.9578,  12.5684] as [number, number], count: 15 },
-  { name: "ภูเก็ต",          coords: [98.3923,   7.8804] as [number, number], count: 10 },
-  { name: "ขอนแก่น",         coords: [102.8359, 16.4322] as [number, number], count: 5  },
-  { name: "เชียงราย",        coords: [99.8324,  19.9105] as [number, number], count: 3  },
+  { name: "กรุงเทพฯ", left: "51%", top: "58%", count: 68 },
+  { name: "ชลบุรี / พัทยา", left: "58%", top: "62%", count: 12 },
+  { name: "เชียงใหม่", left: "35%", top: "23%", count: 8 },
+  { name: "หัวหิน", left: "44%", top: "72%", count: 15 },
+  { name: "ภูเก็ต", left: "30%", top: "90%", count: 10 },
+  { name: "ขอนแก่น", left: "65%", top: "44%", count: 5 },
+  { name: "เชียงราย", left: "40%", top: "11%", count: 3 },
 ];
 
 // ── Sub-components ────────────────────────────────────────────────────────────
@@ -33,61 +30,53 @@ function ThailandMap({
 }) {
   return (
     <div className="relative h-full w-full">
-      <ComposableMap
-        projection="geoMercator"
-        projectionConfig={{ center: [101.5, 13.0], scale: 2400 }}
-        style={{ width: "100%", height: "100%" }}
-      >
-        <Geographies geography={GEO_URL}>
-          {({ geographies }) =>
-            geographies
-              .filter((geo) => geo.properties.name === "Thailand")
-              .map((geo) => (
-                <Geography
-                  key={geo.rsmKey}
-                  geography={geo}
-                  style={{
-                    default: { fill: "rgba(255,138,0,0.08)", stroke: "rgba(255,138,0,0.35)", strokeWidth: 0.5, outline: "none" },
-                    hover:   { fill: "rgba(255,138,0,0.12)", stroke: "rgba(255,138,0,0.5)",  strokeWidth: 0.5, outline: "none" },
-                    pressed: { fill: "rgba(255,138,0,0.12)", outline: "none" },
-                  }}
-                />
-              ))
-          }
-        </Geographies>
+      <div className="absolute inset-8">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_48%,rgba(255,138,0,0.16),transparent_58%)]" />
+        <svg
+          viewBox="0 0 420 620"
+          className="absolute inset-0 h-full w-full drop-shadow-[0_22px_60px_rgba(255,138,0,0.08)]"
+          aria-hidden
+        >
+          <path
+            d="M178 28c37 10 70 34 80 70 8 29-9 45-2 74 6 24 28 31 39 55 14 31-2 68 16 95 14 21 43 21 55 43 14 25-6 54-25 76-23 27-42 51-38 86 3 27 19 49 9 61-13 15-53-2-77-23-30-26-34-62-61-69-25-7-40 21-68 11-27-10-35-45-37-70-4-41 16-74 37-106 17-27 35-55 30-88-4-28-23-41-28-68-8-47 33-91 70-147Z"
+            fill="rgba(255,138,0,0.08)"
+            stroke="rgba(255,138,0,0.42)"
+            strokeWidth="2"
+          />
+          <path
+            d="M167 86c42 31 63 66 64 105 1 52-36 86-34 132 2 44 38 73 35 116-2 32-25 61-49 83"
+            fill="none"
+            stroke="rgba(255,255,255,0.08)"
+            strokeWidth="1"
+          />
+        </svg>
+      </div>
 
+      <div className="absolute inset-8">
         {MAP_PINS.map((loc) => (
-          <Marker
+          <button
             key={loc.name}
-            coordinates={loc.coords}
+            type="button"
             onClick={() => setActivePin(activePin === loc.name ? null : loc.name)}
+            className="absolute -translate-x-1/2 -translate-y-1/2 text-left"
+            style={{ left: loc.left, top: loc.top }}
+            aria-label={loc.name}
           >
-            <motion.circle
-              fill="rgba(255,138,0,0.12)"
-              stroke="rgba(255,138,0,0.3)"
-              strokeWidth={1}
-              initial={{ r: 14, opacity: 0.6 }}
-              animate={{ r: [14, 22, 14], opacity: [0.6, 0, 0.6] }}
+            <motion.span
+              className="absolute left-1/2 top-1/2 h-8 w-8 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#ff8a00]/30 bg-[#ff8a00]/10"
+              animate={{ scale: [1, 1.7, 1], opacity: [0.7, 0, 0.7] }}
               transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
             />
-            <motion.circle
-              fill="#ff8a00"
-              stroke="#fff"
-              strokeWidth={1.5}
-              initial={{ r: 5 }}
-              whileHover={{ r: 8 }}
-              style={{ cursor: "pointer" }}
+            <motion.span
+              className="relative z-10 block h-3 w-3 rounded-full border border-white bg-[#ff8a00]"
+              whileHover={{ scale: 1.45 }}
             />
-            <text
-              textAnchor="middle"
-              y={-14}
-              style={{ fontSize: "5px", fill: "rgba(255,255,255,0.7)", fontWeight: 300, pointerEvents: "none" }}
-            >
+            <span className="absolute left-1/2 top-[-26px] hidden -translate-x-1/2 whitespace-nowrap text-[10px] font-light text-white/70 sm:block">
               {loc.name}
-            </text>
-          </Marker>
+            </span>
+          </button>
         ))}
-      </ComposableMap>
+      </div>
 
       <AnimatePresence>
         {activePin && (() => {

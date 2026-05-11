@@ -135,6 +135,59 @@ const testimonials = [
 
 const brands = ["YKK AP", "Dow Corning", "Guardian Glass", "AGC Glass", "Schuco", "Reynaers", "Pilkington", "Technal"];
 
+const processSteps = [
+  {
+    n: "01",
+    title: "SURVEY",
+    image: "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=1400&q=90",
+    items: [
+      "Pre-site survey and measurement",
+      "Structural compatibility assessment",
+      "System recommendation report",
+    ],
+  },
+  {
+    n: "02",
+    title: "DESIGN",
+    image: "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1400&q=90",
+    items: [
+      "Design consultation and development",
+      "Shop drawing and material scheduling",
+      "Custom facade and partition planning",
+    ],
+  },
+  {
+    n: "03",
+    title: "FABRICATION",
+    image: "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=1400&q=90",
+    items: [
+      "In-house aluminium fabrication",
+      "Tempered and laminated glass cutting",
+      "Quality control before delivery",
+    ],
+  },
+  {
+    n: "04",
+    title: "INSTALLATION",
+    image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1400&q=90",
+    items: [
+      "Curtain wall and facade install",
+      "Interior partition and sliding doors",
+      "Reinstatement and maintenance works",
+    ],
+  },
+  {
+    n: "05",
+    title: "SUPPLY",
+    image: "https://images.unsplash.com/photo-1494526585095-c41746248156?w=1400&q=90",
+    items: [
+      "Tempered, laminated, Low-E and insulated glass",
+      "Aluminium profiles for every system",
+      "Stainless hardware and structural silicone",
+    ],
+  },
+];
+
 // ── Page ─────────────────────────────────────────────────────────────────────
 export default function HomePage() {
   const [loaded, setLoaded] = useState(false);
@@ -509,7 +562,79 @@ export default function HomePage() {
         )}
 
         {/* ── WHAT WE DO ── */}
-        <section className="bg-[#080808]">
+        <section className="relative overflow-hidden border-y border-white/[0.06] bg-[#050505]">
+          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(180deg,rgba(255,255,255,0.025)_1px,transparent_1px)] bg-[size:140px_140px] opacity-25" />
+
+          <div className="relative mx-auto max-w-7xl px-6 py-20 text-center sm:px-8 lg:px-10 lg:py-28">
+            <p className="mb-6 text-xs font-light uppercase tracking-widest text-[#ff8a00]">What We Do</p>
+            <h2 className="mx-auto max-w-4xl text-4xl font-bold leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
+              Precision Glass &amp; Aluminium,<br className="hidden sm:block" /> From Survey to Handover
+            </h2>
+            <p className="mx-auto mt-7 max-w-2xl text-sm font-light leading-8 text-white/45">
+              HAGX manages the full glass and aluminium workflow from site survey, design, fabrication,
+              installation, handover, and premium material supply for project teams.
+            </p>
+          </div>
+
+          <div className="relative mx-auto max-w-[1440px] px-4 pb-16 sm:px-8 lg:px-10 lg:pb-28">
+            <div className="overflow-hidden border border-white/[0.08] bg-black/35 shadow-[0_0_80px_rgba(255,138,0,0.06)]">
+              {processSteps.map((s, index) => {
+                const isReverse = index % 2 === 1;
+
+                return (
+                  <motion.article
+                    key={s.n}
+                    initial={{ opacity: 0, y: 36 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.18 }}
+                    transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                    className={`grid min-h-[620px] items-center gap-10 border-t border-white/[0.07] px-6 py-16 first:border-t-0 sm:px-10 lg:grid-cols-[0.95fr_1.05fr] lg:px-12 lg:py-20 xl:px-16 ${
+                      isReverse ? "lg:grid-flow-dense" : ""
+                    }`}
+                  >
+                    <div className={isReverse ? "lg:col-start-2 lg:text-right" : ""}>
+                      <p className="mb-8 text-3xl font-light leading-none text-[#ff8a00] sm:text-4xl">
+                        {s.n}
+                      </p>
+                      <h3 className="text-[clamp(3.75rem,11vw,8rem)] font-light leading-[0.9] tracking-normal text-white">
+                        {s.title}
+                      </h3>
+                      <ul className={`mt-10 space-y-5 ${isReverse ? "lg:ml-auto" : ""}`}>
+                        {s.items.map((item) => (
+                          <li
+                            key={item}
+                            className={`flex max-w-xl items-center gap-5 text-sm font-light leading-7 text-white/65 sm:text-base ${
+                              isReverse ? "lg:ml-auto lg:flex-row-reverse" : ""
+                            }`}
+                          >
+                            <span className="h-3 w-3 shrink-0 rounded-full bg-[#ff8a00]" />
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <div className={`relative mx-auto aspect-[1.02/1] w-full max-w-[560px] overflow-hidden bg-white ${isReverse ? "lg:col-start-1 lg:row-start-1" : ""}`}>
+                      <Image
+                        src={s.image}
+                        alt={`HAGX ${s.title}`}
+                        fill
+                        sizes="(min-width: 1280px) 560px, (min-width: 1024px) 45vw, 100vw"
+                        className="object-cover"
+                      />
+                      <div className="absolute inset-y-0 right-0 w-[46%] bg-[#f4f0e8]/90 mix-blend-screen" />
+                      <div className="absolute inset-y-0 right-0 w-[46%] bg-[radial-gradient(circle_at_30%_30%,transparent_0_18%,rgba(0,0,0,0.22)_19%,transparent_20%),repeating-linear-gradient(125deg,rgba(0,0,0,0.28)_0_1px,transparent_1px_8px)] opacity-45" />
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-white/15" />
+                      <div className="absolute right-8 top-8 text-xl font-bold tracking-tight text-[#ff8a00]">hagx</div>
+                    </div>
+                  </motion.article>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        <section className="hidden bg-[#080808]" aria-hidden="true">
           {/* intro */}
           <div className="mx-auto max-w-7xl px-6 py-24 text-center sm:px-8 lg:px-10 lg:py-32">
             <p className="mb-6 text-xs font-light uppercase tracking-widest text-[#ff8a00]">What We Do</p>
