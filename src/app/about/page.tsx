@@ -1,9 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { useRef, useState } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import CtaSection from "@/components/CtaSection";
+import PageHero from "@/components/PageHero";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
 
@@ -135,6 +136,7 @@ const journey = [
 
 export default function AboutPage() {
   const [active, setActive] = useState(0);
+  const [activeJourney, setActiveJourney] = useState(0);
   const timelineRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: timelineRef,
@@ -147,43 +149,24 @@ export default function AboutPage() {
       <SiteNav />
 
       {/* ── HERO ── */}
-      <section className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-6 pt-24 pb-20 text-center sm:px-10">
-        {/* radial orange glow */}
-        <div
-          className="pointer-events-none absolute inset-0"
-          style={{
-            background: "radial-gradient(ellipse 70% 55% at 50% 52%, rgba(120,50,0,0.55) 0%, rgba(8,8,8,0) 70%)",
-          }}
-        />
-        {/* arc shape bottom */}
-        <div
-          className="pointer-events-none absolute bottom-0 left-1/2 h-[38vh] w-[160vw] -translate-x-1/2 rounded-t-[50%]"
-          style={{ background: "rgba(40,14,0,0.45)" }}
-        />
-
-        <div className="relative z-10 max-w-5xl">
-          <p className="mb-8 text-xs font-light uppercase tracking-widest text-white/50">About Us</p>
-          <h1 className="text-4xl font-bold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
-            Precise glass and aluminium solutions<br className="hidden sm:block" />
-            <span className="text-white/35">for architecture that demands reliability</span>
-          </h1>
-          <p className="mx-auto mt-8 max-w-xl text-sm font-light leading-8 text-white/40">
-            HAGX เชี่ยวชาญในการส่งมอบโซลูชันงานกระจกและอลูมิเนียมสถาปัตยกรรมที่เปี่ยมด้วยความแม่นยำ ยึดมั่นในมาตรฐานวิศวกรรม และส่งมอบงานตรงต่อเวลา
-          </p>
-        </div>
-
-        {/* client logos */}
-        <div className="relative z-10 mt-20 w-full">
-          <p className="mb-6 text-[10px] font-light uppercase tracking-widest text-white/25">
-            Trusted by leading developers &amp; architects
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
-            {clients.map((c) => (
-              <span key={c} className="text-xs font-light uppercase tracking-widest text-white/20">{c}</span>
-            ))}
+      <PageHero
+        eyebrow="About Us"
+        title="Precise glass and aluminium solutions"
+        titleAlt="for architecture that demands reliability"
+        subtitle="HAGX เชี่ยวชาญในการส่งมอบโซลูชันงานกระจกและอลูมิเนียมสถาปัตยกรรมที่เปี่ยมด้วยความแม่นยำ ยึดมั่นในมาตรฐานวิศวกรรม และส่งมอบงานตรงต่อเวลา"
+        bottomSlot={
+          <div className="border-t border-white/[0.06] px-6 py-8 text-center sm:px-10">
+            <p className="mb-5 text-[10px] font-light uppercase tracking-widest text-white/25">
+              Trusted by leading developers &amp; architects
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-3">
+              {clients.map((c) => (
+                <span key={c} className="text-xs font-light uppercase tracking-widest text-white/20">{c}</span>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        }
+      />
 
       {/* ── STATS ── */}
       <section className="border-y border-white/[0.06]">
@@ -279,13 +262,16 @@ export default function AboutPage() {
             <div className="space-y-12 lg:space-y-16">
               {journey.map((item, index) => {
                 const isReverse = index % 2 === 1;
+                const isActiveJourney = activeJourney === index;
+                const isPastJourney = index < activeJourney;
 
                 return (
                   <motion.article
                     key={item.n}
                     initial={{ opacity: 0, x: isReverse ? 30 : -30, y: 18 }}
                     whileInView={{ opacity: 1, x: 0, y: 0 }}
-                    viewport={{ once: true, amount: 0.35 }}
+                    onViewportEnter={() => setActiveJourney(index)}
+                    viewport={{ once: false, amount: 0.58 }}
                     transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
                     className={`relative grid gap-6 pl-14 lg:grid-cols-2 lg:gap-12 lg:pl-0 ${
                       isReverse ? "lg:[&>*:first-child]:col-start-2" : ""
@@ -293,8 +279,16 @@ export default function AboutPage() {
                   >
                     <motion.div
                       initial={{ scale: 0.72, opacity: 0.45 }}
-                      whileInView={{ scale: 1, opacity: 1 }}
-                      viewport={{ once: true, amount: 0.65 }}
+                      whileInView={{ scale: 1 }}
+                      animate={{
+                        opacity: isActiveJourney ? 1 : isPastJourney ? 0.45 : 0.26,
+                        backgroundColor: isActiveJourney ? "#ff8a00" : "#080808",
+                        color: isActiveJourney ? "#080808" : "#ff8a00",
+                        boxShadow: isActiveJourney
+                          ? "0 0 0 12px rgba(255,138,0,0.14), 0 0 34px rgba(255,138,0,0.85)"
+                          : "0 0 18px rgba(255,138,0,0.22)",
+                      }}
+                      viewport={{ once: false, amount: 0.65 }}
                       transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
                       className="absolute left-[0.94rem] top-2 z-10 flex h-6 w-6 items-center justify-center rounded-full border border-[#ff8a00]/60 bg-[#080808] text-[9px] font-light text-[#ff8a00] shadow-[0_0_18px_rgba(255,138,0,0.3)] lg:left-1/2 lg:-translate-x-1/2"
                     >
@@ -303,11 +297,21 @@ export default function AboutPage() {
 
                     <div className={isReverse ? "lg:col-start-2" : ""}>
                       <motion.div
-                        initial={{ opacity: 0, scale: 0.96, clipPath: "inset(16% 0 16% 0)" }}
-                        whileInView={{ opacity: 1, scale: 1, clipPath: "inset(0% 0 0% 0)" }}
-                        viewport={{ once: true, amount: 0.45 }}
+                        initial={{ opacity: 0, scale: 0.96, clipPath: "inset(16% 0 16% 0)", filter: "grayscale(1) brightness(0.55)" }}
+                        whileInView={{ scale: 1, clipPath: "inset(0% 0 0% 0)" }}
+                        animate={{
+                          opacity: isActiveJourney ? 1 : isPastJourney ? 0.42 : 0.24,
+                          filter: isActiveJourney
+                            ? "grayscale(0) brightness(1)"
+                            : isPastJourney
+                              ? "grayscale(0.75) brightness(0.55)"
+                              : "grayscale(1) brightness(0.42)",
+                        }}
+                        viewport={{ once: false, amount: 0.45 }}
                         transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
-                        className="relative aspect-[1.55/1] overflow-hidden border border-white/[0.08] bg-[#111] lg:max-w-[520px]"
+                        className={`relative aspect-[1.55/1] overflow-hidden border bg-[#111] transition-colors duration-500 lg:max-w-[520px] ${
+                          isActiveJourney ? "border-[#ff8a00]/45" : "border-white/[0.06]"
+                        }`}
                       >
                         <Image
                           src={item.image}
@@ -317,28 +321,43 @@ export default function AboutPage() {
                           className="object-cover opacity-75"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-                        <p className="absolute bottom-4 left-4 text-[10px] font-light uppercase tracking-widest text-white/45">
+                        <p className={`absolute bottom-4 left-4 text-[10px] font-light uppercase tracking-widest transition-colors duration-500 ${
+                          isActiveJourney ? "text-[#ff8a00]" : "text-white/35"
+                        }`}>
                           {item.phase}
                         </p>
                       </motion.div>
                     </div>
 
                     <div className={`flex items-center ${isReverse ? "lg:col-start-1 lg:row-start-1 lg:text-right" : ""}`}>
-                      <div className={isReverse ? "lg:ml-auto" : ""}>
-                        <p className="mb-3 text-[10px] font-light uppercase tracking-widest text-[#ff8a00]">
+                      <motion.div
+                        animate={{
+                          opacity: isActiveJourney ? 1 : isPastJourney ? 0.44 : 0.28,
+                          y: isActiveJourney ? 0 : 6,
+                        }}
+                        transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                        className={isReverse ? "lg:ml-auto" : ""}
+                      >
+                        <p className={`mb-3 text-[10px] font-light uppercase tracking-widest transition-colors duration-500 ${
+                          isActiveJourney ? "text-[#ff8a00]" : "text-white/30"
+                        }`}>
                           {item.phase}
                         </p>
-                        <h3 className="max-w-lg text-2xl font-light leading-tight text-white sm:text-3xl">
+                        <h3 className={`max-w-lg text-2xl font-light leading-tight transition-colors duration-500 sm:text-3xl ${
+                          isActiveJourney ? "text-white" : "text-white/45"
+                        }`}>
                           {item.title}
                         </h3>
                         <div className="mt-5 space-y-3">
                           {item.body.map((text) => (
-                            <p key={text} className="max-w-lg text-xs font-light leading-7 text-white/50">
+                            <p key={text} className={`max-w-lg text-xs font-light leading-7 transition-colors duration-500 ${
+                              isActiveJourney ? "text-white/62" : "text-white/35"
+                            }`}>
                               {text}
                             </p>
                           ))}
                         </div>
-                      </div>
+                      </motion.div>
                     </div>
                   </motion.article>
                 );
@@ -440,23 +459,13 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ── CTA ── */}
-      <section className="px-8 py-20 sm:px-12 lg:py-28">
-        <div className="mx-auto flex max-w-7xl flex-col items-start gap-8 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <p className="mb-3 text-xs font-light uppercase tracking-widest text-[#ff8a00]">เริ่มต้น</p>
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">พร้อมเริ่มโครงการของคุณ?</h2>
-          </div>
-          <div className="flex flex-wrap gap-4">
-            <Link href="/contact" className="inline-flex h-12 items-center bg-[#ff8a00] px-8 text-xs font-light uppercase tracking-normal text-white hover:bg-[#e07a00]">
-              ติดต่อทีม HAGX
-            </Link>
-            <Link href="/portfolio" className="inline-flex h-12 items-center border border-white/20 px-8 text-xs font-light uppercase tracking-normal text-white/60 hover:border-white/50 hover:text-white">
-              ดูผลงาน
-            </Link>
-          </div>
-        </div>
-      </section>
+      <CtaSection
+        eyebrow="Start a Project"
+        title="พร้อมเริ่มโครงการของคุณ?"
+        description="ประเมินแนวทาง วัสดุ และงบประมาณเบื้องต้น โดยไม่มีค่าใช้จ่าย"
+        primaryAction={{ href: "/contact", label: "ติดต่อทีม HAGX" }}
+        secondaryAction={{ href: "/portfolio", label: "ดูผลงาน" }}
+      />
       <SiteFooter />
     </main>
   );

@@ -1,5 +1,7 @@
-import Link from "next/link";
+import CtaSection from "@/components/CtaSection";
+import PageHero from "@/components/PageHero";
 import ServiceCarousel, { type ServiceCarouselItem } from "@/components/ServiceCarousel";
+import TestimonialCarousel, { type TestimonialItem } from "@/components/TestimonialCarousel";
 import SiteFooter from "@/components/SiteFooter";
 import SiteNav from "@/components/SiteNav";
 
@@ -105,19 +107,52 @@ const expertiseTracks = [
   },
 ];
 
+const serviceTestimonials: TestimonialItem[] = [
+  {
+    client: "Property Developer",
+    project: "High-rise Curtain Wall System",
+    scope: "PROJECT INSTALLATION | QC CONTROL",
+    quote: "ทีม HAGX ควบคุมงานติดตั้งได้เป็นระบบตั้งแต่สำรวจหน้างานจนส่งมอบ รายละเอียดรอยต่อและแนวกระจกเรียบร้อยตามมาตรฐานที่ตกลงไว้",
+    bg: "#16120d",
+    accent: "#ff8a00",
+  },
+  {
+    client: "Construction Partner",
+    project: "Custom Aluminium Fabrication",
+    scope: "MANUFACTURING | PRE-ENGINEERING",
+    quote: "งานผลิตจากโรงงานมีความแม่นยำสูง ชิ้นงานประกอบหน้างานได้รวดเร็ว ลดการแก้ไขซ้ำ และช่วยให้แผนงานโครงการเดินต่อได้ตามกำหนด",
+    bg: "#10151c",
+    accent: "#7cb7ff",
+  },
+  {
+    client: "Interior Design Studio",
+    project: "Glass Partition & Hardware Supply",
+    scope: "SUPPLY | INSTALLATION SUPPORT",
+    quote: "วัสดุและฮาร์ดแวร์ที่ HAGX จัดหาให้มีคุณภาพสม่ำเสมอ ทีมให้คำแนะนำเรื่องสเปกและขนาดชัดเจน ทำให้งานจบได้เรียบร้อย",
+    bg: "#11170f",
+    accent: "#77c36a",
+  },
+  {
+    client: "Hospitality Group",
+    project: "Facade Glazing Renovation",
+    scope: "DESIGN SUPPORT | INSTALL",
+    quote: "HAGX เข้าใจข้อจำกัดของอาคารเดิมและเสนอวิธีติดตั้งที่เหมาะสม งานออกมาสวย ตรงดีไซน์ และประสานงานกับทีมโครงการได้ดีมาก",
+    bg: "#1b1118",
+    accent: "#d68adf",
+  },
+];
+
 export default function ServicesPage() {
   return (
     <main className="min-h-screen bg-[#080808] text-white">
       <SiteNav />
 
-      <section className="relative flex min-h-[70vh] items-center overflow-hidden border-b border-white/[0.06] px-6 pb-20 pt-32 sm:px-10 lg:px-16">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_55%_at_50%_45%,rgba(255,112,0,0.2),transparent_68%)]" />
-
-        <h1 className="relative z-10 grid w-full grid-cols-[1fr_auto_1fr] items-center gap-6 text-[18vw] font-bold leading-none tracking-normal sm:text-[14vw] lg:text-[10vw]">
-          <span className="-ml-[12vw] text-white sm:-ml-[7vw] lg:-ml-[4vw]">Our</span>
-          <span className="text-[#ff8a00]">Services</span>
-        </h1>
-      </section>
+      <PageHero
+        eyebrow="Services"
+        title="Our Services"
+        subtitle="งานกระจกและอลูมิเนียมสถาปัตยกรรม ครบทั้งรับเหมาติดตั้ง ผลิตตามสั่ง และจัดหาวัสดุ ด้วยมาตรฐานวิศวกรรมสูงสุดในทุกโครงการ"
+        minHeight="70vh"
+      />
 
       <section className="border-b border-white/[0.06] px-4 py-20 sm:px-8 lg:px-10 lg:py-28">
         <div className="mx-auto max-w-[1500px]">
@@ -191,30 +226,20 @@ export default function ServicesPage() {
         visibleCount={3}
       />
 
-      <section>
-        <div className="container-site section-py">
-          <div className="mb-12 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-            <div>
-              <p className="eyebrow mb-3">Start a Project</p>
-              <h2 className="text-4xl font-bold leading-tight tracking-tight sm:text-5xl">
-                Work with HAGX
-              </h2>
-            </div>
-            <p className="max-w-sm text-sm font-light leading-8 text-white/40 lg:text-right">
-              Send project details or material requirements to our team for technical review, specification support, and quotation.
-            </p>
-          </div>
+      <TestimonialCarousel
+        eyebrow="Client Stories"
+        title="สิ่งที่ลูกค้าพูดถึงเรา"
+        description="ความเชื่อมั่นที่สร้างจากผลงานจริง - ไม่ใช่คำสัญญา"
+        items={serviceTestimonials}
+      />
 
-          <div className="mt-10 flex flex-wrap gap-4">
-            <Link href="/contact" className="btn btn-primary">
-              Contact HAGX
-            </Link>
-            <Link href="/portfolio" className="btn btn-secondary">
-              View Portfolio
-            </Link>
-          </div>
-        </div>
-      </section>
+      <CtaSection
+        eyebrow="Start a Project"
+        title="Work with HAGX"
+        description="Send project details or material requirements to our team for technical review, specification support, and quotation."
+        primaryAction={{ href: "/contact", label: "Contact HAGX" }}
+        secondaryAction={{ href: "/portfolio", label: "View Portfolio" }}
+      />
 
       <SiteFooter />
     </main>

@@ -4,6 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import CtaSection from "@/components/CtaSection";
+import PageHero from "@/components/PageHero";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
 import { products, categories } from "@/lib/products";
@@ -56,18 +58,13 @@ export default function ShopPage() {
     <main className="min-h-screen bg-[#080808] text-white">
       <SiteNav />
 
-      {/* ── Header ── */}
-      <section className="border-b border-white/[0.06] px-8 pb-10 pt-36 sm:px-14">
-        <div className="mx-auto max-w-[1500px]">
-          <p className="eyebrow mb-3">Shop</p>
-          <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
-            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">วัสดุพรีเมียม<br />ราคาโรงงาน</h1>
-            <p className="max-w-xs text-sm font-light leading-8 text-white/40 sm:text-right">
-              กระจก · อลูมิเนียม · ฮาร์ดแวร์<br />สั่งตัดขนาดพิเศษได้ · ส่งทั่วประเทศ
-            </p>
-          </div>
-        </div>
-      </section>
+      <PageHero
+        eyebrow="Shop"
+        title="วัสดุพรีเมียม"
+        titleAlt="ราคาโรงงาน"
+        subtitle="กระจก · อลูมิเนียม · ฮาร์ดแวร์ · สั่งตัดขนาดพิเศษได้ · ส่งทั่วประเทศ"
+        minHeight="55vh"
+      />
 
       <div className="mx-auto max-w-[1500px] flex flex-col gap-0 lg:flex-row">
 
@@ -246,17 +243,16 @@ export default function ShopPage() {
             </div>
           )}
 
-          {/* CTA */}
-          <div className="mt-16 border-t border-white/[0.06] pt-12 text-center">
-            <p className="eyebrow mb-3">ต้องการสินค้าในปริมาณมาก?</p>
-            <h2 className="mb-4 text-3xl font-bold">ติดต่อขอใบเสนอราคา</h2>
-            <p className="mx-auto mb-8 max-w-md text-sm font-light leading-8 text-white/40">
-              สำหรับโครงการหรือคำสั่งซื้อขนาดใหญ่ ทีม HAGX พร้อมให้ราคาพิเศษและจัดส่งตามกำหนด
-            </p>
-            <Link href="/contact" className="btn btn-primary">สอบถามราคา Project</Link>
-          </div>
         </div>
       </div>
+
+      <CtaSection
+        eyebrow="ต้องการสินค้าในปริมาณมาก?"
+        title="ติดต่อขอใบเสนอราคา"
+        description="สำหรับโครงการหรือคำสั่งซื้อขนาดใหญ่ ทีม HAGX พร้อมให้ราคาพิเศษและจัดส่งตามกำหนด"
+        primaryAction={{ href: "/contact", label: "สอบถามราคา Project" }}
+        secondaryAction={{ href: "/services", label: "ดูบริการ" }}
+      />
 
       <SiteFooter />
     </main>

@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import CtaSection from "@/components/CtaSection";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
 import { useState } from "react";
@@ -23,7 +24,12 @@ export default function ContactPage() {
     <main className="min-h-screen bg-[#080808] text-white">
       <SiteNav />
 
-      <div className="mx-auto grid max-w-7xl gap-0 lg:grid-cols-[420px_1fr]">
+      {/* shared hero glow + bottom fade */}
+      <div className="relative">
+        <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: "radial-gradient(ellipse 70% 55% at 30% 40%, rgba(120,50,0,0.40) 0%, transparent 65%)" }} />
+        <div aria-hidden className="pointer-events-none absolute bottom-0 inset-x-0 h-40 bg-gradient-to-t from-[#080808] to-transparent" />
+
+      <div className="relative z-10 mx-auto grid max-w-7xl gap-0 lg:grid-cols-[420px_1fr]">
         {/* left */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
@@ -145,6 +151,15 @@ export default function ContactPage() {
           )}
         </motion.div>
       </div>
+      </div>{/* end glow wrapper */}
+      <CtaSection
+        eyebrow="Before You Send"
+        title="ต้องการดูมาตรฐานงานก่อนตัดสินใจ?"
+        description="ดูตัวอย่างงานติดตั้งและรายการวัสดุของ HAGX เพื่อเตรียมข้อมูลสำหรับการประเมินโครงการ"
+        primaryAction={{ href: "/portfolio", label: "ดูผลงาน" }}
+        secondaryAction={{ href: "/services", label: "ดูบริการ" }}
+      />
+
       <SiteFooter />
     </main>
   );
