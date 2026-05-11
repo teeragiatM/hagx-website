@@ -2,15 +2,27 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ComposableMap, Geographies, Geography, Marker } from "react-simple-maps";
+import {
+  ComposableMap,
+  Geographies,
+  Geography,
+  Marker,
+  ZoomableGroup,
+} from "react-simple-maps";
+import { geoCentroid } from "d3-geo";
 import type { LocalizedPortfolioItem } from "@/lib/localizePortfolio";
 import { typeOptions, categoryOptions } from "@/lib/projects";
 
 // ── Map constants ─────────────────────────────────────────────────────────────
 
-const GEO_URL = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-10m.json";
+const WORLD_GEO_URL  = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-10m.json";
+const THAI_GEO_URL   = "/thailand-provinces.json";
+
+const DEFAULT_CENTER: [number, number] = [101.0, 13.8];
+const DEFAULT_ZOOM   = 1;
+const PROVINCE_ZOOM  = 4;
 
 const MAP_PINS = [
   { name: "กรุงเทพฯ",        coords: [100.5018, 13.7563] as [number, number], count: 68 },
@@ -24,9 +36,18 @@ const MAP_PINS = [
 
 // ── Sub-components ────────────────────────────────────────────────────────────
 
-function PulseMarker({ active, onClick }: { active: boolean; onClick: () => void }) {
+function PulseMarker({
+  active,
+  zoom,
+  onClick,
+}: {
+  active: boolean;
+  zoom: number;
+  onClick: () => void;
+}) {
+  const s = 1 / zoom; // scale inversely with zoom so pin stays same visual size
   return (
-    <g onClick={onClick} style={{ cursor: "pointer" }}>
+    <g onClick={onClick} style={{ cursor: "pointer" }} transform={`scale(${s})`}>
       <motion.circle
         r={10}
         fill="rgba(255,138,0,0.12)"
@@ -54,69 +75,174 @@ function ThailandMap({
   activePin: string | null;
   setActivePin: (n: string | null) => void;
 }) {
+  const [position, setPosition] = useState<{
+    coordinates: [number, number];
+    zoom: number;
+  }>({ coordinates: DEFAULT_CENTER, zoom: DEFAULT_ZOOM });
+
+  const [hoveredProvince, setHoveredProvince] = useState<string | null>(null);
+  const [activeProvince, setActiveProvince]   = useState<string | null>(null);
+
+  const handleProvinceClick = useCallback((geo: any) => {
+    const centroid = geoCentroid(geo) as [number, number];
+    setActiveProvince(geo.properties.name);
+    setPosition({ coordinates: centroid, zoom: PROVINCE_ZOOM });
+  }, []);
+
+  const handleReset = useCallback(() => {
+    setPosition({ coordinates: DEFAULT_CENTER, zoom: DEFAULT_ZOOM });
+    setActiveProvince(null);
+  }, []);
+
+  const isZoomed = position.zoom > DEFAULT_ZOOM;
+
   return (
-    <div className="relative h-full w-full">
+    <div className="relative h-full w-full select-none">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_50%_70%_at_65%_50%,rgba(255,138,0,0.13),transparent_60%)]" />
 
       <ComposableMap
         projection="geoMercator"
-        projectionConfig={{ center: [101.5, 14.5], scale: 1900 }}
+        projectionConfig={{ center: [100, 14], scale: 900 }}
         className="absolute inset-0 h-full w-full"
       >
-        <Geographies geography={GEO_URL}>
-          {({ geographies }) =>
-            geographies.map((geo) => {
-              const isThailand = geo.properties.name === "Thailand";
-              return (
-                <Geography
-                  key={geo.rsmKey}
-                  geography={geo}
-                  fill={isThailand ? "rgba(255,138,0,0.10)" : "rgba(255,255,255,0.03)"}
-                  stroke={isThailand ? "rgba(255,138,0,0.55)" : "rgba(255,255,255,0.18)"}
-                  strokeWidth={isThailand ? 0.7 : 0.4}
-                  style={{
-                    default: { outline: "none" },
-                    hover:   { outline: "none", fill: isThailand ? "rgba(255,138,0,0.15)" : "rgba(255,255,255,0.06)" },
-                    pressed: { outline: "none" },
-                  }}
-                />
-              );
-            })
+        <ZoomableGroup
+          zoom={position.zoom}
+          center={position.coordinates}
+          onMoveEnd={({ zoom, coordinates }) =>
+            setPosition({ zoom, coordinates: coordinates as [number, number] })
           }
-        </Geographies>
+          minZoom={0.8}
+          maxZoom={12}
+        >
+          {/* ── Background world layer ── */}
+          <Geographies geography={WORLD_GEO_URL}>
+            {({ geographies }) =>
+              geographies.map((geo) => {
+                const isThai = geo.properties.name === "Thailand";
+                if (isThai) return null; // covered by province layer
+                return (
+                  <Geography
+                    key={geo.rsmKey}
+                    geography={geo}
+                    fill="rgba(255,255,255,0.03)"
+                    stroke="rgba(255,255,255,0.18)"
+                    strokeWidth={0.4}
+                    style={{
+                      default: { outline: "none" },
+                      hover:   { outline: "none", fill: "rgba(255,255,255,0.06)" },
+                      pressed: { outline: "none" },
+                    }}
+                  />
+                );
+              })
+            }
+          </Geographies>
 
-        {MAP_PINS.map((loc) => (
-          <Marker key={loc.name} coordinates={loc.coords}>
-            <PulseMarker
-              active={activePin === loc.name}
-              onClick={() => setActivePin(activePin === loc.name ? null : loc.name)}
-            />
-            <text
-              textAnchor="middle"
-              y={-14}
-              fill="rgba(255,255,255,0.65)"
-              fontSize={7.5}
-              fontWeight={300}
-              fontFamily="var(--font-anuphan), sans-serif"
-              style={{ pointerEvents: "none", userSelect: "none" }}
-            >
-              {loc.name}
-            </text>
-          </Marker>
-        ))}
+          {/* ── Thailand province layer ── */}
+          <Geographies geography={THAI_GEO_URL}>
+            {({ geographies }) =>
+              geographies.map((geo) => {
+                const name      = geo.properties.name as string;
+                const isActive  = activeProvince === name;
+                const isHovered = hoveredProvince === name;
+                return (
+                  <Geography
+                    key={geo.rsmKey}
+                    geography={geo}
+                    onClick={() => handleProvinceClick(geo)}
+                    onMouseEnter={() => setHoveredProvince(name)}
+                    onMouseLeave={() => setHoveredProvince(null)}
+                    fill={
+                      isActive  ? "rgba(255,138,0,0.35)" :
+                      isHovered ? "rgba(255,138,0,0.18)" :
+                                  "rgba(255,138,0,0.08)"
+                    }
+                    stroke={
+                      isActive  ? "rgba(255,138,0,0.8)" :
+                                  "rgba(255,138,0,0.35)"
+                    }
+                    strokeWidth={isActive ? 0.8 : 0.3}
+                    style={{
+                      default: { outline: "none", cursor: "pointer" },
+                      hover:   { outline: "none", cursor: "pointer" },
+                      pressed: { outline: "none" },
+                    }}
+                  />
+                );
+              })
+            }
+          </Geographies>
+
+          {/* ── Project pins ── */}
+          {MAP_PINS.map((loc) => (
+            <Marker key={loc.name} coordinates={loc.coords}>
+              <PulseMarker
+                active={activePin === loc.name}
+                zoom={position.zoom}
+                onClick={() => setActivePin(activePin === loc.name ? null : loc.name)}
+              />
+              <text
+                textAnchor="middle"
+                y={-14 / position.zoom}
+                fill="rgba(255,255,255,0.7)"
+                fontSize={7.5 / position.zoom}
+                fontWeight={300}
+                fontFamily="var(--font-anuphan), sans-serif"
+                style={{ pointerEvents: "none", userSelect: "none" }}
+              >
+                {loc.name}
+              </text>
+            </Marker>
+          ))}
+        </ZoomableGroup>
       </ComposableMap>
 
+      {/* ── Province hover label ── */}
+      <AnimatePresence>
+        {hoveredProvince && !isZoomed && (
+          <motion.div
+            key="province-label"
+            initial={{ opacity: 0, y: 4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.15 }}
+            className="pointer-events-none absolute bottom-6 left-1/2 -translate-x-1/2 border border-[#ff8a00]/30 bg-[#1a0d00]/90 px-4 py-2 text-xs font-light text-white/70 backdrop-blur-sm"
+          >
+            {hoveredProvince}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ── Reset zoom button ── */}
+      <AnimatePresence>
+        {isZoomed && (
+          <motion.button
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            onClick={handleReset}
+            className="absolute left-6 top-6 flex items-center gap-2 border border-white/15 bg-black/60 px-4 py-2 text-[10px] font-light uppercase tracking-widest text-white/50 backdrop-blur-sm transition-colors hover:border-white/40 hover:text-white"
+          >
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <path d="M3 12a9 9 0 1 1 18 0 9 9 0 0 1-18 0M3 12h4m-4 0 3-3m-3 3 3 3" strokeLinecap="round"/>
+            </svg>
+            Reset map
+          </motion.button>
+        )}
+      </AnimatePresence>
+
+      {/* ── Pin info card — RIGHT SIDE ── */}
       <AnimatePresence>
         {activePin && (() => {
           const loc = MAP_PINS.find((l) => l.name === activePin)!;
           return (
             <motion.div
               key={activePin}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 8 }}
+              initial={{ opacity: 0, x: 16 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 16 }}
               transition={{ duration: 0.25 }}
-              className="absolute left-6 top-6 w-52 border border-[#ff8a00]/30 bg-gradient-to-br from-[#7a3500] to-[#2a1000] p-5 shadow-2xl"
+              className="absolute right-6 top-6 w-52 border border-[#ff8a00]/30 bg-gradient-to-br from-[#7a3500] to-[#2a1000] p-5 shadow-2xl"
             >
               <p className="mb-1 text-xs font-light uppercase tracking-widest text-[#ff8a00]">Location</p>
               <h3 className="text-xl font-bold text-white">{loc.name}</h3>
@@ -132,9 +258,18 @@ function ThailandMap({
           );
         })()}
       </AnimatePresence>
+
+      {/* ── Zoom hint ── */}
+      {!isZoomed && (
+        <p className="pointer-events-none absolute bottom-6 right-6 text-[9px] font-light uppercase tracking-widest text-white/20">
+          คลิกจังหวัดเพื่อซูม
+        </p>
+      )}
     </div>
   );
 }
+
+// ── Filter checkbox ───────────────────────────────────────────────────────────
 
 function FilterCheck({
   label,
@@ -167,10 +302,10 @@ function FilterCheck({
 // ── Main client component ─────────────────────────────────────────────────────
 
 export default function PortfolioClient({ items }: { items: LocalizedPortfolioItem[] }) {
-  const [activePin, setActivePin]               = useState<string | null>(null);
-  const [selectedTypes, setSelectedTypes]       = useState<string[]>([]);
-  const [selectedCategories, setSelectedCats]   = useState<string[]>([]);
-  const [selectedLocations, setSelectedLocs]    = useState<string[]>([]);
+  const [activePin, setActivePin]             = useState<string | null>(null);
+  const [selectedTypes, setSelectedTypes]     = useState<string[]>([]);
+  const [selectedCategories, setSelectedCats] = useState<string[]>([]);
+  const [selectedLocations, setSelectedLocs]  = useState<string[]>([]);
 
   const toggle = (arr: string[], setArr: (a: string[]) => void, val: string) =>
     setArr(arr.includes(val) ? arr.filter((v) => v !== val) : [...arr, val]);
@@ -183,7 +318,7 @@ export default function PortfolioClient({ items }: { items: LocalizedPortfolioIt
   const filtered = useMemo(
     () =>
       items.filter((p) => {
-        if (selectedTypes.length      && !selectedTypes.includes(p.type))         return false;
+        if (selectedTypes.length      && !selectedTypes.includes(p.type))          return false;
         if (selectedCategories.length && !selectedCategories.includes(p.category)) return false;
         if (selectedLocations.length  && !selectedLocations.includes(p.location))  return false;
         return true;
@@ -222,7 +357,7 @@ export default function PortfolioClient({ items }: { items: LocalizedPortfolioIt
             Across<br />Thailand
           </h1>
           <p className="mt-5 max-w-[220px] text-sm font-light leading-7 text-white/40">
-            คลิกจุดบนแผนที่เพื่อดูโครงการในแต่ละพื้นที่
+            คลิกจังหวัดเพื่อซูมดูรายละเอียด<br />หรือกดหมุดเพื่อดูโครงการ
           </p>
           <div className="mt-8 grid grid-cols-2 gap-x-8 gap-y-2">
             {([["120+", "Projects"], ["7", "Provinces"], ["10+", "Years"]] as const).map(([n, l]) => (
