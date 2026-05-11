@@ -21,6 +21,8 @@ export default function SiteNav() {
   const { lang } = useI18n("nav");
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -34,8 +36,9 @@ export default function SiteNav() {
     return () => { document.body.style.overflow = ""; };
   }, [open]);
 
+  // Use server-default "th" until hydration completes to avoid SSR mismatch
   const label = (l: { label_en: string; label_th: string }) =>
-    lang === "th" ? l.label_th : l.label_en;
+    !mounted || lang === "th" ? l.label_th : l.label_en;
 
   const isActive = (href: string) => {
     if (href === "/") return pathname === "/";
