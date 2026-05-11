@@ -292,7 +292,7 @@ function RailItem({
   start: number;
   end: number;
 }) {
-  const opacity  = useTransform(progress, [start - 0.04, start, end, end + 0.04], [0.25, 1, 1, 0.25]);
+  const opacity  = useTransform(progress, [Math.max(0, start - 0.04), start, end, Math.min(1, end + 0.04)], [0.25, 1, 1, 0.25]);
   const barScale = useTransform(progress, [start, end], [0, 1]);
 
   return (
