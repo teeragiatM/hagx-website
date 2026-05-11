@@ -1,32 +1,32 @@
 "use client";
 
-import { motion } from "framer-motion";
-import Image from "next/image";
 import CtaSection from "@/components/CtaSection";
 import PageHero from "@/components/PageHero";
-import TestimonialCarousel from "@/components/TestimonialCarousel";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
+import { MarqueeGrid, type MarqueeItem } from "@/components/ui/Marquee";
+import { ReviewSection } from "@/components/ui/ReviewSection";
 
 // ── Data ──────────────────────────────────────────────────────────────────────
 
-const clients = [
-  { name: "SCG",               logo: "SCG",      sector: "Construction" },
-  { name: "MQDC",              logo: "MQDC",     sector: "Real Estate" },
-  { name: "Sansiri",           logo: "Sansiri",  sector: "Real Estate" },
-  { name: "Origin Property",   logo: "Origin",   sector: "Real Estate" },
-  { name: "AP Thailand",       logo: "AP",       sector: "Real Estate" },
-  { name: "Central Pattana",   logo: "CPN",      sector: "Retail" },
-  { name: "TCC Group",         logo: "TCC",      sector: "Conglomerate" },
-  { name: "Dusit International", logo: "Dusit",  sector: "Hospitality" },
-  { name: "Minor Hotels",      logo: "Minor",    sector: "Hospitality" },
-  { name: "Marriott Thailand", logo: "Marriott", sector: "Hospitality" },
-  { name: "Hilton Phuket",     logo: "Hilton",   sector: "Hospitality" },
-  { name: "PTT",               logo: "PTT",      sector: "Energy" },
-  { name: "EGCO Group",        logo: "EGCO",     sector: "Energy" },
-  { name: "True Corporation",  logo: "True",     sector: "Telecom" },
-  { name: "AIA Thailand",      logo: "AIA",      sector: "Insurance" },
-  { name: "Bangkok Hospital",  logo: "BDMS",     sector: "Healthcare" },
+// MarqueeItem shape: { id, label, sub? }
+const clients: MarqueeItem[] = [
+  { id: "scg",      label: "SCG",       sub: "Construction" },
+  { id: "mqdc",     label: "MQDC",      sub: "Real Estate" },
+  { id: "sansiri",  label: "Sansiri",   sub: "Real Estate" },
+  { id: "origin",   label: "Origin",    sub: "Real Estate" },
+  { id: "ap",       label: "AP Thailand", sub: "Real Estate" },
+  { id: "cpn",      label: "Central Pattana", sub: "Retail" },
+  { id: "tcc",      label: "TCC Group", sub: "Conglomerate" },
+  { id: "dusit",    label: "Dusit",     sub: "Hospitality" },
+  { id: "minor",    label: "Minor Hotels", sub: "Hospitality" },
+  { id: "marriott", label: "Marriott",  sub: "Hospitality" },
+  { id: "hilton",   label: "Hilton",    sub: "Hospitality" },
+  { id: "ptt",      label: "PTT",       sub: "Energy" },
+  { id: "egco",     label: "EGCO",      sub: "Energy" },
+  { id: "true",     label: "True Corp", sub: "Telecom" },
+  { id: "aia",      label: "AIA",       sub: "Insurance" },
+  { id: "bdms",     label: "BDMS",      sub: "Healthcare" },
 ];
 
 const testimonials = [
@@ -87,44 +87,9 @@ const stats = [
   { value: "15+", label: "จังหวัดทั่วไทย", sub: "Provinces Nationwide" },
 ];
 
-// ── Vertical Marquee Column ───────────────────────────────────────────────────
-
-function MarqueeColumn({ items, reverse = false, speed = 40 }: {
-  items: typeof clients;
-  reverse?: boolean;
-  speed?: number;
-}) {
-  const doubled = [...items, ...items];
-  return (
-    <div className="relative overflow-hidden" style={{ height: "100%" }}>
-      <motion.div
-        animate={{ y: reverse ? ["-50%", "0%"] : ["0%", "-50%"] }}
-        transition={{ duration: speed, repeat: Infinity, ease: "linear" }}
-        className="flex flex-col gap-3"
-      >
-        {doubled.map((c, i) => (
-          <div
-            key={i}
-            className="flex h-20 shrink-0 items-center justify-center border border-[#ff8a00]/25 bg-[#0c0c0c] px-5 transition-colors hover:border-[#ff8a00]/60 hover:bg-[#0f0f0f]"
-          >
-            <span className="text-sm font-semibold tracking-wide text-white/70">{c.logo}</span>
-          </div>
-        ))}
-      </motion.div>
-    </div>
-  );
-}
-
-// ── Testimonial Carousel ──────────────────────────────────────────────────────
-
 // ── Page ──────────────────────────────────────────────────────────────────────
 
 export default function ClientsPage() {
-  const col1 = clients.slice(0, 6);
-  const col2 = clients.slice(4, 10);
-  const col3 = clients.slice(8, 14);
-  const col4 = clients.slice(2, 8);
-  const col5 = clients.slice(10, 16);
 
   return (
     <main className="min-h-screen bg-[#080808] text-white">
@@ -136,19 +101,12 @@ export default function ClientsPage() {
         title={<>Trusted by leading<br /><span className="text-[#ff8a00]">brands across Thailand</span></>}
         subtitle="ผู้นำในธุรกิจอสังหาริมทรัพย์ โรงแรม ค้าปลีก และอุตสาหกรรม ไว้วางใจ HAGX ในงานกระจกและอลูมิเนียม"
         backgroundSlot={
-          <div className="flex h-full gap-3 px-3">
-            {[
-              { items: col1, reverse: false, speed: 38 },
-              { items: col2, reverse: true,  speed: 44 },
-              { items: col3, reverse: false, speed: 36 },
-              { items: col4, reverse: true,  speed: 50 },
-              { items: col5, reverse: false, speed: 42 },
-            ].map((col, i) => (
-              <div key={i} className="flex-1 h-full">
-                <MarqueeColumn items={col.items} reverse={col.reverse} speed={col.speed} />
-              </div>
-            ))}
-          </div>
+          <MarqueeGrid
+            items={clients}
+            columns={5}
+            columnSpeeds={[38, 44, 36, 50, 42]}
+            className="h-full px-3"
+          />
         }
       />
 
@@ -179,26 +137,12 @@ export default function ClientsPage() {
       </section>
 
       {/* ── TESTIMONIALS ───────────────────────────────────────────────────── */}
-      <section className="border-b border-white/[0.06] px-8 py-24 sm:px-14">
-        <div className="mx-auto max-w-[1500px]">
-          <div className="hidden">
-            <div>
-              <p className="eyebrow mb-3">Client Stories</p>
-              <h2 className="text-4xl font-bold tracking-tight sm:text-5xl">สิ่งที่ลูกค้าพูดถึงเรา</h2>
-            </div>
-            <p className="max-w-sm text-sm font-light leading-8 text-white/40 lg:text-right">
-              ความเชื่อมั่นที่สร้างจากผลงานจริง — ไม่ใช่คำสัญญา
-            </p>
-          </div>
-          <TestimonialCarousel
-            eyebrow="Client Stories"
-            title="สิ่งที่ลูกค้าพูดถึงเรา"
-            description="ความเชื่อมั่นที่สร้างจากผลงานจริง - ไม่ใช่คำสัญญา"
-            items={testimonials}
-            className="-mx-8 -my-24 sm:-mx-14"
-          />
-        </div>
-      </section>
+      <ReviewSection
+        eyebrow="Client Stories"
+        title="สิ่งที่ลูกค้าพูดถึงเรา"
+        description="ความเชื่อมั่นที่สร้างจากผลงานจริง — ไม่ใช่คำสัญญา"
+        items={testimonials}
+      />
 
       {/* ── CLIENT GRID ────────────────────────────────────────────────────── */}
       <section className="border-b border-white/[0.06] px-8 py-24 sm:px-14">
@@ -208,11 +152,11 @@ export default function ClientsPage() {
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
             {clients.map((c) => (
               <div
-                key={c.name}
+                key={c.id}
                 className="flex flex-col items-center justify-center gap-2 border border-white/[0.07] bg-[#0c0c0c] py-8 px-4 transition-colors hover:border-[#ff8a00]/30"
               >
-                <span className="text-base font-bold text-white/70">{c.logo}</span>
-                <span className="text-[9px] font-light uppercase tracking-widest text-white/25">{c.sector}</span>
+                <span className="text-base font-bold text-white/70">{c.label}</span>
+                <span className="text-[9px] font-light uppercase tracking-widest text-white/25">{c.sub}</span>
               </div>
             ))}
           </div>

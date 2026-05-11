@@ -1,7 +1,7 @@
 import CtaSection from "@/components/CtaSection";
 import PageHero from "@/components/PageHero";
 import ServiceCarousel, { type ServiceCarouselItem } from "@/components/ServiceCarousel";
-import TestimonialCarousel, { type TestimonialItem } from "@/components/TestimonialCarousel";
+import { ReviewSection, type TestimonialItem } from "@/components/ui/ReviewSection";
 import SiteFooter from "@/components/SiteFooter";
 import SiteNav from "@/components/SiteNav";
 
@@ -226,10 +226,10 @@ export default function ServicesPage() {
         visibleCount={3}
       />
 
-      <TestimonialCarousel
+      <ReviewSection
         eyebrow="Client Stories"
         title="สิ่งที่ลูกค้าพูดถึงเรา"
-        description="ความเชื่อมั่นที่สร้างจากผลงานจริง - ไม่ใช่คำสัญญา"
+        description="ความเชื่อมั่นที่สร้างจากผลงานจริง — ไม่ใช่คำสัญญา"
         items={serviceTestimonials}
       />
 
