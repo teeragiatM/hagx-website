@@ -4,22 +4,48 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { ComposableMap, Geographies, Geography, Marker } from "react-simple-maps";
 import type { LocalizedPortfolioItem } from "@/lib/localizePortfolio";
 import { typeOptions, categoryOptions } from "@/lib/projects";
 
 // ── Map constants ─────────────────────────────────────────────────────────────
 
+const GEO_URL = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-10m.json";
+
 const MAP_PINS = [
-  { name: "กรุงเทพฯ", left: "51%", top: "58%", count: 68 },
-  { name: "ชลบุรี / พัทยา", left: "58%", top: "62%", count: 12 },
-  { name: "เชียงใหม่", left: "35%", top: "23%", count: 8 },
-  { name: "หัวหิน", left: "44%", top: "72%", count: 15 },
-  { name: "ภูเก็ต", left: "30%", top: "90%", count: 10 },
-  { name: "ขอนแก่น", left: "65%", top: "44%", count: 5 },
-  { name: "เชียงราย", left: "40%", top: "11%", count: 3 },
+  { name: "กรุงเทพฯ",        coords: [100.5018, 13.7563] as [number, number], count: 68 },
+  { name: "ชลบุรี / พัทยา",  coords: [100.9925, 13.0478] as [number, number], count: 12 },
+  { name: "เชียงใหม่",       coords: [98.9853,  18.7883] as [number, number], count: 8  },
+  { name: "หัวหิน",          coords: [99.9578,  12.5657] as [number, number], count: 15 },
+  { name: "ภูเก็ต",          coords: [98.3923,   7.8804] as [number, number], count: 10 },
+  { name: "ขอนแก่น",         coords: [102.8359, 16.4322] as [number, number], count: 5  },
+  { name: "เชียงราย",        coords: [99.8316,  19.9105] as [number, number], count: 3  },
 ];
 
 // ── Sub-components ────────────────────────────────────────────────────────────
+
+function PulseMarker({ active, onClick }: { active: boolean; onClick: () => void }) {
+  return (
+    <g onClick={onClick} style={{ cursor: "pointer" }}>
+      <motion.circle
+        r={10}
+        fill="rgba(255,138,0,0.12)"
+        stroke="rgba(255,138,0,0.35)"
+        strokeWidth={0.6}
+        animate={{ r: [8, 16, 8], opacity: [0.7, 0, 0.7] }}
+        transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.circle
+        r={active ? 6 : 4}
+        fill="#ff8a00"
+        stroke="white"
+        strokeWidth={0.8}
+        animate={{ r: active ? 6 : 4 }}
+        transition={{ duration: 0.2 }}
+      />
+    </g>
+  );
+}
 
 function ThailandMap({
   activePin,
@@ -30,53 +56,55 @@ function ThailandMap({
 }) {
   return (
     <div className="relative h-full w-full">
-      <div className="absolute inset-8">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_48%,rgba(255,138,0,0.16),transparent_58%)]" />
-        <svg
-          viewBox="0 0 420 620"
-          className="absolute inset-0 h-full w-full drop-shadow-[0_22px_60px_rgba(255,138,0,0.08)]"
-          aria-hidden
-        >
-          <path
-            d="M178 28c37 10 70 34 80 70 8 29-9 45-2 74 6 24 28 31 39 55 14 31-2 68 16 95 14 21 43 21 55 43 14 25-6 54-25 76-23 27-42 51-38 86 3 27 19 49 9 61-13 15-53-2-77-23-30-26-34-62-61-69-25-7-40 21-68 11-27-10-35-45-37-70-4-41 16-74 37-106 17-27 35-55 30-88-4-28-23-41-28-68-8-47 33-91 70-147Z"
-            fill="rgba(255,138,0,0.08)"
-            stroke="rgba(255,138,0,0.42)"
-            strokeWidth="2"
-          />
-          <path
-            d="M167 86c42 31 63 66 64 105 1 52-36 86-34 132 2 44 38 73 35 116-2 32-25 61-49 83"
-            fill="none"
-            stroke="rgba(255,255,255,0.08)"
-            strokeWidth="1"
-          />
-        </svg>
-      </div>
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_50%_70%_at_65%_50%,rgba(255,138,0,0.13),transparent_60%)]" />
 
-      <div className="absolute inset-8">
+      <ComposableMap
+        projection="geoMercator"
+        projectionConfig={{ center: [101.5, 14.5], scale: 1900 }}
+        className="absolute inset-0 h-full w-full"
+      >
+        <Geographies geography={GEO_URL}>
+          {({ geographies }) =>
+            geographies.map((geo) => {
+              const isThailand = geo.properties.name === "Thailand";
+              return (
+                <Geography
+                  key={geo.rsmKey}
+                  geography={geo}
+                  fill={isThailand ? "rgba(255,138,0,0.10)" : "rgba(255,255,255,0.03)"}
+                  stroke={isThailand ? "rgba(255,138,0,0.55)" : "rgba(255,255,255,0.18)"}
+                  strokeWidth={isThailand ? 0.7 : 0.4}
+                  style={{
+                    default: { outline: "none" },
+                    hover:   { outline: "none", fill: isThailand ? "rgba(255,138,0,0.15)" : "rgba(255,255,255,0.06)" },
+                    pressed: { outline: "none" },
+                  }}
+                />
+              );
+            })
+          }
+        </Geographies>
+
         {MAP_PINS.map((loc) => (
-          <button
-            key={loc.name}
-            type="button"
-            onClick={() => setActivePin(activePin === loc.name ? null : loc.name)}
-            className="absolute -translate-x-1/2 -translate-y-1/2 text-left"
-            style={{ left: loc.left, top: loc.top }}
-            aria-label={loc.name}
-          >
-            <motion.span
-              className="absolute left-1/2 top-1/2 h-8 w-8 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#ff8a00]/30 bg-[#ff8a00]/10"
-              animate={{ scale: [1, 1.7, 1], opacity: [0.7, 0, 0.7] }}
-              transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+          <Marker key={loc.name} coordinates={loc.coords}>
+            <PulseMarker
+              active={activePin === loc.name}
+              onClick={() => setActivePin(activePin === loc.name ? null : loc.name)}
             />
-            <motion.span
-              className="relative z-10 block h-3 w-3 rounded-full border border-white bg-[#ff8a00]"
-              whileHover={{ scale: 1.45 }}
-            />
-            <span className="absolute left-1/2 top-[-26px] hidden -translate-x-1/2 whitespace-nowrap text-[10px] font-light text-white/70 sm:block">
+            <text
+              textAnchor="middle"
+              y={-14}
+              fill="rgba(255,255,255,0.65)"
+              fontSize={7.5}
+              fontWeight={300}
+              fontFamily="var(--font-anuphan), sans-serif"
+              style={{ pointerEvents: "none", userSelect: "none" }}
+            >
               {loc.name}
-            </span>
-          </button>
+            </text>
+          </Marker>
         ))}
-      </div>
+      </ComposableMap>
 
       <AnimatePresence>
         {activePin && (() => {
