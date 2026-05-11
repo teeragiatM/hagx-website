@@ -20,9 +20,12 @@ import { typeOptions, categoryOptions } from "@/lib/projects";
 const WORLD_GEO_URL  = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-10m.json";
 const THAI_GEO_URL   = "/thailand-provinces.json";
 
-const DEFAULT_CENTER: [number, number] = [101.0, 13.8];
-const DEFAULT_ZOOM   = 1;
-const PROVINCE_ZOOM  = 4;
+const DEFAULT_CENTER: [number, number] = [101.2, 13.2];
+const DEFAULT_ZOOM   = 2.6;   // Thailand-focused default — surrounding countries visible
+const PROVINCE_ZOOM  = 7;
+const MIN_ZOOM       = 1.8;
+const MAX_ZOOM       = 14;
+const ZOOM_STEP      = 1.5;
 
 const MAP_PINS = [
   { name: "กรุงเทพฯ",        coords: [100.5018, 13.7563] as [number, number], count: 68 },
@@ -94,7 +97,12 @@ function ThailandMap({
     setActiveProvince(null);
   }, []);
 
-  const isZoomed = position.zoom > DEFAULT_ZOOM;
+  const zoomIn  = useCallback(() =>
+    setPosition((p) => ({ ...p, zoom: Math.min(MAX_ZOOM, p.zoom * ZOOM_STEP) })), []);
+  const zoomOut = useCallback(() =>
+    setPosition((p) => ({ ...p, zoom: Math.max(MIN_ZOOM, p.zoom / ZOOM_STEP) })), []);
+
+  const isZoomed = position.zoom > DEFAULT_ZOOM + 0.1;
 
   return (
     <div className="relative h-full w-full select-none">
@@ -111,25 +119,30 @@ function ThailandMap({
           onMoveEnd={({ zoom, coordinates }) =>
             setPosition({ zoom, coordinates: coordinates as [number, number] })
           }
-          minZoom={0.8}
-          maxZoom={12}
+          filterZoomEvent={(evt: any) => {
+            // block scroll-wheel zoom; allow drag pan only
+            if (evt.type === "wheel") return false;
+            return true;
+          }}
+          minZoom={MIN_ZOOM}
+          maxZoom={MAX_ZOOM}
         >
           {/* ── Background world layer ── */}
           <Geographies geography={WORLD_GEO_URL}>
             {({ geographies }) =>
               geographies.map((geo) => {
                 const isThai = geo.properties.name === "Thailand";
-                if (isThai) return null; // covered by province layer
+                if (isThai) return null;
                 return (
                   <Geography
                     key={geo.rsmKey}
                     geography={geo}
-                    fill="rgba(255,255,255,0.03)"
-                    stroke="rgba(255,255,255,0.18)"
+                    fill="rgba(255,255,255,0.025)"
+                    stroke="rgba(255,255,255,0.14)"
                     strokeWidth={0.4}
                     style={{
                       default: { outline: "none" },
-                      hover:   { outline: "none", fill: "rgba(255,255,255,0.06)" },
+                      hover:   { outline: "none", fill: "rgba(255,255,255,0.05)" },
                       pressed: { outline: "none" },
                     }}
                   />
@@ -153,13 +166,13 @@ function ThailandMap({
                     onMouseEnter={() => setHoveredProvince(name)}
                     onMouseLeave={() => setHoveredProvince(null)}
                     fill={
-                      isActive  ? "rgba(255,138,0,0.35)" :
-                      isHovered ? "rgba(255,138,0,0.18)" :
-                                  "rgba(255,138,0,0.08)"
+                      isActive  ? "rgba(255,138,0,0.40)" :
+                      isHovered ? "rgba(255,138,0,0.22)" :
+                                  "rgba(255,138,0,0.10)"
                     }
                     stroke={
-                      isActive  ? "rgba(255,138,0,0.8)" :
-                                  "rgba(255,138,0,0.35)"
+                      isActive  ? "rgba(255,138,0,0.85)" :
+                                  "rgba(255,138,0,0.40)"
                     }
                     strokeWidth={isActive ? 0.8 : 0.3}
                     style={{
@@ -199,39 +212,72 @@ function ThailandMap({
 
       {/* ── Province hover label ── */}
       <AnimatePresence>
-        {hoveredProvince && !isZoomed && (
+        {hoveredProvince && (
           <motion.div
             key="province-label"
             initial={{ opacity: 0, y: 4 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
-            className="pointer-events-none absolute bottom-6 left-1/2 -translate-x-1/2 border border-[#ff8a00]/30 bg-[#1a0d00]/90 px-4 py-2 text-xs font-light text-white/70 backdrop-blur-sm"
+            className="pointer-events-none absolute bottom-6 left-1/2 -translate-x-1/2 border border-[#ff8a00]/25 bg-[#120800]/90 px-4 py-2 text-xs font-light text-white/65 backdrop-blur-sm"
           >
             {hoveredProvince}
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* ── Reset zoom button ── */}
-      <AnimatePresence>
-        {isZoomed && (
-          <motion.button
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            onClick={handleReset}
-            className="absolute left-6 top-6 flex items-center gap-2 border border-white/15 bg-black/60 px-4 py-2 text-[10px] font-light uppercase tracking-widest text-white/50 backdrop-blur-sm transition-colors hover:border-white/40 hover:text-white"
-          >
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-              <path d="M3 12a9 9 0 1 1 18 0 9 9 0 0 1-18 0M3 12h4m-4 0 3-3m-3 3 3 3" strokeLinecap="round"/>
-            </svg>
-            Reset map
-          </motion.button>
-        )}
-      </AnimatePresence>
+      {/* ── Zoom controls — right side ── */}
+      <div className="absolute right-5 top-1/2 flex -translate-y-1/2 flex-col gap-1.5">
+        {/* Zoom in */}
+        <button
+          onClick={zoomIn}
+          disabled={position.zoom >= MAX_ZOOM}
+          className="flex h-9 w-9 items-center justify-center border border-white/15 bg-black/60 text-white/50 backdrop-blur-sm transition-colors hover:border-white/35 hover:text-white disabled:opacity-20"
+          aria-label="Zoom in"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+        </button>
 
-      {/* ── Pin info card — RIGHT SIDE ── */}
+        {/* Zoom level indicator */}
+        <div className="flex h-6 items-center justify-center text-[9px] font-light tracking-widest text-white/20">
+          {Math.round(position.zoom * 10) / 10}×
+        </div>
+
+        {/* Zoom out */}
+        <button
+          onClick={zoomOut}
+          disabled={position.zoom <= MIN_ZOOM}
+          className="flex h-9 w-9 items-center justify-center border border-white/15 bg-black/60 text-white/50 backdrop-blur-sm transition-colors hover:border-white/35 hover:text-white disabled:opacity-20"
+          aria-label="Zoom out"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+        </button>
+
+        {/* Reset */}
+        <AnimatePresence>
+          {isZoomed && (
+            <motion.button
+              initial={{ opacity: 0, scale: 0.85 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.85 }}
+              onClick={handleReset}
+              className="mt-1 flex h-9 w-9 items-center justify-center border border-[#ff8a00]/30 bg-black/60 text-[#ff8a00]/60 backdrop-blur-sm transition-colors hover:border-[#ff8a00]/70 hover:text-[#ff8a00]"
+              aria-label="Reset map"
+              title="Reset"
+            >
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/>
+              </svg>
+            </motion.button>
+          )}
+        </AnimatePresence>
+      </div>
+
+      {/* ── Pin info card — right side (above zoom controls) ── */}
       <AnimatePresence>
         {activePin && (() => {
           const loc = MAP_PINS.find((l) => l.name === activePin)!;
@@ -242,10 +288,10 @@ function ThailandMap({
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 16 }}
               transition={{ duration: 0.25 }}
-              className="absolute right-6 top-6 w-52 border border-[#ff8a00]/30 bg-gradient-to-br from-[#7a3500] to-[#2a1000] p-5 shadow-2xl"
+              className="absolute right-16 top-6 w-48 border border-[#ff8a00]/30 bg-gradient-to-br from-[#7a3500] to-[#2a1000] p-5 shadow-2xl"
             >
-              <p className="mb-1 text-xs font-light uppercase tracking-widest text-[#ff8a00]">Location</p>
-              <h3 className="text-xl font-bold text-white">{loc.name}</h3>
+              <p className="mb-1 text-[10px] font-light uppercase tracking-widest text-[#ff8a00]">Location</p>
+              <h3 className="text-lg font-bold text-white leading-tight">{loc.name}</h3>
               <p className="mt-3 text-3xl font-bold text-[#ff8a00]">{loc.count}+</p>
               <p className="text-xs font-light text-white/50">Projects Completed</p>
               <button
@@ -259,9 +305,9 @@ function ThailandMap({
         })()}
       </AnimatePresence>
 
-      {/* ── Zoom hint ── */}
+      {/* ── Hint ── */}
       {!isZoomed && (
-        <p className="pointer-events-none absolute bottom-6 right-6 text-[9px] font-light uppercase tracking-widest text-white/20">
+        <p className="pointer-events-none absolute bottom-6 right-14 text-[9px] font-light uppercase tracking-widest text-white/18">
           คลิกจังหวัดเพื่อซูม
         </p>
       )}
