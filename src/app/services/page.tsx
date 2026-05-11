@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import ServiceCarousel, { type ServiceCarouselItem } from "@/components/ServiceCarousel";
 import SiteFooter from "@/components/SiteFooter";
@@ -7,54 +6,102 @@ import SiteNav from "@/components/SiteNav";
 const installationServices: ServiceCarouselItem[] = [
   {
     n: "01",
-    title: "Pre-Site Survey",
-    desc: "สำรวจหน้างาน วัดระยะ ประเมินโครงสร้าง และแนะนำระบบที่เหมาะกับงบประมาณและแบบสถาปัตย์",
-    image: "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=1000&q=80",
-  },
-  {
-    n: "02",
-    title: "Design & Shop Drawing",
-    desc: "ออกแบบระบบ จัดทำ shop drawing ตารางวัสดุ และประสานแบบกับสถาปนิกหรือผู้รับเหมาหลัก",
+    title: "Design Consultation & Problem Solving",
+    desc: "เราเป็นคู่คิดที่ช่วยออกแบบและสนับสนุนการตัดสินใจ โดยวิเคราะห์โซลูชันและวิธีแก้ปัญหาทางวิศวกรรมที่ดีที่สุด เพื่อให้งานออกมาสมบูรณ์ตามดีไซน์",
     image: "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1000&q=80",
   },
   {
+    n: "02",
+    title: "Technical Shop Drawing",
+    desc: "จัดทำแบบ shop drawing เชิงเทคนิคอย่างละเอียด เพื่อประสานงานร่วมกับสถาปนิกและผู้รับเหมาหลักอย่างมืออาชีพ ลดความคลาดเคลื่อนก่อนเริ่มผลิตจริง",
+    image: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=1000&q=80",
+  },
+  {
     n: "03",
-    title: "In-house Fabrication",
-    desc: "ผลิตชิ้นงานอลูมิเนียม เตรียมกระจก ตัด เจาะ และตรวจคุณภาพก่อนนำส่งเข้าหน้างาน",
-    image: "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=1000&q=80",
+    title: "Precision Site Survey",
+    desc: "สำรวจหน้างานด้วยอุปกรณ์มาตรฐานสูง เพื่อความแม่นยำในการผลิต ควบคุมระยะจริง และลดข้อผิดพลาดในขั้นตอนการติดตั้ง",
+    image: "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=1000&q=80",
   },
   {
     n: "04",
-    title: "On-site Installation",
-    desc: "ติดตั้ง curtain wall, facade, partition, railing และ sliding system โดยทีมช่าง HAGX",
-    image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1000&q=80",
+    title: "Pre-Engineering & Quality Inspection",
+    desc: "ชิ้นงานถูกเตรียมจากโรงงาน พร้อมผ่านการทดสอบระบบ pre-engineering และตรวจสอบด้วย QC checklist ที่เข้มงวดก่อนส่งมอบสู่หน้างาน",
+    image: "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=1000&q=80",
   },
 ];
 
-const salesServices: ServiceCarouselItem[] = [
+const manufacturingServices: ServiceCarouselItem[] = [
   {
     n: "01",
-    title: "Glass Supply",
-    desc: "จำหน่ายกระจก tempered, laminated, Low-E, insulated, frosted และ decorative glass สำหรับงานโครงการ",
+    title: "Tailor-made Design",
+    desc: "รับผลิตตามสเปกและคุณสมบัติที่ลูกค้าต้องการในรูปแบบ custom-made พร้อมนำเสนอ proposed drawing เพื่ออนุมัติก่อนเข้าสู่ไลน์ผลิตจริง",
+    image: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=1000&q=80",
+  },
+  {
+    n: "02",
+    title: "Precision Manufacturing",
+    desc: "ใช้เครื่องจักรที่ทันสมัยในการประกอบ เพื่อให้ได้ precision joinery งานเนี๊ยบ แข็งแรง และได้ระนาบที่สมบูรณ์ตามมาตรฐานสถาปัตยกรรม",
+    image: "https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=1000&q=80",
+  },
+  {
+    n: "03",
+    title: "Internal System Testing",
+    desc: "มีการ test system ภายในโรงงาน เพื่อตรวจสอบกลไกการทำงาน ความสมบูรณ์ของระบบ และความพร้อมก่อนการส่งมอบ 100%",
+    image: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=1000&q=80",
+  },
+  {
+    n: "04",
+    title: "Certified Materials (TIS Standard)",
+    desc: "คัดสรรวัสดุที่ได้รับมาตรฐานอุตสาหกรรมไทย (มอก.) ในเกรดคุณภาพสูง พร้อมตรวจสอบมาตรฐานสีเคลือบผิวและ coating ให้ตรงตามสเปก",
+    image: "https://images.unsplash.com/photo-1531834685032-c34bf0d84c77?w=1000&q=80",
+  },
+];
+
+const supplyServices: ServiceCarouselItem[] = [
+  {
+    n: "01",
+    title: "Premium Glass & Customization",
+    desc: "จำหน่ายกระจกแผ่นดิบและงานสั่งทำพิเศษ ทั้งการเจียรขอบและตัดตามขนาด cut-to-size พร้อมบริการช่วยประเมินแบบหน้างาน",
     image: "https://images.unsplash.com/photo-1494526585095-c41746248156?w=1000&q=80",
   },
   {
     n: "02",
-    title: "Aluminium Profile",
-    desc: "จำหน่ายโปรไฟล์อลูมิเนียมสำหรับ curtain wall, sliding, casement, storefront และ partition",
+    title: "Aluminium Profile & Hardware",
+    desc: "ศูนย์รวมเส้นอลูมิเนียมหลากหลายซีรีส์จากแบรนด์ชั้นนำ และจำหน่ายอุปกรณ์ฮาร์ดแวร์ครบวงจร เช่น มือจับ, patch fittings และ structural silicone คุณภาพสูง",
     image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1000&q=80",
   },
   {
     n: "03",
-    title: "Hardware & Accessories",
-    desc: "จำหน่าย patch fittings, stainless hardware, มือจับ, structural silicone และอุปกรณ์ติดตั้ง",
-    image: "https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=1000&q=80",
+    title: "SCG Official Partnership",
+    desc: "เป็นตัวแทนจำหน่ายอย่างเป็นทางการสำหรับผลิตภัณฑ์ SCG อาทิ แผ่นยิบซัมและโครงคร่าวซีลาย มั่นใจได้ในสินค้าของแท้ 100%",
+    image: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=1000&q=80",
   },
   {
     n: "04",
-    title: "Sealant & Consumables",
-    desc: "จัดหาซิลิโคน โฟม เทป ยางกันน้ำ และวัสดุสิ้นเปลืองสำหรับทีมติดตั้งกระจกและอลูมิเนียม",
-    image: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=1000&q=80",
+    title: "Nationwide High-Speed Logistics",
+    desc: "อำนวยความสะดวกด้วยบริการจัดส่งสินค้าที่รวดเร็วและปลอดภัย ครอบคลุมทั่วประเทศไทย เพื่อให้งานโครงการดำเนินไปอย่างไม่มีสะดุด",
+    image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1000&q=80",
+  },
+];
+
+const expertiseTracks = [
+  {
+    n: "01",
+    eyebrow: "Project Installation Work",
+    title: "งานรับเหมาและติดตั้งแบบครบวงจร",
+    desc: "HAGX คือผู้เชี่ยวชาญด้านงานติดตั้งที่ยึดถือมาตรฐานสูงสุด เราควบคุมคุณภาพแบบ 100% ด้วยทีมช่าง in-house ของเราเองโดยไม่ใช้ outsource เพื่อส่งมอบงานที่ประณีตและความรับผิดชอบสูงสุดในทุกโครงการ",
+  },
+  {
+    n: "02",
+    eyebrow: "Manufacturing & Custom Fabrication",
+    title: "งานผลิตและประกอบตามมาตรฐาน",
+    desc: "เรายกระดับงานผลิตประตู-หน้าต่างอลูมิเนียมด้วยโรงงานมาตรฐาน เปลี่ยนความต้องการของลูกค้าให้เป็นชิ้นงานที่ใช้งานได้จริง ทนทาน และสวยงามตามหลักสถาปัตยกรรม",
+  },
+  {
+    n: "03",
+    eyebrow: "Supply & Official Distributor",
+    title: "ศูนย์จำหน่ายและจัดหาวัสดุครบวงจร",
+    desc: "เราเป็นคู่ค้ากับแบรนด์วัสดุก่อสร้างชั้นนำ และเป็นตัวแทนจำหน่ายอย่างเป็นทางการ พร้อมซัพพอร์ตลูกค้าด้วยสินค้าคุณภาพสูงและบริการแปรรูปวัสดุที่แม่นยำ",
   },
 ];
 
@@ -79,66 +126,66 @@ export default function ServicesPage() {
               Our Area of Expertise
             </h2>
             <p className="max-w-xl text-sm font-light leading-7 text-white/55 lg:pt-3">
-              HAGX provides aluminium and architectural glass work in two clear paths:
-              project installation and premium material sales.
+              HAGX delivers architectural glass, aluminium fabrication, installation,
+              and material supply through three integrated capabilities built around
+              engineering standards and accountable workmanship.
             </p>
           </div>
 
-          <div className="grid gap-px overflow-hidden border border-white/[0.08] bg-white/[0.08] lg:grid-cols-2">
-            <article className="relative overflow-hidden bg-[#120d08] px-7 py-9 sm:px-10 sm:py-12">
-              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_55%_at_80%_15%,rgba(255,138,0,0.16),transparent_64%)]" />
-              <div className="relative">
-                <div className="mb-8 flex items-center justify-between gap-6">
-                  <p className="text-xs font-light uppercase tracking-widest text-[#ff8a00]">
-                    Installation Work
+          <div className="grid gap-px overflow-hidden border border-white/[0.08] bg-white/[0.08] lg:grid-cols-3">
+            {expertiseTracks.map((track, index) => (
+              <article
+                key={track.n}
+                className={`relative overflow-hidden px-7 py-9 sm:px-10 sm:py-12 ${
+                  index === 0 ? "bg-[#120d08]" : "bg-[#0c0c0c]"
+                }`}
+              >
+                <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_55%_at_80%_15%,rgba(255,138,0,0.16),transparent_64%)]" />
+                <div className="relative">
+                  <div className="mb-8 flex items-center justify-between gap-6">
+                    <p className="text-xs font-light uppercase tracking-widest text-[#ff8a00]">
+                      {track.eyebrow}
+                    </p>
+                    <p className="text-4xl font-light text-white/10">{track.n}</p>
+                  </div>
+                  <h3 className="text-2xl font-light leading-tight text-white sm:text-3xl">
+                    {track.title}
+                  </h3>
+                  <p className="mt-5 text-sm font-light leading-8 text-white/50">
+                    {track.desc}
                   </p>
-                  <p className="text-4xl font-light text-white/10">01</p>
                 </div>
-                <h3 className="text-3xl font-light leading-tight text-white sm:text-4xl">
-                  งานรับเหมาและติดตั้ง
-                </h3>
-                <p className="mt-5 max-w-xl text-sm font-light leading-8 text-white/50">
-                  ดูแลตั้งแต่สำรวจหน้างาน ออกแบบ ผลิต และติดตั้ง เหมาะสำหรับลูกค้าที่ต้องการทีมเดียวรับผิดชอบจนส่งมอบ
-                </p>
-              </div>
-            </article>
-
-            <article className="relative overflow-hidden bg-[#0c0c0c] px-7 py-9 sm:px-10 sm:py-12">
-              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_55%_at_80%_15%,rgba(255,138,0,0.16),transparent_64%)]" />
-              <div className="relative">
-                <div className="mb-8 flex items-center justify-between gap-6">
-                  <p className="text-xs font-light uppercase tracking-widest text-[#ff8a00]">
-                    Supply & Sales
-                  </p>
-                  <p className="text-4xl font-light text-white/10">02</p>
-                </div>
-                <h3 className="text-3xl font-light leading-tight text-white sm:text-4xl">
-                  งานขายและจำหน่ายวัสดุ
-                </h3>
-                <p className="mt-5 max-w-xl text-sm font-light leading-8 text-white/50">
-                  จำหน่ายกระจก อลูมิเนียม ฮาร์ดแวร์ และอุปกรณ์ติดตั้งแยกชิ้น พร้อมช่วยแนะนำสเปกให้ตรงงานจริง
-                </p>
-              </div>
-            </article>
+              </article>
+            ))}
           </div>
         </div>
       </section>
 
       <ServiceCarousel
-        eyebrow="Installation Work"
-        title="งานรับเหมาและติดตั้ง"
-        description="บริการครบวงจรตั้งแต่สำรวจ ออกแบบ ผลิต และติดตั้ง สำหรับงานกระจกและอลูมิเนียมในอาคารพักอาศัย อาคารพาณิชย์ และโครงการสถาปัตยกรรม"
+        eyebrow="01 | Project Installation Work"
+        title="งานรับเหมาและติดตั้งแบบครบวงจร"
+        description="HAGX ควบคุมคุณภาพงานติดตั้งด้วยทีมช่าง in-house 100% โดยไม่ใช้ outsource เพื่อส่งมอบงานที่ประณีต ตรวจสอบได้ และรับผิดชอบได้จริงในทุกโครงการ"
         items={installationServices}
         ctaPrimary={{ href: "/contact", label: "ขอใบเสนอราคาโครงการ" }}
         ctaSecondary={{ href: "/portfolio", label: "ดูผลงานติดตั้ง" }}
-        visibleCount={4}
+        visibleCount={3}
       />
 
       <ServiceCarousel
-        eyebrow="Supply & Sales"
-        title="งานขายและจัดหาวัสดุ"
-        description="สำหรับลูกค้าที่ต้องการสั่งซื้อวัสดุแยก HAGX จำหน่ายกระจก อลูมิเนียม และฮาร์ดแวร์ พร้อมให้คำแนะนำสเปก ขนาด และการใช้งานให้เหมาะกับแต่ละงาน"
-        items={salesServices}
+        eyebrow="02 | Manufacturing & Custom Fabrication"
+        title="งานผลิตและประกอบตามมาตรฐาน"
+        description="โรงงานมาตรฐานของ HAGX เปลี่ยนความต้องการเฉพาะของลูกค้าให้เป็นชิ้นงานประตู-หน้าต่างอลูมิเนียมที่ใช้งานได้จริง ทนทาน และสวยงามตามหลักสถาปัตยกรรม"
+        items={manufacturingServices}
+        ctaPrimary={{ href: "/contact", label: "ปรึกษางานผลิต" }}
+        ctaSecondary={{ href: "/portfolio", label: "ดูตัวอย่างงาน" }}
+        visibleCount={3}
+      />
+
+      <ServiceCarousel
+        eyebrow="03 | Supply & Official Distributor"
+        title="ศูนย์จำหน่ายและจัดหาวัสดุครบวงจร"
+        description="HAGX เป็นคู่ค้ากับแบรนด์วัสดุก่อสร้างชั้นนำและตัวแทนจำหน่ายอย่างเป็นทางการ พร้อมซัพพอร์ตลูกค้าด้วยสินค้าคุณภาพสูง การแปรรูปที่แม่นยำ และระบบจัดส่งทั่วประเทศ"
+        items={supplyServices}
         ctaPrimary={{ href: "/shop", label: "ดูสินค้าทั้งหมด" }}
         ctaSecondary={{ href: "/contact", label: "สอบถามราคา" }}
         visibleCount={3}
@@ -154,7 +201,7 @@ export default function ServicesPage() {
               </h2>
             </div>
             <p className="max-w-sm text-sm font-light leading-8 text-white/40 lg:text-right">
-              Send project details or browse completed work to see facade, partition, railing, and material supply examples.
+              Send project details or material requirements to our team for technical review, specification support, and quotation.
             </p>
           </div>
 

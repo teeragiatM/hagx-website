@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useRef, useState } from "react";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
 
@@ -90,8 +90,57 @@ const clients = [
   "Real Estate Group", "Construction Corp", "Design Build Ltd", "Premium Residences",
 ];
 
+const journey = [
+  {
+    n: "01",
+    phase: "Foundation",
+    title: "The Birth of Precision",
+    image: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=1100&q=85",
+    body: [
+      "HAGX Studio ก่อตั้งขึ้นด้วยวิสัยทัศน์ที่ต้องการยกระดับงานติดตั้งกระจกและอลูมิเนียมในไทยให้มีมาตรฐานเทียบเท่าระดับสากล",
+      "เริ่มต้นจากการเป็นทีมออกแบบสถาปัตยกรรมและที่ปรึกษาด้านวัสดุ ทำให้เราเข้าใจลึกถึงหัวใจของงานโครงสร้างและดีไซน์",
+    ],
+  },
+  {
+    n: "02",
+    phase: "Professional Team & Factory",
+    title: "Strength from Within: In-house Expertise",
+    image: "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=1100&q=85",
+    body: [
+      "เราขยายศักยภาพโดยการจัดตั้ง in-house installation team และโรงงานประกอบของตนเอง เพื่อตัดปัญหาการใช้ outsource และควบคุมคุณภาพงานฝีมือให้ได้ตามมาตรฐาน HAGX 100%",
+      "เริ่มต้นการนำระบบ pre-engineering test มาใช้ในไลน์ผลิต เพื่อตรวจสอบความสมบูรณ์ของสินค้าก่อนส่งมอบถึงหน้างาน",
+    ],
+  },
+  {
+    n: "03",
+    phase: "Official Partnership",
+    title: "Beyond Installation: A Trusted Partner",
+    image: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=1100&q=85",
+    body: [
+      "ก้าวขึ้นสู่การเป็น official distributor อย่างเป็นทางการให้กับแบรนด์วัสดุชั้นนำระดับประเทศ อาทิ SCG",
+      "ขยายกลุ่มสินค้าครอบคลุมงานฝ้าเพดาน ผนังเบา และอุปกรณ์ฮาร์ดแวร์ครบวงจร เพื่อตอบโจทย์ลูกค้าแบบ one-stop service",
+    ],
+  },
+  {
+    n: "04",
+    phase: "Tech-Driven Future",
+    title: "Innovation & National Scale",
+    image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1100&q=85",
+    body: [
+      "HAGX ในปัจจุบันไม่ได้เป็นเพียงผู้รับเหมา แต่เป็นผู้เล่นหลักในตลาดงานกระจกและอลูมิเนียมที่ขับเคลื่อนด้วยระบบบริหารจัดการที่แม่นยำ",
+      "พร้อมให้บริการจัดส่งวัสดุและรับเหมาติดตั้งโครงการขนาดใหญ่ ครอบคลุมทั่วประเทศไทย ด้วยความเร็วและความน่าเชื่อถือที่พิสูจน์แล้วจากหน้างานจริง",
+    ],
+  },
+];
+
 export default function AboutPage() {
   const [active, setActive] = useState(0);
+  const timelineRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: timelineRef,
+    offset: ["start 70%", "end 45%"],
+  });
+  const timelineDotTop = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
   return (
     <main className="min-h-screen bg-[#080808] text-white">
@@ -115,11 +164,11 @@ export default function AboutPage() {
         <div className="relative z-10 max-w-5xl">
           <p className="mb-8 text-xs font-light uppercase tracking-widest text-white/50">About Us</p>
           <h1 className="text-4xl font-bold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
-            HAGX คือผู้เชี่ยวชาญด้านงานกระจก<br className="hidden sm:block" /> และอลูมิเนียม{" "}
-            <span className="text-white/35">สำหรับอาคารพาณิชย์<br className="hidden sm:block" /> และที่พักอาศัยระดับพรีเมียม</span>
+            Precise glass and aluminium solutions<br className="hidden sm:block" />
+            <span className="text-white/35">for architecture that demands reliability</span>
           </h1>
           <p className="mx-auto mt-8 max-w-xl text-sm font-light leading-8 text-white/40">
-            ในฐานะผู้ให้บริการครบวงจร เรามุ่งเน้นส่งมอบงานที่ตรงตามมาตรฐานสถาปัตยกรรม ทั้งด้านฟังก์ชัน งบประมาณ การออกแบบ และคุณภาพ
+            HAGX เชี่ยวชาญในการส่งมอบโซลูชันงานกระจกและอลูมิเนียมสถาปัตยกรรมที่เปี่ยมด้วยความแม่นยำ ยึดมั่นในมาตรฐานวิศวกรรม และส่งมอบงานตรงต่อเวลา
           </p>
         </div>
 
@@ -158,7 +207,7 @@ export default function AboutPage() {
               <span className="text-[#ff8a00]">HAGX.</span>
             </h2>
             <p className="mt-8 text-sm font-light leading-8 text-white/40">
-              HAGX เชี่ยวชาญในการส่งมอบงานกระจกและอลูมิเนียมที่เชื่อถือได้ ตรงตามมาตรฐาน และส่งมอบภายในกรอบเวลาที่กำหนด
+              HAGX เชี่ยวชาญในการส่งมอบโซลูชันงานกระจกและอลูมิเนียมสถาปัตยกรรมที่เปี่ยมด้วยความแม่นยำ เรายึดมั่นในมาตรฐานวิศวกรรมและการส่งมอบงานที่ตรงต่อเวลา เพราะเราเชื่อว่าความสำเร็จของโครงการเริ่มต้นจากรายละเอียดที่ถูกต้อง
             </p>
           </div>
 
@@ -193,6 +242,108 @@ export default function AboutPage() {
                 </p>
               </motion.div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── THE HAGX JOURNEY ── */}
+      <section ref={timelineRef} className="relative overflow-hidden border-b border-white/[0.06] px-4 py-16 sm:px-8 lg:px-10 lg:py-24">
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.025)_1px,transparent_1px),linear-gradient(180deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:140px_140px] opacity-25" />
+
+        <div className="relative mx-auto max-w-[1500px]">
+          <div className="sticky top-20 z-20 mb-14 grid gap-6 bg-[#080808]/80 py-4 backdrop-blur-md lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
+            <div>
+              <p className="mb-3 text-[10px] font-light uppercase tracking-widest text-[#ff8a00]">The HAGX Journey</p>
+              <h2 className="text-4xl font-light leading-none tracking-normal text-white sm:text-5xl lg:text-6xl">
+                From studio discipline to national scale
+              </h2>
+            </div>
+            <p className="max-w-xl text-xs font-light leading-7 text-white/45 lg:ml-auto lg:text-right">
+              A timeline of how HAGX grew from architectural thinking into a fully integrated glass, aluminium, manufacturing, and material supply partner.
+            </p>
+          </div>
+
+          <div className="relative">
+            <div className="absolute left-5 top-0 h-full w-px bg-white/[0.08] lg:left-1/2" />
+            <motion.div
+              style={{ scaleY: scrollYProgress }}
+              className="absolute left-5 top-0 h-full w-px origin-top bg-[#ff8a00]/70 lg:left-1/2"
+            />
+            <motion.div
+              style={{ top: timelineDotTop }}
+              className="pointer-events-none absolute left-5 z-20 h-4 w-4 -translate-x-1/2 rounded-full border border-[#ff8a00] bg-[#080808] shadow-[0_0_28px_rgba(255,138,0,0.9)] lg:left-1/2"
+            >
+              <span className="absolute left-1/2 top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#ff8a00]" />
+            </motion.div>
+
+            <div className="space-y-12 lg:space-y-16">
+              {journey.map((item, index) => {
+                const isReverse = index % 2 === 1;
+
+                return (
+                  <motion.article
+                    key={item.n}
+                    initial={{ opacity: 0, x: isReverse ? 30 : -30, y: 18 }}
+                    whileInView={{ opacity: 1, x: 0, y: 0 }}
+                    viewport={{ once: true, amount: 0.35 }}
+                    transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+                    className={`relative grid gap-6 pl-14 lg:grid-cols-2 lg:gap-12 lg:pl-0 ${
+                      isReverse ? "lg:[&>*:first-child]:col-start-2" : ""
+                    }`}
+                  >
+                    <motion.div
+                      initial={{ scale: 0.72, opacity: 0.45 }}
+                      whileInView={{ scale: 1, opacity: 1 }}
+                      viewport={{ once: true, amount: 0.65 }}
+                      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                      className="absolute left-[0.94rem] top-2 z-10 flex h-6 w-6 items-center justify-center rounded-full border border-[#ff8a00]/60 bg-[#080808] text-[9px] font-light text-[#ff8a00] shadow-[0_0_18px_rgba(255,138,0,0.3)] lg:left-1/2 lg:-translate-x-1/2"
+                    >
+                      {item.n}
+                    </motion.div>
+
+                    <div className={isReverse ? "lg:col-start-2" : ""}>
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.96, clipPath: "inset(16% 0 16% 0)" }}
+                        whileInView={{ opacity: 1, scale: 1, clipPath: "inset(0% 0 0% 0)" }}
+                        viewport={{ once: true, amount: 0.45 }}
+                        transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
+                        className="relative aspect-[1.55/1] overflow-hidden border border-white/[0.08] bg-[#111] lg:max-w-[520px]"
+                      >
+                        <Image
+                          src={item.image}
+                          alt={item.title}
+                          fill
+                          sizes="(min-width: 1024px) 40vw, 100vw"
+                          className="object-cover opacity-75"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+                        <p className="absolute bottom-4 left-4 text-[10px] font-light uppercase tracking-widest text-white/45">
+                          {item.phase}
+                        </p>
+                      </motion.div>
+                    </div>
+
+                    <div className={`flex items-center ${isReverse ? "lg:col-start-1 lg:row-start-1 lg:text-right" : ""}`}>
+                      <div className={isReverse ? "lg:ml-auto" : ""}>
+                        <p className="mb-3 text-[10px] font-light uppercase tracking-widest text-[#ff8a00]">
+                          {item.phase}
+                        </p>
+                        <h3 className="max-w-lg text-2xl font-light leading-tight text-white sm:text-3xl">
+                          {item.title}
+                        </h3>
+                        <div className="mt-5 space-y-3">
+                          {item.body.map((text) => (
+                            <p key={text} className="max-w-lg text-xs font-light leading-7 text-white/50">
+                              {text}
+                            </p>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </motion.article>
+                );
+              })}
+            </div>
           </div>
         </div>
       </section>

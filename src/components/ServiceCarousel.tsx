@@ -36,7 +36,7 @@ function ServiceCard({ item }: { item: ServiceCarouselItem }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-      className="group relative min-h-[430px] overflow-hidden bg-[#111]"
+      className="group relative min-h-[500px] overflow-hidden bg-[#111]"
     >
       <Image
         src={item.image}
@@ -51,7 +51,7 @@ function ServiceCard({ item }: { item: ServiceCarouselItem }) {
         <h3 className="max-w-[15rem] text-2xl font-light leading-tight text-white">
           {item.title}
         </h3>
-        <p className="mt-4 line-clamp-3 text-xs font-light leading-6 text-white/45">
+        <p className="mt-4 text-xs font-light leading-6 text-white/55">
           {item.desc}
         </p>
       </div>

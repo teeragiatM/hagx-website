@@ -1,68 +1,89 @@
 "use client";
 
 import { motion, MotionValue, useScroll, useTransform } from "framer-motion";
-import { PenTool, RefreshCw, Sparkles } from "lucide-react";
 import { useRef } from "react";
 import { useI18n } from "@/i18n/useI18n";
 
-const pillars = [
-  {
-    key: "design",
-    num: "01",
-    label_th: "ออกแบบอย่างสมบูรณ์",
-    label_en: "Design Integrity",
-    short: "Perfectly\nDesigned",
-    desc_th:
-      "เราออกแบบด้วยความแม่นยำ ควบคุมทุกเส้น รายละเอียด รอยต่อ และวัสดุให้มีเหตุผลรองรับตั้งแต่ Shop Drawing จนถึงวันส่งมอบ",
-    desc_en:
-      "We design with precision, controlling every line, joint, and material from shop drawing to final handover.",
-    tag: "DESIGN",
-    ghost: "PERFECTLY\nDESIGNED",
-    Icon: PenTool,
-    overview: { x: "0vw", y: "-19vh" },
-  },
-  {
-    key: "planning",
-    num: "02",
-    label_th: "วางแผนอย่างรอบคอบ",
-    label_en: "Careful Planning",
-    short: "Carefully\nPlanned",
-    desc_th:
-      "เราสำรวจ ประเมิน และวางแผนทุกโครงการให้ครอบคลุมตั้งแต่โครงสร้าง งบประมาณ ลำดับงาน ไปจนถึงข้อจำกัดของหน้างานจริง",
-    desc_en:
-      "We survey, assess, and plan every project comprehensively, from structure and budget to site constraints.",
-    tag: "STRATEGY",
-    ghost: "CAREFULLY\nPLANNED",
-    Icon: RefreshCw,
-    overview: { x: "-17vw", y: "14vh" },
-  },
-  {
-    key: "execution",
-    num: "03",
-    label_th: "ดำเนินงานอย่างชาญฉลาด",
-    label_en: "Smart Execution",
-    short: "Smartly\nExecuted",
-    desc_th:
-      "ทีมหน้างานควบคุมคุณภาพ ส่งมอบตรงเวลา และประสานการผลิตจนถึงติดตั้งให้จบในมาตรฐานเดียวกันทุกโครงการ",
-    desc_en:
-      "Our site team controls quality and delivers every project on time, from fabrication to final inspection.",
-    tag: "DELIVERY",
-    ghost: "SMARTLY\nEXECUTED",
-    Icon: Sparkles,
-    overview: { x: "17vw", y: "14vh" },
-  },
-];
+// ── Content ────────────────────────────────────────────────────────────────────
 
-// Per-pillar scroll phases: [zoomInStart, zoomInEnd, activeEnd, zoomOutEnd]
-const PHASES = [
-  [0.03, 0.12, 0.27, 0.33],
-  [0.36, 0.44, 0.57, 0.63],
-  [0.66, 0.74, 0.88, 0.97],
+const PILLARS = [
+  {
+    num: "01",
+    tag: "ANALYZE",
+    title_th: "วิเคราะห์",
+    title_en: "Analyze",
+    desc_th:
+      "วิเคราะห์โจทย์สถาปนิกและข้อจำกัดหน้างานอย่างละเอียด ก่อนกำหนดระบบที่เหมาะสมที่สุดสำหรับแต่ละโครงการ",
+    desc_en:
+      "Deep-dive into architectural briefs and site constraints before defining the optimal system for each project.",
+  },
+  {
+    num: "02",
+    tag: "FABRICATE",
+    title_th: "ผลิต",
+    title_en: "Fabricate",
+    desc_th:
+      "ประกอบบานด้วยเครื่องจักรและทดสอบระบบ Pre-engineering ก่อนส่งถึงหน้างาน เพื่อความแม่นยำและคุณภาพสูงสุด",
+    desc_en:
+      "Machine-assembled with pre-engineering system testing before reaching the site for maximum precision.",
+  },
+  {
+    num: "03",
+    tag: "INSTALL",
+    title_th: "ติดตั้ง",
+    title_en: "Install",
+    desc_th:
+      "ติดตั้งด้วยมาตรฐานความปลอดภัยและทีมช่างฝีมือประณีต ตรวจสอบทุกจุดก่อนส่งมอบงาน",
+    desc_en:
+      "Installed to safety standards by skilled craftsmen, with every joint inspected before handover.",
+  },
 ] as const;
 
-const OVERVIEW_SCALE = 0.52;
-const ACTIVE_SCALE = 1.74;
-const FINAL_OVERVIEW_START = 0.95;
+const BENEFITS = [
+  {
+    label: "Seamless Integration",
+    desc_th: "การทำงานสอดประสานตั้งแต่แบบร่างจนถึงวันส่งมอบ",
+    desc_en: "Coordinated workflow from design brief to final handover.",
+  },
+  {
+    label: "Uncompromised Quality",
+    desc_th: "มาตรฐานที่ไม่ยอมลดละ ทั้งวัสดุและฝีมือช่าง",
+    desc_en: "Standards that never compromise on material or craftsmanship.",
+  },
+  {
+    label: "Client-Centric Success",
+    desc_th: "ความสำเร็จของโครงการคุณ คือเครื่องพิสูจน์กลยุทธ์ของเรา",
+    desc_en: "Your project's success is the proof of our strategy.",
+  },
+] as const;
+
+// ── SVG geometry ───────────────────────────────────────────────────────────────
+
+const R = 100;           // ring radius
+const CY = 150;          // vertical center
+const CXS = [110, 260, 410] as const;
+const SPACING = CXS[1] - CXS[0];  // 150
+const IY = Math.sqrt(R * R - (SPACING / 2) ** 2); // ≈ 66
+
+// Intersection points between adjacent rings
+const INT_PTS = [
+  { x: (CXS[0] + CXS[1]) / 2, y: CY - IY, pair: 0 },
+  { x: (CXS[0] + CXS[1]) / 2, y: CY + IY, pair: 0 },
+  { x: (CXS[1] + CXS[2]) / 2, y: CY - IY, pair: 1 },
+  { x: (CXS[1] + CXS[2]) / 2, y: CY + IY, pair: 1 },
+];
+
+// ── Scroll phases ──────────────────────────────────────────────────────────────
+
+const PH = [
+  { s: 0.04, fi: 0.11, fo: 0.32, e: 0.37 },
+  { s: 0.37, fi: 0.44, fo: 0.61, e: 0.66 },
+  { s: 0.66, fi: 0.73, fo: 0.85, e: 0.90 },
+] as const;
+
+const FINALE = 0.91;
+
+// ── Main ───────────────────────────────────────────────────────────────────────
 
 export default function StrategySection() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -76,26 +97,22 @@ export default function StrategySection() {
     <section
       ref={containerRef}
       className="relative border-t border-white/[0.06] bg-[#050505]"
-      style={{ height: "430vh" }}
+      style={{ height: "480vh" }}
     >
       <div className="sticky top-0 h-screen overflow-hidden bg-[#050505]">
-        <OrbitRings progress={scrollYProgress} />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_55%_50%_at_50%_50%,rgba(255,138,0,0.07),transparent_65%)]" />
 
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_45%,rgba(255,138,0,0.12),transparent_42%),linear-gradient(180deg,transparent_72%,#050505_100%)]" />
+        {/* Desktop layout: left text | center rings */}
+        <div className="relative flex h-full items-center justify-center gap-0">
+          <TextColumn progress={scrollYProgress} lang={lang} />
 
-        <div className="absolute inset-0">
-          {pillars.map((pillar, index) => (
-            <StrategyCircle
-              key={pillar.key}
-              pillar={pillar}
-              index={index}
-              lang={lang}
-              progress={scrollYProgress}
-            />
-          ))}
+          <div className="w-full max-w-[560px] shrink-0 px-4">
+            <RingsSVG progress={scrollYProgress} lang={lang} />
+          </div>
+
+          {/* balance spacer */}
+          <div className="hidden w-[300px] shrink-0 xl:block" />
         </div>
-
-        <StrategyRail progress={scrollYProgress} lang={lang} />
 
         <ScrollHint progress={scrollYProgress} />
       </div>
@@ -103,226 +120,315 @@ export default function StrategySection() {
   );
 }
 
-// ── Orbit rings ────────────────────────────────────────────────────────────────
+// ── Text column (left) ─────────────────────────────────────────────────────────
 
-function OrbitRings({ progress }: { progress: MotionValue<number> }) {
-  const rotate = useTransform(progress, [0, 1], [0, 24]);
-  const opacity = useTransform(
-    progress,
-    [0, 0.02, PHASES[0][1], PHASES[0][2], PHASES[0][3],
-     PHASES[1][1], PHASES[1][2], PHASES[1][3],
-     PHASES[2][1], PHASES[2][2], PHASES[2][3], 1],
-    [1, 1, 0.12, 0.12, 1, 0.12, 0.12, 1, 0.12, 0.12, 1, 1]
-  );
-  return (
-    <motion.div style={{ rotate, opacity }} className="pointer-events-none absolute inset-0" aria-hidden>
-      <div className="absolute left-1/2 top-1/2 h-[72vmin] w-[72vmin] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#ff8a00]/10" />
-      <div className="absolute left-1/2 top-1/2 h-[48vmin] w-[48vmin] -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/[0.04]" />
-    </motion.div>
-  );
-}
-
-// ── Strategy circle ────────────────────────────────────────────────────────────
-
-function StrategyCircle({
-  pillar,
-  index,
-  lang,
+function TextColumn({
   progress,
+  lang,
 }: {
-  pillar: (typeof pillars)[number];
-  index: number;
-  lang: "th" | "en";
   progress: MotionValue<number>;
+  lang: "th" | "en";
 }) {
-  const [zoomInStart, zoomInEnd, activeEnd, zoomOutEnd] = PHASES[index];
-  const isFirst = index === 0;
-  const isLast = index === pillars.length - 1;
-  const FADE = 0.02;
-
-  // ── Opacity: visible in initial overview, own phase, final overview ──────────
-  let opKeys: number[];
-  let opVals: number[];
-
-  if (isFirst) {
-    // Pillar 0: initial overview seamlessly transitions into own phase
-    opKeys = [0, zoomOutEnd, zoomOutEnd + FADE, FINAL_OVERVIEW_START - FADE, FINAL_OVERVIEW_START, 1];
-    opVals = [1, 1,          0,                 0,                            1,                    1];
-  } else if (isLast) {
-    // Last pillar: brief in overview, then hidden until own phase
-    opKeys = [0, 0.02, 0.02 + FADE, zoomInStart - FADE, zoomInStart, 1];
-    opVals = [1, 1,    0,           0,                   1,           1];
-  } else {
-    // Middle pillars
-    opKeys = [
-      0, 0.02, 0.02 + FADE,
-      zoomInStart - FADE, zoomInStart,
-      zoomOutEnd, zoomOutEnd + FADE,
-      FINAL_OVERVIEW_START - FADE, FINAL_OVERVIEW_START, 1,
-    ];
-    opVals = [1, 1, 0, 0, 1, 1, 0, 0, 1, 1];
-  }
-
-  const opacity  = useTransform(progress, opKeys, opVals);
-  const x        = useTransform(progress, [0, zoomInStart, zoomInEnd, activeEnd, zoomOutEnd], [pillar.overview.x, pillar.overview.x, "0vw", "0vw", pillar.overview.x]);
-  const y        = useTransform(progress, [0, zoomInStart, zoomInEnd, activeEnd, zoomOutEnd], [pillar.overview.y, pillar.overview.y, "0vh", "0vh", pillar.overview.y]);
-  const scale    = useTransform(progress, [0, zoomInStart, zoomInEnd, activeEnd, zoomOutEnd], [OVERVIEW_SCALE, OVERVIEW_SCALE, ACTIVE_SCALE, ACTIVE_SCALE, OVERVIEW_SCALE]);
-  const iconRot  = useTransform(progress, [zoomInStart, zoomInEnd + 0.1], [0, index % 2 === 0 ? 28 : -28]);
-
-  // Text visibility
-  const summaryOp = useTransform(progress, [zoomInStart, zoomInStart + 0.05], [1, 0]);
-  const detailOp  = useTransform(progress, [zoomInStart + 0.04, zoomInEnd, activeEnd - 0.04, activeEnd], [0, 1, 1, 0]);
-
-  // Ghost text
-  const ghostOp = useTransform(progress, [zoomInStart, zoomInEnd, activeEnd - 0.04, activeEnd], [0, 1, 1, 0]);
-  const ghostX  = useTransform(progress, [zoomInStart, activeEnd], ["-8vw", "4vw"]);
+  const headingOp = useTransform(progress, [0, 0.02, PH[0].s, PH[0].fi], [0, 1, 1, 1]);
 
   return (
-    <>
-      {/* Ghost text behind the active circle */}
+    <div className="hidden w-[300px] shrink-0 xl:block">
       <motion.p
-        style={{ opacity: ghostOp, x: ghostX }}
-        className="pointer-events-none absolute left-1/2 top-1/2 z-[1] hidden -translate-x-1/2 -translate-y-[55%] select-none whitespace-pre-line text-center text-[10vw] font-black italic leading-none tracking-normal text-white/[0.07] lg:block"
+        style={{ opacity: headingOp }}
+        className="mb-2 text-[10px] font-light uppercase tracking-widest text-white/30"
       >
-        {pillar.ghost}
+        Our Integrated Strategy
+      </motion.p>
+      <motion.p
+        style={{ opacity: headingOp }}
+        className="mb-10 text-sm font-light leading-7 text-white/50"
+      >
+        {lang === "th"
+          ? "ที่ HAGX เราผสาน 3 หัวใจหลัก เพื่อผลลัพธ์ที่แม่นยำทุกโครงการ"
+          : "At HAGX we integrate 3 core principles for flawless results every time."}
       </motion.p>
 
-      {/* Circle */}
-      <motion.article
-        style={{ x, y, scale, opacity, zIndex: index + 2 }}
-        className="absolute left-1/2 top-1/2 aspect-square w-[min(76vw,470px)] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#ff8a00]/75 bg-[radial-gradient(circle_at_42%_30%,rgba(255,164,47,0.22),rgba(113,52,0,0.92)_48%,rgba(16,12,8,0.98)_100%)] shadow-[0_36px_90px_rgba(0,0,0,0.60)] sm:w-[min(60vw,550px)] lg:w-[min(44vw,630px)]"
-      >
-        {/* Conic shimmer */}
-        <motion.div
-          style={{ rotate: iconRot }}
-          className="absolute inset-0 rounded-full bg-[conic-gradient(from_90deg,transparent,rgba(255,138,0,0.18),transparent_34%,rgba(255,255,255,0.05),transparent_70%)] opacity-60"
-        />
+      {PILLARS.map((p, i) => (
+        <PillarItem key={p.num} pillar={p} index={i} progress={progress} lang={lang} />
+      ))}
 
-        <div className="relative z-10 flex h-full flex-col items-center justify-center px-[16%] text-center">
-          {/* Icon */}
-          <motion.div
-            style={{ rotate: iconRot }}
-            className="mb-5 flex h-16 w-16 items-center justify-center text-[#ffb45a] drop-shadow-[8px_10px_0_rgba(0,0,0,0.28)]"
-          >
-            <pillar.Icon strokeWidth={1.6} className="h-12 w-12" />
-          </motion.div>
-
-          {/* Summary title (overview) */}
-          <motion.div style={{ opacity: summaryOp }}>
-            <p className="mb-1 text-[10px] font-light uppercase tracking-widest text-[#ffb45a]/70">
-              {pillar.num}
-            </p>
-            <h3 className="text-2xl font-semibold leading-tight tracking-normal text-white sm:text-3xl">
-              {pillar.short.split("\n").map((part) => (
-                <span key={part} className="block">
-                  {part}
-                </span>
-              ))}
-            </h3>
-          </motion.div>
-
-          {/* Detail (active) */}
-          <motion.div
-            style={{ opacity: detailOp }}
-            className="absolute inset-x-[12%] top-1/2 -translate-y-[24%]"
-          >
-            <p className="mb-3 text-[11px] font-light uppercase tracking-widest text-[#ffb45a]/80">
-              {pillar.num} / {pillar.tag}
-            </p>
-            <h3 className="text-2xl font-semibold leading-tight tracking-normal text-white sm:text-3xl">
-              {pillar.short.split("\n").map((part) => (
-                <span key={part} className="block">
-                  {part}
-                </span>
-              ))}
-            </h3>
-            <p className="mx-auto mt-6 max-w-sm text-xs font-light leading-7 text-white/75 sm:text-sm">
-              {lang === "th" ? pillar.desc_th : pillar.desc_en}
-            </p>
-          </motion.div>
-        </div>
-      </motion.article>
-    </>
-  );
-}
-
-// ── Left rail ──────────────────────────────────────────────────────────────────
-
-function StrategyRail({
-  progress,
-  lang,
-}: {
-  progress: MotionValue<number>;
-  lang: "th" | "en";
-}) {
-  return (
-    <div className="pointer-events-none absolute left-6 top-1/2 z-20 hidden -translate-y-1/2 lg:block">
-      <p className="mb-8 text-[10px] font-light uppercase tracking-widest text-white/25">
-        Our Strategy
-      </p>
-      <div className="space-y-5 border-l border-white/10 pl-6">
-        {pillars.map((pillar, index) => {
-          const [s, , e] = PHASES[index];
-          return (
-            <RailItem
-              key={pillar.key}
-              pillar={pillar}
-              lang={lang}
-              progress={progress}
-              start={s}
-              end={e}
-            />
-          );
-        })}
-      </div>
+      <FinaleList progress={progress} lang={lang} />
     </div>
   );
 }
 
-function RailItem({
+function PillarItem({
   pillar,
-  lang,
+  index,
   progress,
-  start,
-  end,
+  lang,
 }: {
-  pillar: (typeof pillars)[number];
-  lang: "th" | "en";
+  pillar: (typeof PILLARS)[number];
+  index: number;
   progress: MotionValue<number>;
-  start: number;
-  end: number;
+  lang: "th" | "en";
 }) {
-  const opacity  = useTransform(progress, [Math.max(0, start - 0.04), start, end, Math.min(1, end + 0.04)], [0.25, 1, 1, 0.25]);
-  const barScale = useTransform(progress, [start, end], [0, 1]);
+  const { s, fi, fo, e } = PH[index];
+  const op = useTransform(progress, [Math.max(0, s - 0.02), fi, fo, e], [0, 1, 1, 0]);
+  const x  = useTransform(progress, [Math.max(0, s - 0.02), fi], ["24px", "0px"]);
 
   return (
-    <motion.div style={{ opacity }} className="relative min-w-[200px]">
-      <motion.span
-        style={{ scaleY: barScale }}
-        className="absolute -left-[25px] top-0 h-full w-px origin-top bg-[#ff8a00]"
-      />
-      <div className="flex gap-4">
-        <span className="mt-1 text-xs font-light tabular-nums text-[#ff8a00]">{pillar.num}</span>
-        <div>
-          <p className="text-lg font-light leading-tight tracking-normal text-white">
-            {lang === "th" ? pillar.label_th : pillar.label_en}
-          </p>
-          <p className="mt-1 text-[9px] font-light uppercase tracking-widest text-white/25">
-            {pillar.tag}
+    <motion.div style={{ opacity: op, x }} className="absolute">
+      <p className="mb-1 text-[10px] font-light uppercase tracking-widest text-[#ff8a00]">
+        {pillar.num} / {pillar.tag}
+      </p>
+      <h3 className="text-3xl font-bold leading-tight text-white">
+        {lang === "th" ? pillar.title_th : pillar.title_en}
+      </h3>
+      <p className="mt-4 max-w-xs text-sm font-light leading-7 text-white/55">
+        {lang === "th" ? pillar.desc_th : pillar.desc_en}
+      </p>
+    </motion.div>
+  );
+}
+
+function FinaleList({
+  progress,
+  lang,
+}: {
+  progress: MotionValue<number>;
+  lang: "th" | "en";
+}) {
+  const op = useTransform(progress, [FINALE, FINALE + 0.06, 1], [0, 1, 1]);
+  const y  = useTransform(progress, [FINALE, FINALE + 0.08], ["20px", "0px"]);
+
+  return (
+    <motion.div style={{ opacity: op, y }} className="absolute space-y-4">
+      <p className="mb-6 text-[10px] font-light uppercase tracking-widest text-[#ff8a00]">
+        Seamless · Quality · Success
+      </p>
+      {BENEFITS.map((b) => (
+        <div key={b.label}>
+          <p className="text-sm font-semibold text-white">{b.label}</p>
+          <p className="text-xs font-light leading-6 text-white/45">
+            {lang === "th" ? b.desc_th : b.desc_en}
           </p>
         </div>
-      </div>
+      ))}
     </motion.div>
+  );
+}
+
+// ── SVG rings ──────────────────────────────────────────────────────────────────
+
+function RingsSVG({
+  progress,
+  lang,
+}: {
+  progress: MotionValue<number>;
+  lang: "th" | "en";
+}) {
+  return (
+    <svg viewBox="0 0 520 300" className="h-auto w-full" aria-hidden>
+      <defs>
+        <filter id="rg" x="-30%" y="-30%" width="160%" height="160%">
+          <feGaussianBlur stdDeviation="5" result="blur" />
+          <feMerge>
+            <feMergeNode in="blur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+        <filter id="dg" x="-120%" y="-120%" width="340%" height="340%">
+          <feGaussianBlur stdDeviation="7" result="blur" />
+          <feMerge>
+            <feMergeNode in="blur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+      </defs>
+
+      {/* Dim base rings */}
+      {CXS.map((cx, i) => (
+        <circle key={i} cx={cx} cy={CY} r={R}
+          fill="none" stroke="rgba(255,255,255,0.09)" strokeWidth="1.5" />
+      ))}
+
+      {/* Active ring overlays (one component each to allow hook calls) */}
+      <ActiveRing progress={progress} cx={CXS[0]} index={0} />
+      <ActiveRing progress={progress} cx={CXS[1]} index={1} />
+      <ActiveRing progress={progress} cx={CXS[2]} index={2} />
+
+      {/* Dim base intersection dots */}
+      {INT_PTS.map((pt, i) => (
+        <circle key={i} cx={pt.x} cy={pt.y} r="4" fill="rgba(255,255,255,0.08)" />
+      ))}
+
+      {/* Active intersection glow dots */}
+      <IntersectionDots progress={progress} />
+
+      {/* Ring labels (inside each ring) */}
+      {PILLARS.map((p, i) => (
+        <RingLabel key={p.num} progress={progress} cx={CXS[i]} pillar={p} index={i} lang={lang} />
+      ))}
+
+      {/* Finale: HAGX logo at center ring */}
+      <FinaleLogo progress={progress} />
+    </svg>
+  );
+}
+
+// ── Active ring (separate component for hook isolation) ────────────────────────
+
+function ActiveRing({
+  progress,
+  cx,
+  index,
+}: {
+  progress: MotionValue<number>;
+  cx: number;
+  index: number;
+}) {
+  const { s, fi, fo, e } = PH[index];
+  const activeOp  = useTransform(progress, [Math.max(0, s - 0.01), fi, fo, e], [0, 1, 1, 0]);
+  const finaleOp  = useTransform(progress, [FINALE, FINALE + 0.07, 1], [0, 1, 1]);
+
+  return (
+    <>
+      <motion.circle cx={cx} cy={CY} r={R}
+        fill="none" stroke="#ff8a00" strokeWidth="2.5"
+        style={{ opacity: activeOp }} filter="url(#rg)" />
+      <motion.circle cx={cx} cy={CY} r={R}
+        fill="none" stroke="#ff8a00" strokeWidth="2"
+        style={{ opacity: finaleOp }} filter="url(#rg)" />
+    </>
+  );
+}
+
+// ── Intersection glow dots ─────────────────────────────────────────────────────
+
+function IntersectionDots({ progress }: { progress: MotionValue<number> }) {
+  // Left pair (between ring 0 & 1): lit during ring0, ring1, and finale
+  const leftOp = useTransform(
+    progress,
+    [PH[0].s, PH[0].fi, PH[1].fo, PH[1].e, FINALE, FINALE + 0.07, 1],
+    [0, 1, 1, 0, 0, 1, 1]
+  );
+  // Right pair (between ring 1 & 2): lit during ring1, ring2, and finale
+  const rightOp = useTransform(
+    progress,
+    [PH[1].s, PH[1].fi, PH[2].fo, PH[2].e, FINALE, FINALE + 0.07, 1],
+    [0, 1, 1, 0, 0, 1, 1]
+  );
+
+  return (
+    <>
+      {INT_PTS.map((pt, i) => (
+        <motion.circle
+          key={i}
+          cx={pt.x} cy={pt.y} r={6}
+          fill="#ff8a00"
+          filter="url(#dg)"
+          style={{ opacity: pt.pair === 0 ? leftOp : rightOp }}
+        />
+      ))}
+    </>
+  );
+}
+
+// ── Ring label (pillar title inside ring) ──────────────────────────────────────
+
+function RingLabel({
+  progress,
+  cx,
+  pillar,
+  index,
+  lang,
+}: {
+  progress: MotionValue<number>;
+  cx: number;
+  pillar: (typeof PILLARS)[number];
+  index: number;
+  lang: "th" | "en";
+}) {
+  const { s, fi, fo, e } = PH[index];
+
+  // Summary label: visible when NOT active
+  const summaryOp = useTransform(
+    progress,
+    [0, Math.max(0, s - 0.01), s + 0.05, fo, e],
+    [1, 1, 0, 0, 1]
+  );
+  // Finale: hide label when finale fires
+  const finaleHide = useTransform(progress, [FINALE - 0.02, FINALE + 0.04], [1, 0]);
+
+  return (
+    <>
+      {/* Ring number (always dim) */}
+      <motion.text
+        x={cx} y={CY - R + 22}
+        textAnchor="middle"
+        fill="rgba(255,138,0,0.5)"
+        fontSize="11"
+        fontWeight="300"
+        fontFamily="var(--font-anuphan),sans-serif"
+        style={{ opacity: summaryOp }}
+      >
+        {pillar.num}
+      </motion.text>
+
+      {/* Ring title */}
+      <motion.text
+        x={cx} y={CY + 6}
+        textAnchor="middle"
+        fill="rgba(255,255,255,0.55)"
+        fontSize="13"
+        fontWeight="600"
+        fontFamily="var(--font-anuphan),sans-serif"
+        letterSpacing="0.04em"
+        style={{ opacity: summaryOp }}
+      >
+        {lang === "th" ? pillar.title_th : pillar.title_en}
+      </motion.text>
+
+      {/* Tag below */}
+      <motion.text
+        x={cx} y={CY + 22}
+        textAnchor="middle"
+        fill="rgba(255,255,255,0.22)"
+        fontSize="8"
+        fontWeight="300"
+        fontFamily="var(--font-anuphan),sans-serif"
+        letterSpacing="0.12em"
+        style={{ opacity: summaryOp }}
+      >
+        {pillar.tag}
+      </motion.text>
+    </>
+  );
+}
+
+// ── Finale logo ────────────────────────────────────────────────────────────────
+
+function FinaleLogo({ progress }: { progress: MotionValue<number> }) {
+  const op    = useTransform(progress, [FINALE, FINALE + 0.07, 1], [0, 1, 1]);
+  const scale = useTransform(progress, [FINALE, FINALE + 0.1], [0.6, 1]);
+
+  return (
+    <motion.g
+      style={{ opacity: op, scale }}
+      transform={`translate(${CXS[1]}, ${CY})`}
+    >
+      <image
+        href="/images/hagx-logo.svg"
+        x={-38} y={-10}
+        width="76" height="19"
+      />
+    </motion.g>
   );
 }
 
 // ── Scroll hint ────────────────────────────────────────────────────────────────
 
 function ScrollHint({ progress }: { progress: MotionValue<number> }) {
-  const opacity = useTransform(progress, [0, 0.04], [1, 0]);
+  const op = useTransform(progress, [0, 0.04], [1, 0]);
   return (
     <motion.div
-      style={{ opacity }}
+      style={{ opacity: op }}
       className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 lg:flex"
     >
       <motion.span
