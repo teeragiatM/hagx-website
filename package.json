@@ -25,6 +25,7 @@
     "lucide-react": "latest",
     "next": "latest",
     "next-sanity": "latest",
+    "prop-types": "^15.8.1",
     "radix-ui": "latest",
     "react": "latest",
     "react-day-picker": "latest",
