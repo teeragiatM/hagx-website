@@ -1,13 +1,170 @@
 {
+  "hero": {
+    "eyebrow": "Services",
+    "title": "Our Services",
+    "subtitle": "Architectural glass and aluminium solutions covering installation, custom fabrication, and material supply with engineering-grade standards."
+  },
+  "expertise": {
+    "heading": "Our Area of Expertise",
+    "description": "HAGX connects architectural glass, aluminium fabrication, installation, and material supply through three core capabilities built around engineering standards and accountable delivery.",
+    "tracks": [
+      {
+        "n": "01",
+        "eyebrow": "Project Installation Work",
+        "title": "Complete project installation work",
+        "desc": "HAGX controls installation quality through a 100% in-house team, without outsourcing, to deliver refined, accountable, and verifiable workmanship on every project."
+      },
+      {
+        "n": "02",
+        "eyebrow": "Manufacturing & Custom Fabrication",
+        "title": "Manufacturing and fabrication to standard",
+        "desc": "Our factory turns client requirements into durable, precise, and architecturally refined aluminium door and window systems."
+      },
+      {
+        "n": "03",
+        "eyebrow": "Supply & Official Distributor",
+        "title": "Complete material supply and distribution",
+        "desc": "We partner with leading construction material brands and support clients with high-quality products, precise processing, and nationwide delivery."
+      }
+    ]
+  },
+  "carousels": {
+    "installation": {
+      "eyebrow": "01 | Project Installation Work",
+      "title": "Complete project installation work",
+      "description": "HAGX controls installation quality through a 100% in-house team, without outsourcing, to deliver refined, accountable, and verifiable workmanship on every project.",
+      "items": [
+        {
+          "title": "Design consultation and problem solving",
+          "desc": "We support design decisions by analyzing engineering solutions and site constraints so the finished work aligns with the design intent."
+        },
+        {
+          "title": "Technical shop drawing",
+          "desc": "Detailed technical shop drawings help coordinate professionally with architects and main contractors before fabrication begins."
+        },
+        {
+          "title": "Precision site survey",
+          "desc": "Site measurements are taken with high-standard tools to improve production accuracy and reduce installation errors."
+        },
+        {
+          "title": "Pre-engineering and quality inspection",
+          "desc": "Components are prepared and system-tested in the factory, then checked against strict QC lists before delivery to site."
+        }
+      ],
+      "ctaPrimary": "Request a project quote",
+      "ctaSecondary": "View installation works"
+    },
+    "manufacturing": {
+      "eyebrow": "02 | Manufacturing & Custom Fabrication",
+      "title": "Manufacturing and fabrication to standard",
+      "description": "HAGX turns custom requirements into aluminium door and window systems that are durable, precise, and architecturally refined.",
+      "items": [
+        {
+          "title": "Tailor-made design",
+          "desc": "Custom production based on required specifications, with proposed drawings prepared for approval before production."
+        },
+        {
+          "title": "Precision manufacturing",
+          "desc": "Modern machinery supports precise joinery, clean finishing, strength, and accurate alignment."
+        },
+        {
+          "title": "Internal system testing",
+          "desc": "Systems are tested inside the factory to verify operation, completeness, and readiness before handover."
+        },
+        {
+          "title": "Certified materials",
+          "desc": "We select high-grade materials that meet Thai Industrial Standards and verify coating quality against the required specification."
+        }
+      ],
+      "ctaPrimary": "Consult fabrication work",
+      "ctaSecondary": "View examples"
+    },
+    "supply": {
+      "eyebrow": "03 | Supply & Official Distributor",
+      "title": "Complete material supply and distribution",
+      "description": "HAGX supplies quality construction materials and processing services through official partnerships and nationwide logistics.",
+      "items": [
+        {
+          "title": "Premium glass and customization",
+          "desc": "Raw glass sheets and made-to-order glass services, including edge polishing and cut-to-size processing."
+        },
+        {
+          "title": "Aluminium profile and hardware",
+          "desc": "A complete range of aluminium profiles and hardware, including handles, patch fittings, and structural silicone."
+        },
+        {
+          "title": "SCG official partnership",
+          "desc": "Official distributor support for SCG products such as gypsum boards and ceiling framing systems."
+        },
+        {
+          "title": "Nationwide high-speed logistics",
+          "desc": "Fast and secure delivery across Thailand keeps project material flow moving without unnecessary delay."
+        }
+      ],
+      "ctaPrimary": "View all products",
+      "ctaSecondary": "Ask for pricing"
+    }
+  },
+  "cta": {
+    "eyebrow": "Start a Project",
+    "title": "Work with HAGX",
+    "description": "Send us your project or material requirements so our team can review the technical details, recommend specifications, and prepare a quotation.",
+    "primary": "Contact HAGX",
+    "secondary": "View works"
+  },
+  "scope_of_works": {
+    "eyebrow": "Scope of Works",
+    "subtitle": "What we install",
+    "footer": "And all types of custom-made glass and aluminium solutions — Custom Solutions",
+    "categories": [
+      {
+        "id": "01",
+        "title": "Residential Doors & Windows",
+        "items": [
+          "All types of aluminium door and window systems\n(Sliding, Casement, Awning, Folding)",
+          "Modern main entrance doors",
+          "Automatic sliding door systems"
+        ]
+      },
+      {
+        "id": "02",
+        "title": "Architectural Glass & Structure",
+        "items": [
+          "Skylight & Glass Roof",
+          "Architectural Glazing & Facade",
+          "Glass Lift Enclosure",
+          "Custom Architectural Accents"
+        ]
+      },
+      {
+        "id": "03",
+        "title": "Interior & Decorative Glass",
+        "items": [
+          "Interior Glass House & Partitions",
+          "Shower Screen: Swing & Sliding",
+          "Decorative Mirror & Colored Glass"
+        ]
+      },
+      {
+        "id": "04",
+        "title": "Safety Railing Systems",
+        "items": [
+          "Glass Staircase Railing",
+          "Glass Balustrade & Railing System",
+          "Frameless Glass Railing"
+        ]
+      }
+    ]
+  },
   "eyebrow_installation": "Installation Work",
-  "title_installation": "Installation & Fabrication",
-  "desc_installation": "End-to-end service from survey, design, fabrication, and installation — managed by the HAGX team, no subcontractors.",
-  "eyebrow_supply": "Supply & Sales",
-  "title_supply": "Premium Material Supply",
-  "desc_supply": "Order glass, aluminium, and hardware individually — at factory prices with custom sizing available.",
-  "hover_prompt": "Hover to explore →",
-  "cta_quote": "Request a Project Quote",
-  "cta_portfolio": "View Portfolio",
-  "cta_shop": "Browse Shop",
-  "cta_contact": "Enquire Pricing"
+  "title_installation": "Project installation and contracting",
+  "desc_installation": "A complete service from survey, design, fabrication, and installation by HAGX's own team.",
+  "eyebrow_supply": "Material Supply",
+  "title_supply": "Premium material supply",
+  "desc_supply": "Order glass, aluminium, and hardware at factory-direct pricing with custom cut-to-size options.",
+  "hover_prompt": "Scroll for details",
+  "cta_quote": "Request a project quote",
+  "cta_portfolio": "View works",
+  "cta_shop": "View all products",
+  "cta_contact": "Ask for pricing"
 }

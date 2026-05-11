@@ -46,8 +46,8 @@ export default function Contact() {
               </div>
               <div>
                 <p className="text-[10px] tracking-[0.2em] uppercase text-slate-400 font-light mb-1">อีเมล</p>
-                <a href="mailto:hello@hagx.com" className="text-slate-600 font-light hover:text-slate-900 transition-colors">
-                  hello@hagx.com
+                <a href="mailto:contact@hagx.com" className="text-slate-600 font-light hover:text-slate-900 transition-colors">
+                  contact@hagx.com
                 </a>
               </div>
             </div>

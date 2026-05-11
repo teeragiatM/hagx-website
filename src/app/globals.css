@@ -33,6 +33,11 @@
   --duration-s: 0.35s;
 }
 
+/* ── Base ──────────────────────────────────────────────────────────────────── */
+html, body {
+  position: relative; /* required by Lenis to calculate scroll offset correctly */
+}
+
 /* ── Tailwind theme bridge ─────────────────────────────────────────────────── */
 @theme {
   --font-sans:     var(--font-anuphan), ui-sans-serif, system-ui, sans-serif;
@@ -141,6 +146,41 @@
 
   /* ── Section divider ── */
   .section-border { border-top: 1px solid var(--color-border); }
+
+  .hero-bottom-shadow {
+    isolation: isolate;
+  }
+
+  .hero-bottom-shadow::before,
+  .hero-bottom-shadow::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    pointer-events: none;
+  }
+
+  .hero-content-layer {
+    pointer-events: none;
+  }
+
+  .hero-content-layer :is(a, button, input, textarea, select, summary, [role="button"], [tabindex]:not([tabindex="-1"])) {
+    pointer-events: auto;
+  }
+
+  .hero-bottom-shadow::before {
+    z-index: 18;
+    height: min(42vh, 28rem);
+    background:
+      radial-gradient(ellipse 72% 70% at 50% 100%, rgba(8, 8, 8, 0.78) 0%, rgba(8, 8, 8, 0.28) 48%, transparent 76%);
+  }
+
+  .hero-bottom-shadow::after {
+    z-index: 22;
+    height: min(34vh, 22rem);
+    background:
+      linear-gradient(to top, #080808 0%, rgba(8, 8, 8, 0.92) 18%, rgba(8, 8, 8, 0.58) 50%, transparent 100%);
+  }
 
   /* ── Fade-reveal (used with Framer Motion) ── */
   /* Uniform timing applied via JS: duration=0.7, ease=ease-out */

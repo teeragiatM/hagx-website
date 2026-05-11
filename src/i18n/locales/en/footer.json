@@ -1,8 +1,20 @@
 {
-  "tagline": "Premium Aluminium & Glass Solutions for Modern Architecture. Bangkok, Thailand.",
+  "tagline": "Premium aluminium and glass solutions for modern architecture. Bangkok, Thailand.",
   "sitemap": "Sitemap",
   "systems": "Systems",
+  "system_links": [
+    "Curtain Wall System",
+    "Glass Facade & Cladding",
+    "Interior Partition",
+    "Sliding & Folding Doors",
+    "Material Supply"
+  ],
+  "location": "Location",
+  "address": "6/197 Huahin, Prachuap Khiri Khan, Thailand",
   "social": "Social",
+  "terms": "Terms & Conditions",
+  "privacy": "Privacy Policy",
   "rights": "All rights reserved.",
+  "copyright": "HAGX Co., Ltd. All rights reserved.",
   "since": "Architectural Precision Since 2026"
 }

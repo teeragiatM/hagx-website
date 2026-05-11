@@ -28,8 +28,44 @@
     "see_all": "See all Works"
   },
   "cta": {
+    "eyebrow": "Start a Project",
     "title": "Bring Your Vision to Life —\nConnect with HAGX Today",
     "desc": "Send us your project details and our team will assess the approach, materials, and budget — at no cost.",
     "button": "Send Your Inquiry"
+  },
+  "about_intro": {
+    "eyebrow": "About Us",
+    "title": "Precise. Reliable. HAGX.",
+    "description": "HAGX is a specialist team for the design, fabrication, and installation of architectural glass and aluminium systems. With precision at the core, we turn project requirements into durable, refined door and window systems engineered for lasting safety, performance, and architectural clarity.",
+    "tabs": {
+      "who": "Who We Are",
+      "values": "Our Values",
+      "team": "Our Team",
+      "founders": "Founders"
+    },
+    "sections": {
+      "who": {
+        "eyebrow": "Who We Are",
+        "title": "Glass and aluminium specialists driven by precision.",
+        "description": "We believe strong architectural glass work must be more than beautiful. It must be durable, measurable, and built for the real performance needs of each building."
+      },
+      "values": {
+        "eyebrow": "Our Values",
+        "title": "The principles that define HAGX.",
+        "description": "We apply the same discipline across every step, from site reading and material selection to fabrication, installation, and long-term accountability."
+      },
+      "team": {
+        "eyebrow": "Our Team",
+        "title": "One team from survey and fabrication to installation.",
+        "description": "Our survey team, factory team, and installation crew work as one system to reduce deviation and maintain quality from start to finish.",
+        "roles": ["Survey Team", "Fabrication", "Site Supervisor", "Installation Crew"]
+      },
+      "founders": {
+        "eyebrow": "Founders",
+        "title": "Built from real experience in materials, sites, and architecture.",
+        "description": "HAGX grew from hands-on understanding of design, materials, and installation, connecting every part of a project under one standard.",
+        "roles": ["Technical Direction", "Project Management", "Architectural Coordination"]
+      }
+    }
   }
 }

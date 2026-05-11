@@ -146,9 +146,13 @@
   "footer": {
     "tagline": "Premium Aluminium & Glass Solutions for Modern Architecture. Bangkok, Thailand.",
     "sitemap": "Sitemap",
-    "systems": "Systems",
+    "location": "Location",
+    "address": "6/197 Huahin",
     "social": "Social",
     "rights": "All rights reserved.",
-    "since": "Architectural Precision Since 2026"
+    "since": "Architectural Precision Since 2026",
+    "terms": "Terms of Use",
+    "privacy": "Privacy Policy",
+    "copyright": "HAGX. All rights reserved."
   }
 }

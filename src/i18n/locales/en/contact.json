@@ -1,25 +1,60 @@
 {
-  "eyebrow": "Contact Us",
-  "title": "Ready to Design\nYour Space?",
-  "desc": "Our team will assess your approach, materials, and preliminary budget — free of charge.",
-  "testimonial": "The HAGX team managed the project from start to finish, delivered on time, and the result exceeded our expectations.",
+  "hero": {
+    "eyebrow": "Contact Us",
+    "title": "Ready to Design\nYour Space?",
+    "description": "The HAGX team is ready to assess your approach, materials, and preliminary budget free of charge.",
+    "testimonial": "The HAGX team managed the project from start to finish, delivered on time, and the result exceeded our expectations.",
+    "testimonial_author": "Property Developer, Bangkok",
+    "location": "Bangkok, Thailand",
+    "email": "contact@hagx.co",
+    "hours": "Mon - Sat · 09:00 - 18:00"
+  },
   "form": {
+    "aria": "HAGX contact form",
     "first_name": "First Name",
+    "first_name_placeholder": "Your first name",
     "last_name": "Last Name",
-    "email": "Work Email",
+    "last_name_placeholder": "Your last name",
+    "email": "Email",
+    "email_placeholder": "Your work email",
     "industry": "Industry",
+    "industry_placeholder": "Your company's industry",
     "company": "Company Name",
+    "company_placeholder": "Your company name",
     "phone": "Contact No.",
+    "phone_placeholder": "Your contact number",
     "topic": "Topic of Inquiry",
+    "topic_placeholder": "Select an option",
     "details": "Project Details",
-    "details_placeholder": "Enter your project details (location, size, goals, timeline, budget, etc.)",
+    "details_placeholder": "Enter your project details, such as location, size, goals, timeline, and budget.",
     "submit": "Send Your Inquiry",
-    "select": "Select an option",
-    "industry_placeholder": "Your company's industry"
+    "industries": [
+      "Real Estate",
+      "Architecture / Interior Design",
+      "Construction",
+      "Retail",
+      "Other"
+    ],
+    "topics": [
+      "Curtain Wall System",
+      "Glass Facade & Cladding",
+      "Interior Glass Partition",
+      "Sliding & Folding Doors",
+      "Premium Material Supply",
+      "Other"
+    ]
   },
   "success": {
+    "mark": "✓",
     "title": "Inquiry Sent",
-    "desc": "The HAGX team will get back to you within 1 business day.",
+    "description": "The HAGX team will get back to you within 1 business day.",
     "back": "Back to Home"
+  },
+  "before_send": {
+    "eyebrow": "Before You Send",
+    "title": "Want to review our work standards first?",
+    "description": "Explore HAGX installation examples and material selections to prepare the details for your project assessment.",
+    "primary": "View Work",
+    "secondary": "View Services"
   }
 }

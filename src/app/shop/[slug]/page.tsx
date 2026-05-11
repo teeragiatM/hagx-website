@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
+import CtaSection from "@/components/CtaSection";
 import { products, categories } from "@/lib/products";
 
 export function generateStaticParams() {
@@ -184,6 +185,14 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           </div>
         </section>
       )}
+
+      <CtaSection
+        eyebrow="Need Project Pricing?"
+        title="ต้องการสเปกหรือจำนวนมาก?"
+        description="ทีม HAGX พร้อมช่วยประเมินราคา สเปก และการจัดส่งสำหรับคำสั่งซื้อโครงการ"
+        primaryAction={{ href: "/contact", label: "สอบถามราคา" }}
+        secondaryAction={{ href: "/shop", label: "ดูสินค้าอื่น" }}
+      />
 
       <SiteFooter />
     </main>

@@ -1,13 +1,23 @@
 "use client";
 
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import CtaSection from "@/components/CtaSection";
+import SectionHeader from "@/components/SectionHeader";
+import SiteFooter from "@/components/SiteFooter";
+import SiteNav from "@/components/SiteNav";
+import StrategySection from "@/components/StrategySection";
+import { hagxStats, hagxValues } from "@/content/hagx";
+import { useI18n } from "@/i18n/useI18n";
+import {
+  AnimatePresence,
+  motion,
+  useScroll,
+  useSpring,
+  useTransform,
+  type Variants,
+} from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { useI18n } from "@/i18n/useI18n";
-import StrategySection from "@/components/StrategySection";
-import SiteNav from "@/components/SiteNav";
-import SiteFooter from "@/components/SiteFooter";
+import { useEffect, useRef, useState } from "react";
 
 // ── Preloader ────────────────────────────────────────────────────────────────
 function Preloader({ onDone }: { onDone: () => void }) {
@@ -17,7 +27,11 @@ function Preloader({ onDone }: { onDone: () => void }) {
     let p = 0;
     const id = setInterval(() => {
       p += Math.random() * 18 + 4;
-      if (p >= 100) { p = 100; clearInterval(id); setTimeout(onDone, 400); }
+      if (p >= 100) {
+        p = 100;
+        clearInterval(id);
+        setTimeout(onDone, 400);
+      }
       setProgress(Math.min(p, 100));
     }, 60);
     return () => clearInterval(id);
@@ -47,7 +61,37 @@ const fadeUp = {
   visible: { opacity: 1, y: 0 },
 };
 
-function Reveal({ id, className, children }: { id?: string; className?: string; children: React.ReactNode }) {
+const premiumEase = [0.22, 1, 0.36, 1] as const;
+
+const premiumTextGroup: Variants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.11,
+      delayChildren: 0.05,
+    },
+  },
+};
+
+const premiumTextItem: Variants = {
+  hidden: { opacity: 0, y: 34, filter: "blur(10px)" },
+  visible: {
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: { duration: 0.85, ease: premiumEase },
+  },
+};
+
+function Reveal({
+  id,
+  className,
+  children,
+}: {
+  id?: string;
+  className?: string;
+  children: React.ReactNode;
+}) {
   return (
     <motion.section
       id={id}
@@ -63,84 +107,195 @@ function Reveal({ id, className, children }: { id?: string; className?: string; 
   );
 }
 
+type ProcessStep = {
+  n: string;
+  title: string;
+  titleTh: string;
+  image: string;
+  itemsTh: string[];
+  itemsEn: string[];
+};
+
+function ProcessStepCard({
+  step,
+  index,
+  lang,
+}: {
+  step: ProcessStep;
+  index: number;
+  lang: "th" | "en";
+}) {
+  const ref = useRef<HTMLElement | null>(null);
+  const isReverse = index % 2 === 1;
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 90,
+    damping: 28,
+    mass: 0.35,
+  });
+  const imageY = useTransform(smoothProgress, [0, 1], [-72, 72]);
+  const imageInnerY = useTransform(smoothProgress, [0, 1], [46, -46]);
+  const imageScale = useTransform(
+    smoothProgress,
+    [0, 0.5, 1],
+    [1.18, 1.08, 1.18],
+  );
+  const textY = useTransform(smoothProgress, [0, 1], [52, -52]);
+  const numberY = useTransform(smoothProgress, [0, 1], [88, -88]);
+
+  return (
+    <motion.article
+      ref={ref}
+      initial={{ opacity: 0, y: 36 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.18 }}
+      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+      className={`grid min-h-[700px] items-center gap-10 border-t border-white/[0.07] px-6 py-20 first:border-t-0 sm:px-10 lg:grid-cols-[0.95fr_1.05fr] lg:px-12 lg:py-24 xl:px-16 ${
+        isReverse ? "lg:grid-flow-dense" : ""
+      }`}
+    >
+      <motion.div
+        style={{ y: textY }}
+        className={isReverse ? "lg:col-start-2 lg:text-right" : ""}
+      >
+        <motion.p
+          style={{ y: numberY }}
+          className="mb-8 text-3xl font-light leading-none text-[#ff8a00] sm:text-4xl"
+        >
+          {step.n}
+        </motion.p>
+        <h3 className="text-[clamp(3.75rem,11vw,8rem)] font-light leading-[0.9] tracking-normal text-white">
+          {lang === "th" ? step.titleTh : step.title}
+        </h3>
+        <ul className={`mt-10 space-y-5 ${isReverse ? "lg:ml-auto" : ""}`}>
+          {(lang === "th" ? step.itemsTh : step.itemsEn).map((item) => (
+            <li
+              key={item}
+              className={`flex max-w-xl items-center gap-5 text-sm font-light leading-7 text-white/65 sm:text-base ${
+                isReverse ? "lg:ml-auto lg:flex-row-reverse" : ""
+              }`}
+            >
+              <span className="h-3 w-3 shrink-0 rounded-full bg-[#ff8a00]" />
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+      </motion.div>
+
+      <motion.div
+        style={{ y: imageY }}
+        className={`relative mx-auto aspect-[1.02/1] w-full max-w-[560px] overflow-hidden bg-white ${
+          isReverse ? "lg:col-start-1 lg:row-start-1" : ""
+        }`}
+      >
+        <motion.div
+          className="absolute inset-[-14%]"
+          style={{ y: imageInnerY, scale: imageScale }}
+        >
+          <Image
+            src={step.image}
+            alt={`HAGX ${step.title}`}
+            fill
+            sizes="(min-width: 1280px) 560px, (min-width: 1024px) 45vw, 100vw"
+            className="object-cover"
+          />
+        </motion.div>
+        <div className="absolute inset-y-0 right-0 w-[46%] bg-[#f4f0e8]/90 mix-blend-screen" />
+        <div className="absolute inset-y-0 right-0 w-[46%] bg-[radial-gradient(circle_at_30%_30%,transparent_0_18%,rgba(0,0,0,0.22)_19%,transparent_20%),repeating-linear-gradient(125deg,rgba(0,0,0,0.28)_0_1px,transparent_1px_8px)] opacity-45" />
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-white/15" />
+        <motion.div
+          style={{ y: numberY }}
+          className="absolute right-8 top-8 text-xl font-bold tracking-tight text-[#ff8a00]"
+        >
+          hagx
+        </motion.div>
+      </motion.div>
+    </motion.article>
+  );
+}
+
 // ── Data ─────────────────────────────────────────────────────────────────────
 
-const aboutTabs = [
-  {
-    id: "who-we-are",
-    label: "Who We Are",
-    eyebrow: "about us",
-    title: "Transform a Space for Work into a Space for Life",
-    description:
-      "HAGX คือทีมออกแบบ ผลิต และติดตั้งระบบกระจก-อลูมิเนียมสำหรับอาคารที่ต้องการความแม่นยำ สะอาด และมีมาตรฐานระดับสถาปัตยกรรม",
-    image:
-      "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1400&q=90",
-    stats: [
-      ["10+", "Years of technical experience"],
-      ["120+", "Projects completed"],
-      ["01", "Integrated specialist team"],
-    ],
-  },
-  {
-    id: "our-values",
-    label: "Our Values",
-    eyebrow: "our values",
-    title: "Precision, restraint, and responsibility in every detail",
-    description:
-      "เราให้ความสำคัญกับเส้นสายที่นิ่ง งานติดตั้งที่ตรวจสอบได้ และวัสดุที่เหมาะกับการใช้งานจริง เพื่อให้ผลลัพธ์เรียบร้อยตั้งแต่วันแรกจนถึงระยะยาว",
-    image:
-      "https://images.unsplash.com/photo-1494526585095-c41746248156?w=1400&q=90",
-    values: [
-      ["01", "Precision", "ควบคุมระยะ แนว และรอยต่ออย่างเป็นระบบ"],
-      ["02", "Reliability", "สื่อสารชัดเจนและรับผิดชอบทุกขั้นตอน"],
-      ["03", "Performance", "เลือกวัสดุให้เหมาะกับอาคาร แสง และการใช้งาน"],
-    ],
-  },
-  {
-    id: "our-team",
-    label: "Our Team",
-    eyebrow: "our team",
-    title: "One team from survey to installation",
-    description:
-      "ทีมหน้างาน ช่างผลิต และผู้ควบคุมงานทำงานร่วมกันตั้งแต่การอ่านแบบ สำรวจพื้นที่ ผลิตชิ้นงาน ไปจนถึงเก็บรายละเอียดก่อนส่งมอบ",
-    image:
-      "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=1400&q=90",
-    roles: ["Survey Team", "Fabrication", "Site Supervisor", "Installation Crew"],
-  },
-  {
-    id: "founders",
-    label: "Founders",
-    eyebrow: "founders",
-    title: "Built by people who understand material, site, and architecture",
-    description:
-      "HAGX ถูกสร้างจากประสบการณ์หน้างานจริง เพื่อเชื่อมช่องว่างระหว่างงานออกแบบ วัสดุ และการติดตั้งให้จบในมาตรฐานเดียว",
-    image:
-      "https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=1400&q=90",
-    founders: ["Technical Direction", "Project Management", "Architectural Coordination"],
-  },
-];
+// aboutTabs is now built inside the component using t() + lang (see below)
 
 const portfolio = [
-  { title: "Curtain Wall System", sub: "อาคารสำนักงาน 12 ชั้น กรุงเทพ", desc: "ระบบ Curtain Wall แบบ Unitized สำหรับอาคารสำนักงานพรีเมียม ใช้กระจก Low-E Double Glazing พร้อมโปรไฟล์ Thermal Break ควบคุมทุกขั้นตอนโดยทีม HAGX", image: "https://images.unsplash.com/photo-1494526585095-c41746248156?w=1400&q=90", span: "lg:row-span-2 min-h-[540px]" },
-  { title: "Glass Facade", sub: "วิลล่าพักอาศัย Hua Hin", desc: "Facade กระจกเต็มบาน พร้อมระบบบานเปิดและบานเลื่อนรอบบ้าน เน้นวิวทะเลและแสงธรรมชาติ ออกแบบให้สอดคล้องกับโครงสร้างคอนกรีตเดิม", image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1400&q=90", span: "min-h-[360px]" },
-  { title: "Interior Partition", sub: "สำนักงานพรีเมียม สีลม", desc: "ระบบ Glass Partition แบบ Frameless พร้อมบานเลื่อนและฝ้าเพดานเชื่อมต่อ เพื่อการแบ่งพื้นที่ทำงานที่ยืดหยุ่นและสวยงาม", image: "https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=1400&q=90", span: "min-h-[360px]" },
+  {
+    title: "Curtain Wall System",
+    sub: "อาคารสำนักงาน 12 ชั้น กรุงเทพ",
+    desc: "ระบบ Curtain Wall แบบ Unitized สำหรับอาคารสำนักงานพรีเมียม ใช้กระจก Low-E Double Glazing พร้อมโปรไฟล์ Thermal Break ควบคุมทุกขั้นตอนโดยทีม HAGX",
+    image:
+      "https://images.unsplash.com/photo-1494526585095-c41746248156?w=1400&q=90",
+    span: "lg:row-span-2 min-h-[540px]",
+  },
+  {
+    title: "Glass Facade",
+    sub: "วิลล่าพักอาศัย Hua Hin",
+    desc: "Facade กระจกเต็มบาน พร้อมระบบบานเปิดและบานเลื่อนรอบบ้าน เน้นวิวทะเลและแสงธรรมชาติ ออกแบบให้สอดคล้องกับโครงสร้างคอนกรีตเดิม",
+    image:
+      "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1400&q=90",
+    span: "min-h-[360px]",
+  },
+  {
+    title: "Interior Partition",
+    sub: "สำนักงานพรีเมียม สีลม",
+    desc: "ระบบ Glass Partition แบบ Frameless พร้อมบานเลื่อนและฝ้าเพดานเชื่อมต่อ เพื่อการแบ่งพื้นที่ทำงานที่ยืดหยุ่นและสวยงาม",
+    image:
+      "https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=1400&q=90",
+    span: "min-h-[360px]",
+  },
 ];
 
 const testimonials = [
-  { client: "Property Developer, Bangkok", project: "CURTAIN WALL · GLASS FACADE · PROJECT MANAGEMENT", quote: "ทีม HAGX ดูแลโครงการตั้งแต่ขั้นตอนออกแบบจนส่งมอบ การสื่อสารชัดเจนและงานเสร็จตรงเวลา ระบบ Curtain Wall ทำงานได้อย่างสมบูรณ์แบบ ไม่มีปัญหาหลังส่งมอบ", logo: "PA" },
-  { client: "Interior Design Studio, Silom", project: "GLASS PARTITION · SLIDING SYSTEM", quote: "วัสดุคุณภาพดีมาก ทีมช่างมีความชำนาญและทำงานได้สะอาดเรียบร้อย ลูกค้าของเราประทับใจมากกับผลงานที่ได้รับ จะกลับมาใช้บริการอีกแน่นอน", logo: "DS" },
-  { client: "Real Estate Group, Hua Hin", project: "GLASS FACADE · ALUMINIUM SYSTEM", quote: "ผลงานออกมาดีเกินคาด ทีมเข้าใจ vision ของเราและแปลงมันเป็นงานจริงได้อย่างแม่นยำ ระบบกระจกทั้งหมดทำให้บ้านดูโมเดิร์นมากขึ้น", logo: "RG" },
+  {
+    client: "Property Developer, Bangkok",
+    project: "CURTAIN WALL · GLASS FACADE · PROJECT MANAGEMENT",
+    quote:
+      "ทีม HAGX ดูแลโครงการตั้งแต่ขั้นตอนออกแบบจนส่งมอบ การสื่อสารชัดเจนและงานเสร็จตรงเวลา ระบบ Curtain Wall ทำงานได้อย่างสมบูรณ์แบบ ไม่มีปัญหาหลังส่งมอบ",
+    logo: "PA",
+  },
+  {
+    client: "Interior Design Studio, Silom",
+    project: "GLASS PARTITION · SLIDING SYSTEM",
+    quote:
+      "วัสดุคุณภาพดีมาก ทีมช่างมีความชำนาญและทำงานได้สะอาดเรียบร้อย ลูกค้าของเราประทับใจมากกับผลงานที่ได้รับ จะกลับมาใช้บริการอีกแน่นอน",
+    logo: "DS",
+  },
+  {
+    client: "Real Estate Group, Hua Hin",
+    project: "GLASS FACADE · ALUMINIUM SYSTEM",
+    quote:
+      "ผลงานออกมาดีเกินคาด ทีมเข้าใจ vision ของเราและแปลงมันเป็นงานจริงได้อย่างแม่นยำ ระบบกระจกทั้งหมดทำให้บ้านดูโมเดิร์นมากขึ้น",
+    logo: "RG",
+  },
 ];
 
-
-const brands = ["YKK AP", "Dow Corning", "Guardian Glass", "AGC Glass", "Schuco", "Reynaers", "Pilkington", "Technal"];
+const brands = [
+  "YKK AP",
+  "Dow Corning",
+  "Guardian Glass",
+  "AGC Glass",
+  "Schuco",
+  "Reynaers",
+  "Pilkington",
+  "Technal",
+];
 
 const processSteps = [
   {
     n: "01",
     title: "SURVEY",
-    image: "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=1400&q=90",
-    items: [
+    titleTh: "สำรวจ",
+    image:
+      "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=1400&q=90",
+    itemsTh: [
+      "สำรวจหน้างานและวัดขนาด",
+      "ประเมินความเข้ากันได้ของโครงสร้าง",
+      "จัดทำรายงานแนะนำระบบที่เหมาะสม",
+    ],
+    itemsEn: [
       "Pre-site survey and measurement",
       "Structural compatibility assessment",
       "System recommendation report",
@@ -149,8 +304,15 @@ const processSteps = [
   {
     n: "02",
     title: "DESIGN",
-    image: "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1400&q=90",
-    items: [
+    titleTh: "ออกแบบ",
+    image:
+      "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1400&q=90",
+    itemsTh: [
+      "ให้คำปรึกษาและพัฒนาแบบ",
+      "จัดทำแบบก่อสร้างและตารางวัสดุ",
+      "วางแผนผนังกระจกและฉากกั้นแบบกำหนดเอง",
+    ],
+    itemsEn: [
       "Design consultation and development",
       "Shop drawing and material scheduling",
       "Custom facade and partition planning",
@@ -159,8 +321,15 @@ const processSteps = [
   {
     n: "03",
     title: "FABRICATION",
-    image: "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=1400&q=90",
-    items: [
+    titleTh: "ผลิต",
+    image:
+      "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=1400&q=90",
+    itemsTh: [
+      "ผลิตอลูมิเนียมในโรงงานของเรา",
+      "ตัดกระจกนิรภัยและกระจกหลายชั้น",
+      "ตรวจสอบคุณภาพก่อนส่งมอบ",
+    ],
+    itemsEn: [
       "In-house aluminium fabrication",
       "Tempered and laminated glass cutting",
       "Quality control before delivery",
@@ -169,8 +338,15 @@ const processSteps = [
   {
     n: "04",
     title: "INSTALLATION",
-    image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1400&q=90",
-    items: [
+    titleTh: "ติดตั้ง",
+    image:
+      "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1400&q=90",
+    itemsTh: [
+      "ติดตั้งระบบผนังกระจกและผิวอาคาร",
+      "ติดตั้งฉากกั้นและประตูบานเลื่อน",
+      "งานซ่อมแซมและบำรุงรักษา",
+    ],
+    itemsEn: [
       "Curtain wall and facade install",
       "Interior partition and sliding doors",
       "Reinstatement and maintenance works",
@@ -179,8 +355,15 @@ const processSteps = [
   {
     n: "05",
     title: "SUPPLY",
-    image: "https://images.unsplash.com/photo-1494526585095-c41746248156?w=1400&q=90",
-    items: [
+    titleTh: "จัดหาวัสดุ",
+    image:
+      "https://images.unsplash.com/photo-1494526585095-c41746248156?w=1400&q=90",
+    itemsTh: [
+      "กระจกนิรภัย / หลายชั้น / Low-E / กระจกกันความร้อน",
+      "อลูมิเนียมโปรไฟล์ทุกระบบ",
+      "ฮาร์ดแวร์สแตนเลสและซิลิโคนโครงสร้าง",
+    ],
+    itemsEn: [
       "Tempered, laminated, Low-E and insulated glass",
       "Aluminium profiles for every system",
       "Stainless hardware and structural silicone",
@@ -192,28 +375,83 @@ const processSteps = [
 export default function HomePage() {
   const [loaded, setLoaded] = useState(false);
   const [activeAbout, setActiveAbout] = useState(0);
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const [activeProject, setActiveProject] = useState(0);
   const [activeTestimonial, setActiveTestimonial] = useState(0);
+
+  const getAboutSectionKey = (id: string) => {
+    if (id === "who-we-are") return "who";
+    if (id === "our-values") return "values";
+    if (id === "our-team") return "team";
+    return "founders";
+  };
+
+  // Build tabs dynamically so labels + roles respond to lang changes
+  const aboutTabs = [
+    {
+      id: "who-we-are",
+      image:
+        "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1400&q=90",
+      stats: hagxStats.map(
+        ({ n, labelTh, labelEn }) =>
+          [n, lang === "th" ? labelTh : labelEn] as const,
+      ),
+    },
+    {
+      id: "our-values",
+      image:
+        "https://images.unsplash.com/photo-1494526585095-c41746248156?w=1400&q=90",
+      values: hagxValues.map(
+        ({ n, title, titleTh, subTh, subEn }) =>
+          [
+            n,
+            lang === "th" ? titleTh : title,
+            lang === "th" ? subTh : subEn,
+          ] as const,
+      ),
+    },
+    {
+      id: "our-team",
+      image:
+        "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=1400&q=90",
+      roles: t("about_intro.sections.team.roles", {
+        returnObjects: true,
+      }) as unknown as string[],
+    },
+    {
+      id: "founders",
+      image:
+        "https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=1400&q=90",
+      founders: t("about_intro.sections.founders.roles", {
+        returnObjects: true,
+      }) as unknown as string[],
+    },
+  ];
+
   const currentAbout = aboutTabs[activeAbout];
+  const currentAboutKey = getAboutSectionKey(currentAbout.id);
 
   return (
     <>
-      <AnimatePresence>{!loaded && <Preloader onDone={() => setLoaded(true)} />}</AnimatePresence>
+      <AnimatePresence>
+        {!loaded && <Preloader onDone={() => setLoaded(true)} />}
+      </AnimatePresence>
       <SiteNav />
 
       <main className="bg-[#080808] text-white">
-
         {/* ── HERO ── */}
-        <section className="relative min-h-screen overflow-hidden" aria-label="HAGX hero">
+        <section
+          className="hero-bottom-shadow relative min-h-screen overflow-hidden"
+          aria-label="HAGX hero"
+        >
           <Image
-            src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=2200&q=90"
+            src="/images/20241030_135650.jpg"
             alt="วิลล่าสมัยใหม่ระบบกระจก Full-height — HAGX Premium Glass Bangkok"
-            fill priority sizes="100vw"
+            fill
+            priority
+            sizes="100vw"
             className="object-cover opacity-50"
           />
-          <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-[#080808] to-transparent" />
-
           <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl flex-col justify-end px-6 pb-24 pt-32 sm:px-8 sm:pb-32 lg:px-10">
             <motion.div
               initial={{ opacity: 0, y: 36 }}
@@ -225,9 +463,14 @@ export default function HomePage() {
                 {t("hero.eyebrow")}
               </p>
               <h1 className="text-5xl font-bold leading-none tracking-tight sm:text-6xl lg:text-[5.5rem]">
-                {t("hero.title").split("\n").map((line, i) => (
-                  <span key={i}>{line}{i === 0 && <br className="hidden sm:block" />}</span>
-                ))}
+                {t("hero.title")
+                  .split("\n")
+                  .map((line, i) => (
+                    <span key={i}>
+                      {line}
+                      {i === 0 && <br className="hidden sm:block" />}
+                    </span>
+                  ))}
               </h1>
               <p className="mt-7 max-w-xl text-base font-light leading-8 text-white/55 sm:text-lg">
                 {t("hero.subtitle")}
@@ -251,22 +494,24 @@ export default function HomePage() {
         </section>
 
         {/* ── ABOUT US ── */}
-        <section id="about" className="relative border-y border-white/[0.06] bg-[#080808]">
+        <section
+          id="about"
+          className="relative border-y border-white/[0.06] bg-[#080808]"
+        >
           <div className="mx-auto grid max-w-[1500px] lg:grid-cols-[49%_51%]">
             <div className="border-white/[0.06] px-6 py-20 sm:px-8 lg:sticky lg:top-0 lg:flex lg:h-screen lg:flex-col lg:justify-center lg:border-r lg:px-10">
-              <div className="mb-10">
-                <p className="mb-8 text-sm font-light uppercase tracking-normal text-[#ff8a00] sm:text-base">
-                  About Us
-                </p>
-                <h2 className="max-w-3xl text-5xl font-light leading-[1.16] tracking-tight text-white sm:text-6xl lg:text-[4.7vw]">
-                  Transform A Space for Work, Into A Space for Life
-                </h2>
-                <p className="mt-8 max-w-2xl text-sm font-light leading-8 text-white/55 sm:text-base">
-                  HAGX คือทีมออกแบบ ผลิต และติดตั้งระบบกระจก-อลูมิเนียมสำหรับอาคารที่ต้องการความแม่นยำ สะอาด และมีมาตรฐานระดับสถาปัตยกรรม
-                </p>
-              </div>
+              <SectionHeader
+                eyebrow={t("about_intro.eyebrow")}
+                heading={t("about_intro.title")}
+                description={t("about_intro.description")}
+                layout="stack"
+                className="mb-10 text-left [&_h2]:mx-0 [&_h2]:max-w-3xl [&_h2]:text-left [&_h2]:leading-[1.16] [&_h2]:tracking-tight lg:[&_h2]:text-[4.7vw] [&_p]:text-left sm:[&_p]:text-base"
+              />
 
-              <nav aria-label="About sections" className="mb-12 flex flex-wrap gap-x-10 gap-y-5">
+              <nav
+                aria-label="About sections"
+                className="mb-12 flex flex-wrap gap-x-10 gap-y-5"
+              >
                 {aboutTabs.map((tab, index) => (
                   <button
                     key={tab.id}
@@ -279,16 +524,20 @@ export default function HomePage() {
                       });
                     }}
                     className={`group inline-flex items-center gap-4 text-base font-light transition-colors sm:text-lg ${
-                      index === activeAbout ? "text-[#ff8a00]" : "text-white/38 hover:text-white/70"
+                      index === activeAbout
+                        ? "text-[#ff8a00]"
+                        : "text-white/38 hover:text-white/70"
                     }`}
                   >
                     <span
                       className={`h-0 w-0 border-y-[7px] border-l-[9px] border-y-transparent drop-shadow-[0_0_10px_rgba(255,138,0,0.8)] transition-colors ${
-                        index === activeAbout ? "border-l-[#ff8a00]" : "border-l-[#ff8a00]/70"
+                        index === activeAbout
+                          ? "border-l-[#ff8a00]"
+                          : "border-l-[#ff8a00]/70"
                       }`}
                       aria-hidden="true"
                     />
-                    {tab.label}
+                    {t(`about_intro.tabs.${getAboutSectionKey(tab.id)}`)}
                   </button>
                 ))}
               </nav>
@@ -302,7 +551,7 @@ export default function HomePage() {
               >
                 <Image
                   src={currentAbout.image}
-                  alt={`${currentAbout.label} — HAGX`}
+                  alt={`${t(`about_intro.tabs.${currentAboutKey}`)} — HAGX`}
                   fill
                   sizes="(min-width: 1024px) 49vw, 100vw"
                   className="object-cover opacity-70"
@@ -313,11 +562,6 @@ export default function HomePage() {
 
             <div className="relative">
               <div className="pointer-events-none absolute left-0 top-0 z-20 hidden h-full w-px bg-[#ff8a00]/80 lg:block" />
-              <motion.div
-                className="pointer-events-none sticky top-1/2 z-30 ml-[-13px] hidden h-6 w-6 rounded-full bg-[#ff8a00] shadow-[0_0_0_16px_rgba(255,138,0,0.16),0_0_32px_rgba(255,138,0,0.55)] lg:block"
-                animate={{ scale: [1, 1.08, 1] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-              />
 
               {aboutTabs.map((tab, index) => (
                 <motion.article
@@ -330,11 +574,14 @@ export default function HomePage() {
                   {tab.stats && (
                     <div className="w-full">
                       <p className="mb-10 text-sm font-light uppercase tracking-normal text-[#ff8a00] sm:text-base">
-                        Who We Are
+                        {t("about_intro.sections.who.eyebrow")}
                       </p>
                       <div className="space-y-8">
                         {tab.stats.map(([number, label]) => (
-                          <div key={label} className="grid items-center gap-5 sm:grid-cols-[1fr_220px]">
+                          <div
+                            key={label}
+                            className="grid items-center gap-5 sm:grid-cols-[1fr_220px]"
+                          >
                             <p className="text-[24vw] font-light leading-none tracking-tighter text-[#ff8a00] sm:text-[12rem] lg:text-[10vw]">
                               {number}
                             </p>
@@ -350,7 +597,7 @@ export default function HomePage() {
                   {tab.values && (
                     <div className="w-full">
                       <p className="mb-12 text-sm font-light uppercase tracking-normal text-[#ff8a00] sm:text-base">
-                        Our Values
+                        {t("about_intro.sections.values.eyebrow")}
                       </p>
                       <div className="overflow-hidden rounded-2xl border border-[#ff8a00]/45 bg-white/[0.04] shadow-2xl shadow-black/40">
                         {tab.values.map(([number, title, text]) => (
@@ -359,8 +606,12 @@ export default function HomePage() {
                             className="grid min-h-36 grid-cols-[1fr_auto] gap-8 border-b border-black/30 bg-gradient-to-r from-white/[0.08] to-white/[0.03] p-7 last:border-b-0 sm:p-9"
                           >
                             <div>
-                              <h3 className="text-2xl font-light text-[#ff8a00]">{title}</h3>
-                              <p className="mt-5 max-w-sm text-base font-light leading-7 text-white/62">{text}</p>
+                              <h3 className="text-2xl font-light text-[#ff8a00]">
+                                {title}
+                              </h3>
+                              <p className="mt-5 max-w-sm text-base font-light leading-7 text-white/62">
+                                {text}
+                              </p>
                             </div>
                             <p className="text-7xl font-light leading-none text-[#ff8a00]/45 sm:text-8xl">
                               {number}
@@ -374,7 +625,7 @@ export default function HomePage() {
                   {tab.roles && (
                     <div className="relative w-full overflow-hidden py-10">
                       <p className="absolute left-0 top-0 text-[18vw] font-bold leading-none tracking-tighter text-[#ff8a00]/35">
-                        Our Team
+                        {t("about_intro.sections.team.eyebrow")}
                       </p>
                       <div className="relative mt-32">
                         <div className="relative h-[360px] overflow-hidden sm:h-[520px]">
@@ -400,7 +651,10 @@ export default function HomePage() {
                     <div className="relative w-full overflow-hidden py-10">
                       <div className="grid gap-px bg-[#ff8a00]/20 sm:grid-cols-3">
                         {tab.founders.map((founder, founderIndex) => (
-                          <div key={founder} className="relative h-[420px] bg-white/[0.04]">
+                          <div
+                            key={founder}
+                            className="relative h-[420px] bg-white/[0.04]"
+                          >
                             <Image
                               src={tab.image}
                               alt={founder}
@@ -422,7 +676,7 @@ export default function HomePage() {
                         ))}
                       </div>
                       <p className="mt-[-12px] text-[18vw] font-bold leading-[0.85] tracking-tighter text-[#ff8a00]/38">
-                        Meet Our Founders
+                        {lang === "th" ? "ทีมผู้ก่อตั้ง" : "Meet Our Founders"}
                       </p>
                     </div>
                   )}
@@ -432,204 +686,38 @@ export default function HomePage() {
           </div>
         </section>
 
-        {false && false && (
-        <Reveal className="border-y border-white/[0.06] bg-[#080808]">
-          <div className="mx-auto grid max-w-7xl gap-12 px-6 py-24 sm:px-8 lg:grid-cols-[0.95fr_1.05fr] lg:px-10 lg:py-32">
-            <div className="lg:sticky lg:top-28 lg:self-start">
-              <div className="mb-10">
-                <p className="mb-5 text-xs font-light uppercase tracking-widest text-white/35">
-                  {currentAbout.eyebrow}
-                </p>
-                <h2 className="max-w-xl text-4xl font-bold leading-tight tracking-tight sm:text-5xl">
-                  {currentAbout.title}
-                </h2>
-                <p className="mt-6 max-w-lg text-sm font-light leading-8 text-white/45">
-                  {currentAbout.description}
-                </p>
-              </div>
-
-              <div className="relative mb-8 grid overflow-hidden border border-white/[0.08] bg-white/[0.03] sm:grid-cols-2 lg:grid-cols-1">
-                <motion.div
-                  className="absolute left-0 top-0 hidden h-1/4 w-px bg-white sm:block lg:h-1/4"
-                  animate={{ y: `${activeAbout * 100}%` }}
-                  transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                />
-                {aboutTabs.map((tab, index) => (
-                  <button
-                    key={tab.id}
-                    type="button"
-                    onClick={() => setActiveAbout(index)}
-                    className={`group flex items-center gap-4 border-white/[0.06] px-5 py-4 text-left text-xs font-light uppercase tracking-normal transition-colors ${
-                      index === activeAbout ? "text-white" : "text-white/35 hover:text-white/70"
-                    } ${index < aboutTabs.length - 1 ? "border-b" : ""}`}
-                  >
-                    <span
-                      className={`h-0 w-0 border-y-[5px] border-l-[7px] border-y-transparent transition-colors ${
-                        index === activeAbout ? "border-l-white" : "border-l-white/25"
-                      }`}
-                      aria-hidden="true"
-                    />
-                    {tab.label}
-                  </button>
-                ))}
-              </div>
-
-              <motion.div
-                key={currentAbout.image}
-                initial={{ opacity: 0, scale: 1.02 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-                className="relative h-[360px] overflow-hidden bg-white/5 sm:h-[460px]"
-              >
-                <Image
-                  src={currentAbout.image}
-                  alt={`${currentAbout.label} — HAGX`}
-                  fill
-                  sizes="(min-width: 1024px) 45vw, 100vw"
-                  className="object-cover opacity-70"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#080808]/75 via-transparent to-transparent" />
-              </motion.div>
-            </div>
-
-            <div className="space-y-5 lg:pt-24">
-              <motion.article
-                key={`${currentAbout.id}-intro`}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-                className="border border-white/[0.08] bg-white/[0.03] p-7 sm:p-9"
-              >
-                <p className="mb-8 text-xs font-light uppercase tracking-widest text-white/35">
-                  {currentAbout.label}
-                </p>
-                <p className="text-2xl font-light leading-snug text-white/85 sm:text-3xl">
-                  งานกระจกที่ดีต้องไม่ใช่แค่สวย แต่ต้องแม่นยำ แข็งแรง และทำให้อาคารใช้งานได้ดีขึ้นในทุกวัน
-                </p>
-              </motion.article>
-
-              {currentAbout.stats && (
-                <div className="grid gap-px overflow-hidden border border-white/[0.08] bg-white/[0.08] sm:grid-cols-3">
-                  {currentAbout.stats?.map(([number, label]) => (
-                    <div key={label} className="bg-[#080808] p-7">
-                      <p className="text-5xl font-semibold tracking-tight">{number}</p>
-                      <p className="mt-4 text-xs font-light uppercase leading-5 text-white/35">
-                        {label}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {currentAbout.values && (
-                <div className="space-y-3">
-                  {currentAbout.values?.map(([number, title, text]) => (
-                    <article key={title} className="flex gap-6 border border-white/[0.08] bg-white/[0.03] p-6">
-                      <p className="text-xs font-light text-white/25">{number}</p>
-                      <div>
-                        <h3 className="text-xl font-semibold">{title}</h3>
-                        <p className="mt-2 text-sm font-light leading-7 text-white/45">{text}</p>
-                      </div>
-                    </article>
-                  ))}
-                </div>
-              )}
-
-              {currentAbout.roles && (
-                <div className="grid gap-px overflow-hidden border border-white/[0.08] bg-white/[0.08] sm:grid-cols-2">
-                  {currentAbout.roles?.map((role, index) => (
-                    <div key={role} className="bg-[#080808] p-7">
-                      <p className="text-xs font-light text-white/25">{String(index + 1).padStart(2, "0")}</p>
-                      <p className="mt-8 text-xl font-semibold">{role}</p>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {currentAbout.founders && (
-                <div className="space-y-3">
-                  {currentAbout.founders?.map((item) => (
-                    <div key={item} className="flex items-center justify-between border-b border-white/[0.08] py-6">
-                      <p className="text-xl font-light">{item}</p>
-                      <span className="h-px w-12 bg-white/20" />
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-        </Reveal>
-        )}
-
         {/* ── WHAT WE DO ── */}
         <section className="relative overflow-hidden border-y border-white/[0.06] bg-[#050505]">
           <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(180deg,rgba(255,255,255,0.025)_1px,transparent_1px)] bg-[size:140px_140px] opacity-25" />
 
-          <div className="relative mx-auto max-w-7xl px-6 py-20 text-center sm:px-8 lg:px-10 lg:py-28">
-            <p className="mb-6 text-xs font-light uppercase tracking-widest text-[#ff8a00]">What We Do</p>
-            <h2 className="mx-auto max-w-4xl text-4xl font-bold leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
-              Precision Glass &amp; Aluminium,<br className="hidden sm:block" /> From Survey to Handover
-            </h2>
-            <p className="mx-auto mt-7 max-w-2xl text-sm font-light leading-8 text-white/45">
-              HAGX manages the full glass and aluminium workflow from site survey, design, fabrication,
-              installation, handover, and premium material supply for project teams.
-            </p>
-          </div>
+          <motion.div
+            className="relative mx-auto max-w-7xl px-6 py-20 text-center sm:px-8 lg:px-10 lg:py-28"
+            variants={premiumTextGroup}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.35 }}
+          >
+            <motion.div variants={premiumTextItem}>
+              <SectionHeader
+                eyebrow={t("whatwedo.eyebrow")}
+                heading={t("whatwedo.title")}
+                description={t("whatwedo.desc")}
+                layout="stack"
+                className="mb-0 [&_h2]:text-4xl [&_h2]:font-bold [&_h2]:leading-tight [&_h2]:tracking-tight sm:[&_h2]:text-5xl lg:[&_h2]:text-6xl [&_p:last-child]:text-white/45"
+              />
+            </motion.div>
+          </motion.div>
 
           <div className="relative mx-auto max-w-[1440px] px-4 pb-16 sm:px-8 lg:px-10 lg:pb-28">
             <div className="overflow-hidden border border-white/[0.08] bg-black/35 shadow-[0_0_80px_rgba(255,138,0,0.06)]">
-              {processSteps.map((s, index) => {
-                const isReverse = index % 2 === 1;
-
-                return (
-                  <motion.article
-                    key={s.n}
-                    initial={{ opacity: 0, y: 36 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.18 }}
-                    transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                    className={`grid min-h-[620px] items-center gap-10 border-t border-white/[0.07] px-6 py-16 first:border-t-0 sm:px-10 lg:grid-cols-[0.95fr_1.05fr] lg:px-12 lg:py-20 xl:px-16 ${
-                      isReverse ? "lg:grid-flow-dense" : ""
-                    }`}
-                  >
-                    <div className={isReverse ? "lg:col-start-2 lg:text-right" : ""}>
-                      <p className="mb-8 text-3xl font-light leading-none text-[#ff8a00] sm:text-4xl">
-                        {s.n}
-                      </p>
-                      <h3 className="text-[clamp(3.75rem,11vw,8rem)] font-light leading-[0.9] tracking-normal text-white">
-                        {s.title}
-                      </h3>
-                      <ul className={`mt-10 space-y-5 ${isReverse ? "lg:ml-auto" : ""}`}>
-                        {s.items.map((item) => (
-                          <li
-                            key={item}
-                            className={`flex max-w-xl items-center gap-5 text-sm font-light leading-7 text-white/65 sm:text-base ${
-                              isReverse ? "lg:ml-auto lg:flex-row-reverse" : ""
-                            }`}
-                          >
-                            <span className="h-3 w-3 shrink-0 rounded-full bg-[#ff8a00]" />
-                            <span>{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    <div className={`relative mx-auto aspect-[1.02/1] w-full max-w-[560px] overflow-hidden bg-white ${isReverse ? "lg:col-start-1 lg:row-start-1" : ""}`}>
-                      <Image
-                        src={s.image}
-                        alt={`HAGX ${s.title}`}
-                        fill
-                        sizes="(min-width: 1280px) 560px, (min-width: 1024px) 45vw, 100vw"
-                        className="object-cover"
-                      />
-                      <div className="absolute inset-y-0 right-0 w-[46%] bg-[#f4f0e8]/90 mix-blend-screen" />
-                      <div className="absolute inset-y-0 right-0 w-[46%] bg-[radial-gradient(circle_at_30%_30%,transparent_0_18%,rgba(0,0,0,0.22)_19%,transparent_20%),repeating-linear-gradient(125deg,rgba(0,0,0,0.28)_0_1px,transparent_1px_8px)] opacity-45" />
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-white/15" />
-                      <div className="absolute right-8 top-8 text-xl font-bold tracking-tight text-[#ff8a00]">hagx</div>
-                    </div>
-                  </motion.article>
-                );
-              })}
+              {processSteps.map((step, index) => (
+                <ProcessStepCard
+                  key={step.n}
+                  step={step}
+                  index={index}
+                  lang={lang}
+                />
+              ))}
             </div>
           </div>
         </section>
@@ -637,12 +725,16 @@ export default function HomePage() {
         <section className="hidden bg-[#080808]" aria-hidden="true">
           {/* intro */}
           <div className="mx-auto max-w-7xl px-6 py-24 text-center sm:px-8 lg:px-10 lg:py-32">
-            <p className="mb-6 text-xs font-light uppercase tracking-widest text-[#ff8a00]">What We Do</p>
+            <p className="mb-6 text-xs font-light uppercase tracking-widest text-[#ff8a00]">
+              What We Do
+            </p>
             <h2 className="mx-auto max-w-4xl text-4xl font-bold leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
-              Precision Glass &amp; Aluminium,<br className="hidden sm:block" /> From Survey to Handover
+              Precision Glass &amp; Aluminium,
+              <br className="hidden sm:block" /> From Survey to Handover
             </h2>
             <p className="mx-auto mt-7 max-w-2xl text-sm font-light leading-8 text-white/45">
-              HAGX ให้บริการครบวงจรตั้งแต่สำรวจหน้างาน ออกแบบ ผลิต และติดตั้ง — พร้อมจำหน่ายวัสดุพรีเมียมสำหรับทีมที่ต้องการสั่งซื้อแยก
+              HAGX ให้บริการครบวงจรตั้งแต่สำรวจหน้างาน ออกแบบ ผลิต และติดตั้ง —
+              พร้อมจำหน่ายวัสดุพรีเมียมสำหรับทีมที่ต้องการสั่งซื้อแยก
             </p>
           </div>
 
@@ -650,36 +742,61 @@ export default function HomePage() {
             {
               n: "01",
               title: "SURVEY",
-              image: "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=1400&q=90",
-              items: ["Pre-site Survey & Measurement", "Structural Compatibility Assessment", "System Recommendation Report"],
+              image:
+                "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=1400&q=90",
+              items: [
+                "Pre-site Survey & Measurement",
+                "Structural Compatibility Assessment",
+                "System Recommendation Report",
+              ],
               flip: false,
             },
             {
               n: "02",
               title: "DESIGN",
-              image: "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1400&q=90",
-              items: ["Design Consultation & Development", "Shop Drawing & Material Scheduling", "Custom Facade & Partition Planning"],
+              image:
+                "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1400&q=90",
+              items: [
+                "Design Consultation & Development",
+                "Shop Drawing & Material Scheduling",
+                "Custom Facade & Partition Planning",
+              ],
               flip: true,
             },
             {
               n: "03",
               title: "FABRICATION",
-              image: "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=1400&q=90",
-              items: ["In-house Aluminium Fabrication", "Tempered & Laminated Glass Cutting", "Quality Control Before Delivery"],
+              image:
+                "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=1400&q=90",
+              items: [
+                "In-house Aluminium Fabrication",
+                "Tempered & Laminated Glass Cutting",
+                "Quality Control Before Delivery",
+              ],
               flip: false,
             },
             {
               n: "04",
               title: "INSTALLATION",
-              image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1400&q=90",
-              items: ["Curtain Wall & Facade Install", "Interior Partition & Sliding Doors", "Reinstatement & Maintenance Works"],
+              image:
+                "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1400&q=90",
+              items: [
+                "Curtain Wall & Facade Install",
+                "Interior Partition & Sliding Doors",
+                "Reinstatement & Maintenance Works",
+              ],
               flip: true,
             },
             {
               n: "05",
               title: "SUPPLY",
-              image: "https://images.unsplash.com/photo-1494526585095-c41746248156?w=1400&q=90",
-              items: ["กระจก Tempered / Laminated / Low-E", "อลูมิเนียมโปรไฟล์ทุกระบบ", "ฮาร์ดแวร์ Stainless & Structural Silicone"],
+              image:
+                "https://images.unsplash.com/photo-1494526585095-c41746248156?w=1400&q=90",
+              items: [
+                "กระจก Tempered / Laminated / Low-E",
+                "อลูมิเนียมโปรไฟล์ทุกระบบ",
+                "ฮาร์ดแวร์ Stainless & Structural Silicone",
+              ],
               flip: false,
             },
           ].map((s) => (
@@ -704,14 +821,19 @@ export default function HomePage() {
               </div>
 
               {/* content */}
-              <div className={`flex flex-1 flex-col justify-center px-8 py-14 sm:px-12 lg:px-16 lg:py-20 ${s.flip ? "lg:items-end lg:text-right" : ""}`}>
+              <div
+                className={`flex flex-1 flex-col justify-center px-8 py-14 sm:px-12 lg:px-16 lg:py-20 ${s.flip ? "lg:items-end lg:text-right" : ""}`}
+              >
                 <p className="mb-4 text-sm font-light text-[#ff8a00]">{s.n}</p>
                 <h3 className="mb-8 text-6xl font-bold leading-none tracking-tighter text-white sm:text-7xl lg:text-[8vw]">
                   {s.title}
                 </h3>
                 <ul className={`space-y-4 ${s.flip ? "lg:items-end" : ""}`}>
                   {s.items.map((item) => (
-                    <li key={item} className={`flex items-start gap-3 text-sm font-light text-white/55 ${s.flip ? "lg:flex-row-reverse" : ""}`}>
+                    <li
+                      key={item}
+                      className={`flex items-start gap-3 text-sm font-light text-white/55 ${s.flip ? "lg:flex-row-reverse" : ""}`}
+                    >
                       <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-[#ff8a00]" />
                       {item}
                     </li>
@@ -726,21 +848,33 @@ export default function HomePage() {
         <StrategySection />
 
         {/* ── PROJECTS ── */}
-        <section id="portfolio" className="border-t border-white/[0.06] bg-[#080808] py-24 lg:py-36">
+        <section
+          id="portfolio"
+          className="border-t border-white/[0.06] bg-[#080808] py-24 lg:py-36"
+        >
           <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-10">
-            <div className="mb-16">
-              <p className="mb-3 text-xs font-light uppercase tracking-widest text-[#ff8a00]">hagx</p>
-              <h2 className="text-4xl font-bold leading-tight tracking-tight text-white sm:text-5xl">
-                Projects That Define<br />Our Craft
-              </h2>
-            </div>
+            <SectionHeader
+              eyebrow={t("projects.eyebrow")}
+              heading={t("projects.title")}
+              layout="split"
+              className="mb-16 [&_h2]:text-4xl [&_h2]:font-bold [&_h2]:leading-tight [&_h2]:tracking-tight sm:[&_h2]:text-5xl"
+            />
 
             <div className="grid gap-8 lg:grid-cols-[220px_1fr_110px] lg:items-end">
               <div>
-                <p className="mb-2 text-xs font-light uppercase tracking-widest text-[#ff8a00]">{portfolio[activeProject].title}</p>
-                <h3 className="mb-4 text-xl font-light text-white/85">{portfolio[activeProject].sub}</h3>
-                <p className="mb-6 text-sm font-light leading-7 text-white/45">{portfolio[activeProject].desc}</p>
-                <Link href="#contact" className="text-xs font-light uppercase tracking-normal text-white/40 underline underline-offset-4 hover:text-white">
+                <p className="mb-2 text-xs font-light uppercase tracking-widest text-[#ff8a00]">
+                  {portfolio[activeProject].title}
+                </p>
+                <h3 className="mb-4 text-xl font-light text-white/85">
+                  {portfolio[activeProject].sub}
+                </h3>
+                <p className="mb-6 text-sm font-light leading-7 text-white/45">
+                  {portfolio[activeProject].desc}
+                </p>
+                <Link
+                  href="#contact"
+                  className="text-xs font-light uppercase tracking-normal text-white/40 underline underline-offset-4 hover:text-white"
+                >
                   View Project
                 </Link>
               </div>
@@ -768,10 +902,18 @@ export default function HomePage() {
                     type="button"
                     onClick={() => setActiveProject(i)}
                     className={`relative h-20 w-20 shrink-0 overflow-hidden border transition-all lg:h-24 lg:w-full ${
-                      i === activeProject ? "border-[#ff8a00] opacity-100" : "border-white/10 opacity-45 hover:opacity-70"
+                      i === activeProject
+                        ? "border-[#ff8a00] opacity-100"
+                        : "border-white/10 opacity-45 hover:opacity-70"
                     }`}
                   >
-                    <Image src={p.image} alt={p.title} fill className="object-cover" sizes="110px" />
+                    <Image
+                      src={p.image}
+                      alt={p.title}
+                      fill
+                      className="object-cover"
+                      sizes="110px"
+                    />
                   </button>
                 ))}
               </div>
@@ -784,9 +926,11 @@ export default function HomePage() {
           <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-10">
             <div className="grid gap-16 lg:grid-cols-[320px_1fr] lg:items-start">
               <div>
-                <h2 className="text-4xl font-bold leading-tight tracking-tight text-white sm:text-5xl">
-                  Trusted<br />Partnership
-                </h2>
+                <SectionHeader
+                  heading={t("partnership.title")}
+                  layout="stack"
+                  className="mb-0 text-left [&_h2]:mx-0 [&_h2]:text-left [&_h2]:text-4xl [&_h2]:font-bold [&_h2]:leading-tight [&_h2]:tracking-tight sm:[&_h2]:text-5xl"
+                />
                 <Link
                   href="#portfolio"
                   className="mt-8 inline-flex h-12 items-center border border-white/20 px-6 text-xs font-light uppercase tracking-normal text-white transition-colors hover:border-white hover:bg-white hover:text-[#080808]"
@@ -814,13 +958,20 @@ export default function HomePage() {
                   <blockquote className="text-lg font-light leading-8 text-white/75">
                     &ldquo;{testimonials[activeTestimonial].quote}&rdquo;
                   </blockquote>
-                  <p className="mt-6 text-sm font-light text-white/40">— {testimonials[activeTestimonial].client}</p>
+                  <p className="mt-6 text-sm font-light text-white/40">
+                    — {testimonials[activeTestimonial].client}
+                  </p>
                 </motion.div>
 
                 <div className="mt-5 flex gap-3">
                   <button
                     type="button"
-                    onClick={() => setActiveTestimonial((p) => (p - 1 + testimonials.length) % testimonials.length)}
+                    onClick={() =>
+                      setActiveTestimonial(
+                        (p) =>
+                          (p - 1 + testimonials.length) % testimonials.length,
+                      )
+                    }
                     className="flex h-11 w-11 items-center justify-center border border-white/15 text-white/50 transition-colors hover:border-white hover:text-white"
                     aria-label="Previous testimonial"
                   >
@@ -828,7 +979,9 @@ export default function HomePage() {
                   </button>
                   <button
                     type="button"
-                    onClick={() => setActiveTestimonial((p) => (p + 1) % testimonials.length)}
+                    onClick={() =>
+                      setActiveTestimonial((p) => (p + 1) % testimonials.length)
+                    }
                     className="flex h-11 w-11 items-center justify-center border border-white/15 text-white/50 transition-colors hover:border-white hover:text-white"
                     aria-label="Next testimonial"
                   >
@@ -843,7 +996,15 @@ export default function HomePage() {
             <div className="marquee-track">
               {[0, 1].map((gi) => (
                 <div key={gi} className="flex items-center">
-                  {["Property Developer A", "Architecture Studio", "Interior Design Co.", "Real Estate Group", "Construction Corp", "Design Build Ltd", "Premium Residences"].map((brand) => (
+                  {[
+                    "Property Developer A",
+                    "Architecture Studio",
+                    "Interior Design Co.",
+                    "Real Estate Group",
+                    "Construction Corp",
+                    "Design Build Ltd",
+                    "Premium Residences",
+                  ].map((brand) => (
                     <span
                       key={`${gi}-${brand}`}
                       className="mx-12 whitespace-nowrap text-xs font-light uppercase tracking-widest text-white/20"
@@ -857,53 +1018,14 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ── CTA ── */}
-        <section className="relative overflow-hidden border-t border-white/[0.06] bg-[#0d0a08] py-32 lg:py-44">
-          {/* floating project images */}
-          <div className="pointer-events-none absolute inset-0">
-            <div className="absolute left-[4%] top-[8%] h-36 w-52 -rotate-6 overflow-hidden border border-white/10 shadow-2xl sm:h-44 sm:w-64">
-              <Image src="https://images.unsplash.com/photo-1494526585095-c41746248156?w=800&q=80" alt="" fill className="object-cover opacity-55" sizes="260px" />
-            </div>
-            <div className="absolute left-[36%] top-[4%] h-32 w-48 rotate-2 overflow-hidden border border-white/10 shadow-2xl sm:h-40 sm:w-56">
-              <Image src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800&q=80" alt="" fill className="object-cover opacity-55" sizes="220px" />
-            </div>
-            <div className="absolute right-[4%] top-[6%] h-36 w-52 rotate-4 overflow-hidden border border-white/10 shadow-2xl sm:h-44 sm:w-64">
-              <Image src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=800&q=80" alt="" fill className="object-cover opacity-55" sizes="260px" />
-            </div>
-            <div className="absolute bottom-[8%] left-[3%] h-40 w-56 rotate-3 overflow-hidden border border-white/10 shadow-2xl sm:h-48 sm:w-64">
-              <Image src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80" alt="" fill className="object-cover opacity-55" sizes="260px" />
-            </div>
-            <div className="absolute bottom-[6%] left-[38%] h-36 w-52 -rotate-2 overflow-hidden border border-white/10 shadow-2xl sm:h-44 sm:w-60">
-              <Image src="https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=800&q=80" alt="" fill className="object-cover opacity-55" sizes="240px" />
-            </div>
-            <div className="absolute bottom-[10%] right-[3%] h-40 w-56 -rotate-4 overflow-hidden border border-white/10 shadow-2xl sm:h-48 sm:w-64">
-              <Image src="https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=800&q=80" alt="" fill className="object-cover opacity-55" sizes="260px" />
-            </div>
-          </div>
-
-          {/* dark vignette overlay */}
-          <div
-            className="pointer-events-none absolute inset-0"
-            style={{ background: "radial-gradient(ellipse 60% 60% at 50% 50%, rgba(8,8,8,0.6) 0%, rgba(8,8,8,0.92) 100%)" }}
-          />
-
-          {/* center content */}
-          <div className="relative z-10 flex flex-col items-center px-6 text-center">
-            <p className="mb-6 text-xs font-light uppercase tracking-widest text-[#ff8a00]">{t("cta.eyebrow")}</p>
-            <h2 className="mx-auto max-w-3xl text-4xl font-bold leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
-              {t("cta.title")}
-            </h2>
-            <p className="mx-auto mt-6 max-w-lg text-sm font-light leading-8 text-white/45">
-              {t("cta.desc")}
-            </p>
-            <Link
-              href="/contact"
-              className="mt-10 inline-flex h-14 items-center bg-[#ff8a00] px-10 text-sm font-light uppercase tracking-normal text-white transition-colors hover:bg-[#e07a00]"
-            >
-              {t("cta.button")}
-            </Link>
-          </div>
-        </section>
+        <CtaSection
+          eyebrow={t("cta.eyebrow")}
+          title={t("cta.title")}
+          description={t("cta.desc")}
+          primaryAction={{ href: "/contact", label: t("cta.button") }}
+          secondaryAction={{ href: "/shop", label: "ดูวัสดุ" }}
+          className="bg-[#0d0a08]"
+        />
 
         {/* ── BRAND MARQUEE ── */}
         <section

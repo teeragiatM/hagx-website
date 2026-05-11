@@ -221,7 +221,7 @@ export function CarouselNav({ ctaPrimary, ctaSecondary, actionSlot, className }:
       canPrev={startIndex > 0}
       canNext={startIndex < maxStart}
       actionSlot={actions}
-      dotStyle="line"
+      dotStyle="dot"
       className={`mt-12 ${className ?? ""}`}
     />
   );

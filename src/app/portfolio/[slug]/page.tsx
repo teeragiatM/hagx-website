@@ -1,5 +1,6 @@
 import SiteFooter from "@/components/SiteFooter";
 import SiteNav from "@/components/SiteNav";
+import CtaSection from "@/components/CtaSection";
 import {
   getPortfolioItemBySlug,
   getPortfolioItems,
@@ -89,7 +90,7 @@ export default async function ProjectPage({
       </div>
 
       {/* Hero image */}
-      <div className="relative h-[55vh] overflow-hidden">
+      <div className="hero-bottom-shadow relative h-[55vh] overflow-hidden">
         <Image
           src={item.cover_image}
           alt={item.title}
@@ -98,7 +99,7 @@ export default async function ProjectPage({
           sizes="100vw"
           className="object-cover opacity-60"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-[#080808]/40 to-transparent" />
+        <div className="absolute inset-0 bg-[#080808]/18" />
         <div className="absolute bottom-0 left-0 right-0 px-8 pb-12 sm:px-14">
           <div className="mx-auto max-w-[1500px]">
             <p className="eyebrow mb-3">{typeLabel}</p>
@@ -254,6 +255,14 @@ export default async function ProjectPage({
           </div>
         </section>
       )}
+
+      <CtaSection
+        eyebrow="Start a Project"
+        title="อยากทำโครงการลักษณะนี้?"
+        description="ส่งรายละเอียดโครงการให้ทีม HAGX ช่วยประเมินระบบ วัสดุ และแนวทางติดตั้งเบื้องต้น"
+        primaryAction={{ href: "/contact", label: "ปรึกษาโครงการ" }}
+        secondaryAction={{ href: "/portfolio", label: "ดูผลงานอื่น" }}
+      />
 
       <SiteFooter />
     </main>

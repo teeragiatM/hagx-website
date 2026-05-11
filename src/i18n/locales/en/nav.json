@@ -1,4 +1,14 @@
 {
+  "links": {
+    "home": "Home",
+    "about": "About Us",
+    "services": "Services",
+    "portfolio": "Projects",
+    "shop": "Shop",
+    "clients": "Clients",
+    "insights": "Insights",
+    "contact": "Contact"
+  },
   "home": "Home",
   "about": "About Us",
   "services": "Services",
@@ -6,5 +16,12 @@
   "shop": "Shop",
   "clients": "Clients",
   "contact": "Contact",
-  "quote": "Get a Quote"
+  "quote": "Get a Quote",
+  "insights": "Insights",
+  "contact_cta": "Contact Us",
+  "close": "Close",
+  "menu_toggle": "Toggle menu",
+  "contact_heading": "Contact",
+  "social_heading": "Social",
+  "business_hours": "Mon-Sat · 09:00-18:00"
 }

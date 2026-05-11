@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import CtaSection from "@/components/CtaSection";
 import SiteNav from "@/components/SiteNav";
 import SiteFooter from "@/components/SiteFooter";
 import PortfolioClient from "@/components/PortfolioClient";
@@ -36,22 +36,13 @@ export default async function PortfolioPage() {
       */}
       <PortfolioClient items={items} />
 
-      {/* ── CTA ── */}
-      <section className="border-t border-white/[0.06] px-8 py-24 sm:px-14">
-        <div className="mx-auto max-w-[1500px] text-center">
-          <p className="eyebrow mb-3">Start a Project</p>
-          <h2 className="mb-4 text-4xl font-bold tracking-tight sm:text-5xl">
-            มีโครงการในใจแล้ว?
-          </h2>
-          <p className="mx-auto mb-10 max-w-md text-sm font-light leading-8 text-white/40">
-            ประเมินแนวทาง วัสดุ และงบประมาณเบื้องต้น โดยไม่มีค่าใช้จ่าย
-          </p>
-          <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-            <Link href="/contact"  className="btn btn-primary">ติดต่อทีม HAGX</Link>
-            <Link href="/shop"     className="btn btn-secondary">ดูวัสดุ</Link>
-          </div>
-        </div>
-      </section>
+      <CtaSection
+        eyebrow="Start a Project"
+        title="มีโครงการในใจแล้ว?"
+        description="ประเมินแนวทาง วัสดุ และงบประมาณเบื้องต้น โดยไม่มีค่าใช้จ่าย"
+        primaryAction={{ href: "/contact", label: "ติดต่อทีม HAGX" }}
+        secondaryAction={{ href: "/shop", label: "ดูวัสดุ" }}
+      />
 
       <SiteFooter />
     </main>

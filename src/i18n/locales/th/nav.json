@@ -1,4 +1,14 @@
 {
+  "links": {
+    "home": "หน้าหลัก",
+    "about": "เกี่ยวกับ",
+    "services": "บริการ",
+    "portfolio": "ผลงาน",
+    "shop": "สินค้า",
+    "clients": "ลูกค้า",
+    "insights": "บทความ",
+    "contact": "ติดต่อ"
+  },
   "home": "หน้าหลัก",
   "about": "เกี่ยวกับ",
   "services": "บริการ",
@@ -6,5 +16,12 @@
   "shop": "สินค้า",
   "clients": "ลูกค้า",
   "contact": "ติดต่อ",
-  "quote": "ขอใบเสนอราคา"
+  "quote": "ขอใบเสนอราคา",
+  "insights": "บทความ",
+  "contact_cta": "ติดต่อเรา",
+  "close": "ปิด",
+  "menu_toggle": "เปิดเมนู",
+  "contact_heading": "ติดต่อ",
+  "social_heading": "โซเชียล",
+  "business_hours": "จันทร์-เสาร์ · 09:00-18:00"
 }

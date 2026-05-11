@@ -1,24 +1,90 @@
 {
-  "eyebrow": "Our Clients",
-  "title": "Trusted by leading",
-  "title_accent": "brands across Thailand",
-  "subtitle": "Industry leaders in real estate, hospitality, retail, and industrial\ntrust HAGX for their glass and aluminium needs.",
-  "stats": {
-    "years": "Years of Experience",
-    "projects": "Projects Completed",
-    "clients": "Corporate Clients",
-    "provinces": "Provinces Nationwide"
+  "hero": {
+    "eyebrow": "Our Clients",
+    "title": "Trusted by leading",
+    "title_accent": "brands across Thailand",
+    "subtitle": "Industry leaders in real estate, hospitality, retail, and industrial sectors trust HAGX for their glass and aluminium work."
   },
-  "tagline": "Places That Inspire.\nDesigns That Endure.",
-  "tagline_sub": "Every project sets a new standard — with premium materials and internationally experienced teams.",
-  "stories_eyebrow": "Client Stories",
-  "stories_title": "What our clients say",
-  "stories_sub": "Trust built from real results — not promises.",
-  "all_eyebrow": "All Clients",
-  "all_title": "Our Clients",
-  "cta_eyebrow": "Join Our Clients",
-  "cta_title": "Ready to start your project?",
-  "cta_desc": "Contact the HAGX team for a consultation and quote — free, no obligation.",
-  "cta_contact": "Contact Us",
-  "cta_portfolio": "View Portfolio"
+  "clients": [
+    { "id": "scg", "label": "SCG", "sub": "Construction" },
+    { "id": "mqdc", "label": "MQDC", "sub": "Real Estate" },
+    { "id": "sansiri", "label": "Sansiri", "sub": "Real Estate" },
+    { "id": "origin", "label": "Origin", "sub": "Real Estate" },
+    { "id": "ap", "label": "AP Thailand", "sub": "Real Estate" },
+    { "id": "cpn", "label": "Central Pattana", "sub": "Retail" },
+    { "id": "tcc", "label": "TCC Group", "sub": "Conglomerate" },
+    { "id": "dusit", "label": "Dusit", "sub": "Hospitality" },
+    { "id": "minor", "label": "Minor Hotels", "sub": "Hospitality" },
+    { "id": "marriott", "label": "Marriott", "sub": "Hospitality" },
+    { "id": "hilton", "label": "Hilton", "sub": "Hospitality" },
+    { "id": "ptt", "label": "PTT", "sub": "Energy" },
+    { "id": "egco", "label": "EGCO", "sub": "Energy" },
+    { "id": "true", "label": "True Corp", "sub": "Telecom" },
+    { "id": "aia", "label": "AIA", "sub": "Insurance" },
+    { "id": "bdms", "label": "BDMS", "sub": "Healthcare" }
+  ],
+  "stats": [
+    { "value": "10+", "label": "Years of Experience", "sub": "Built through specialist practice" },
+    { "value": "120+", "label": "Projects Completed", "sub": "Delivered with one consistent standard" },
+    { "value": "50+", "label": "Corporate Clients", "sub": "Across multiple industries" },
+    { "value": "15+", "label": "Provinces Nationwide", "sub": "Ready to support projects across Thailand" }
+  ],
+  "tagline": {
+    "title": "Places That Inspire\nDesigns That Endure",
+    "description": "Every project sets a new standard with premium materials and internationally experienced teams."
+  },
+  "stories": {
+    "eyebrow": "Client Stories",
+    "title": "What our clients say",
+    "description": "Trust built from real results, not promises.",
+    "items": [
+      {
+        "client": "MQDC",
+        "project": "Whizdom 101 Tower",
+        "scope": "Curtain Wall | Fabrication",
+        "quote": "The HAGX team delivered high-quality curtain wall work according to the design and schedule. Their coordination was excellent and kept the project moving smoothly."
+      },
+      {
+        "client": "Dusit International",
+        "project": "Dusit Thani Maldives",
+        "scope": "Design | Supply | Install",
+        "quote": "HAGX delivered exceptional facade glazing work that met our international hospitality standards. Their attention to detail and technical expertise set them apart."
+      },
+      {
+        "client": "Central Pattana",
+        "project": "Central World Renovation",
+        "scope": "Supply | Installation",
+        "quote": "The glass and aluminium materials supplied by HAGX were premium quality. Every component passed strict quality control, giving our team full confidence on site."
+      },
+      {
+        "client": "Origin Property",
+        "project": "Notting Hill Sukhumvit",
+        "scope": "Glass Railing | Facade",
+        "quote": "The glass railing and facade work installed by HAGX looked excellent. Our customers were very impressed, and the work was delivered ahead of schedule."
+      },
+      {
+        "client": "PTT",
+        "project": "PTT HQ Office Tower",
+        "scope": "Curtain Wall | Low-E IGU",
+        "quote": "HAGX's Low-E double glazing system significantly reduced our building's cooling load. Technical documentation and testing reports were thorough and professional."
+      },
+      {
+        "client": "AIA Thailand",
+        "project": "AIA Capital Center",
+        "scope": "Glass Partition | Interior",
+        "quote": "The glass partition system designed and installed by HAGX fit our office perfectly, balancing function and appearance."
+      }
+    ]
+  },
+  "all": {
+    "eyebrow": "All Clients",
+    "title": "Our Clients"
+  },
+  "cta": {
+    "eyebrow": "Join Our Clients",
+    "title": "Ready to start your project?",
+    "description": "Contact the HAGX team for an initial consultation and quotation. Free, with no obligation.",
+    "primary": "Contact Us",
+    "secondary": "View Work"
+  }
 }

@@ -1,6 +1,7 @@
 {
   "nav": {
     "portfolio": "ผลงาน",
+    "home": "หน้าหลัก",
     "services": "บริการ",
     "shop": "ร้านค้า",
     "contact": "ติดต่อ",
@@ -9,7 +10,7 @@
   "hero": {
     "eyebrow": "Premium Aluminium & Glass · Bangkok",
     "title": "งานกระจกและอลูมิเนียม\nระดับสถาปัตยกรรม",
-    "subtitle": "ออกแบบ ผลิต และติดตั้ง — พร้อมระบบสั่งซื้อและคำนวณราคาออนไลน์",
+    "subtitle": "ยกระดับอาคารด้วยระบบประตู-หน้าต่างอลูมิเนียมคุณภาพสูง มั่นใจด้วยบริการออกแบบ ผลิต และติดตั้งครบวงจรโดยทีมช่างมืออาชีพ พร้อมโซลูชันจัดจำหน่ายวัสดุและอุปกรณ์ฮาร์ดแวร์คุณภาพสูง ดูแลจบในที่เดียวตั้งแต่ให้คำปรึกษาจนถึงส่งมอบ",
     "cta_primary": "ขอใบเสนอราคา",
     "cta_secondary": "เกี่ยวกับ HAGX"
   },
@@ -145,9 +146,59 @@
   "footer": {
     "tagline": "Premium Aluminium & Glass Solutions for Modern Architecture. Bangkok, Thailand.",
     "sitemap": "แผนผังเว็บ",
-    "systems": "ระบบ",
+    "location": "ที่ตั้ง",
+    "address": "6/197 หัวหิน",
     "social": "โซเชียล",
     "rights": "สงวนลิขสิทธิ์",
-    "since": "Architectural Precision Since 2026"
+    "since": "Architectural Precision Since 2026",
+    "terms": "เงื่อนไขการใช้งาน",
+    "privacy": "นโยบายความเป็นส่วนตัว",
+    "copyright": "HAGX. สงวนลิขสิทธิ์"
+  },
+  "services": {
+    "scope_of_works": {
+      "eyebrow": "ขอบเขตงานบริการ",
+      "title": "สิ่งที่เราทำ | Project Installation",
+      "footer": "และงานกระจก-อลูมิเนียมสั่งทำพิเศษทุกรูปแบบ (Custom Solutions)",
+      "categories": [
+        {
+          "id": "01",
+          "title": "งานประตู-หน้าต่างอาคาร",
+          "items": [
+            "ระบบประตู-หน้าต่างอลูมิเนียมทุกรูปแบบ (บานเลื่อน, บานเปิด, บานกระทุ้ง, บานเฟี้ยม)",
+            "ประตูทางเข้าหลักสไตล์โมเดิร์น (Main Entrance Doors)",
+            "ระบบประตูบานเลื่อนอัตโนมัติ (Automatic Sliding Systems)"
+          ]
+        },
+        {
+          "id": "02",
+          "title": "งานกระจกโครงสร้างและงานภายนอก",
+          "items": [
+            "หลังคากระจกนิรภัย (Skylight & Glass Roof)",
+            "งานกระจกตกแต่งอาคารทุกชนิด (Architectural Glazing & Facade)",
+            "งานกระจกโครงสร้างพิเศษ อาทิ กระจกหุ้มลิฟต์ (Glass Lift Enclosure)",
+            "งานตกแต่งเสริมอาคารด้วยอลูมิเนียมและกระจกดีไซน์เฉพาะ (Custom Architectural Accents)"
+          ]
+        },
+        {
+          "id": "03",
+          "title": "งานกระจกตกแต่งภายใน",
+          "items": [
+            "งานกั้นห้องเรือนกระจก (Interior Glass House & Partitions)",
+            "กระจกกั้นอาบน้ำนิรภัยทุกประเภท (Shower Screen: Swing & Sliding)",
+            "กระจกเงาตกแต่งและกระจกสีพิเศษสำหรับงานบิลต์อิน (Decorative Mirror & Colored Glass)"
+          ]
+        },
+        {
+          "id": "04",
+          "title": "งานราวกันตกและระบบความปลอดภัย",
+          "items": [
+            "ราวบันไดกระจก (Glass Staircase Railing)",
+            "ราวกันตกกระจกและอลูมิเนียม (Glass Balustrade & Railing System)",
+            "งานราวกันตกไร้กรอบเพื่อทัศนียภาพที่โปร่งสบาย (Frameless Glass Railing)"
+          ]
+        }
+      ]
+    }
   }
 }

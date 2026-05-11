@@ -72,7 +72,7 @@ export default function PageHero({
   return (
     <section
       className={cn(
-        "relative flex flex-col overflow-hidden border-b border-white/[0.06]",
+        "hero-bottom-shadow relative flex flex-col overflow-hidden border-b border-white/[0.06]",
         isCenter ? "items-center justify-center text-center" : "justify-center",
         className,
       )}
@@ -80,7 +80,7 @@ export default function PageHero({
     >
       {/* ── Custom background slot (e.g. marquee columns) ── */}
       {backgroundSlot && (
-        <div aria-hidden className="absolute inset-0 overflow-hidden">
+        <div className="absolute inset-0 overflow-hidden">
           {backgroundSlot}
         </div>
       )}
@@ -110,25 +110,14 @@ export default function PageHero({
       )}
 
       {/* ── Arc shape at bottom ── */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute bottom-0 left-1/2 h-[38vh] w-[160vw] -translate-x-1/2 rounded-t-[50%]"
-        style={{ background: "rgba(40,14,0,0.40)" }}
-      />
-
       {/* ── Bottom fade to page bg ── */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute bottom-0 inset-x-0 h-40 bg-gradient-to-t from-[#080808] to-transparent"
-      />
-
       {/* ── Main content ── */}
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         className={cn(
-          "relative z-10 w-full px-6 pb-20 pt-32 sm:px-10 lg:px-16",
+          "hero-content-layer relative z-10 w-full px-6 pb-20 pt-32 sm:px-10 lg:px-16",
           isCenter ? "mx-auto max-w-5xl" : "max-w-[1500px]",
         )}
       >

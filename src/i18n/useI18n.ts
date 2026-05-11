@@ -2,7 +2,7 @@
 
 import "@/i18n/config";
 import { useEffect, useState } from "react";
-import { useTranslation, TFuncReturn } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 type Namespace = "nav" | "footer" | "home" | "about" | "services" | "portfolio" | "shop" | "clients" | "contact";
 
@@ -20,9 +20,8 @@ export function useI18n(ns: Namespace = "home") {
   }, [i18n]);
 
   // Before hydration completes, force Thai so t() output matches server render
-  const t: typeof rawT = mounted
-    ? rawT
-    : (key: any, opts?: any) => rawT(key, { lng: "th", ...opts });
+  const t = (key: string, opts?: Record<string, unknown>) =>
+    mounted ? rawT(key, opts) : rawT(key, { lng: "th", ...opts });
 
   function toggle() {
     i18n.changeLanguage(lang === "th" ? "en" : "th");

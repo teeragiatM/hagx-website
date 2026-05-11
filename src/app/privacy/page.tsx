@@ -1,0 +1,76 @@
+import SiteFooter from "@/components/SiteFooter";
+import SiteNav from "@/components/SiteNav";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = { title: "Privacy Policy" };
+
+export default function PrivacyPage() {
+  return (
+    <>
+      <SiteNav />
+      <main className="min-h-screen bg-[#050505] px-8 pb-24 pt-40 sm:px-12 lg:px-16">
+        <div className="mx-auto max-w-3xl">
+          <p className="mb-4 text-[10px] font-light uppercase tracking-widest text-[#ff8a00]">
+            Legal
+          </p>
+          <h1 className="mb-12 text-4xl font-light text-white sm:text-5xl">
+            Privacy Policy
+          </h1>
+          <div className="space-y-8 text-sm font-light leading-8 text-white/50">
+            <section>
+              <h2 className="mb-3 text-base font-normal text-white/80">
+                1. ข้อมูลที่เราเก็บรวบรวม
+              </h2>
+              <p>
+                เราอาจเก็บข้อมูลส่วนบุคคลที่ท่านให้ไว้โดยตรง เช่น ชื่อ อีเมล
+                เบอร์โทรศัพท์ และข้อมูลโครงการ
+                เมื่อท่านติดต่อผ่านแบบฟอร์มหรือช่องทางอื่นๆ ของเรา
+              </p>
+            </section>
+            <section>
+              <h2 className="mb-3 text-base font-normal text-white/80">
+                2. วัตถุประสงค์การใช้ข้อมูล
+              </h2>
+              <p>
+                ข้อมูลที่เก็บรวบรวมใช้เพื่อตอบคำถาม จัดทำใบเสนอราคา
+                ติดตามโครงการ และปรับปรุงบริการของเรา
+                เราไม่ขายหรือแชร์ข้อมูลส่วนบุคคลให้บุคคลที่สามโดยไม่ได้รับความยินยอม
+              </p>
+            </section>
+            <section>
+              <h2 className="mb-3 text-base font-normal text-white/80">
+                3. การรักษาความปลอดภัย
+              </h2>
+              <p>
+                เราใช้มาตรการรักษาความปลอดภัยที่เหมาะสมเพื่อป้องกันการเข้าถึง
+                เปิดเผย หรือทำลายข้อมูลส่วนบุคคลโดยไม่ได้รับอนุญาต
+              </p>
+            </section>
+            <section>
+              <h2 className="mb-3 text-base font-normal text-white/80">
+                4. คุกกี้
+              </h2>
+              <p>
+                เว็บไซต์อาจใช้คุกกี้เพื่อปรับปรุงประสบการณ์การใช้งาน
+                ท่านสามารถปิดการใช้งานคุกกี้ผ่านการตั้งค่าเบราว์เซอร์ได้ตลอดเวลา
+              </p>
+            </section>
+            <section>
+              <h2 className="mb-3 text-base font-normal text-white/80">
+                5. สิทธิ์ของท่าน
+              </h2>
+              <p>
+                ท่านมีสิทธิ์ขอเข้าถึง แก้ไข หรือลบข้อมูลส่วนบุคคลของท่าน
+                โดยติดต่อเราที่ contact@hagx.co
+              </p>
+            </section>
+            <p className="pt-4 text-xs text-white/25">
+              อัปเดตล่าสุด: มกราคม 2026 · HAGX Co., Ltd.
+            </p>
+          </div>
+        </div>
+      </main>
+      <SiteFooter />
+    </>
+  );
+}

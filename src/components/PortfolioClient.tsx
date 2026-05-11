@@ -12,6 +12,7 @@ import {
   ZoomableGroup,
 } from "react-simple-maps";
 import { geoCentroid } from "d3-geo";
+import PageHero from "@/components/PageHero";
 import type { LocalizedPortfolioItem } from "@/lib/localizePortfolio";
 import { typeOptions, categoryOptions } from "@/lib/projects";
 
@@ -378,7 +379,19 @@ export default function PortfolioClient({ items }: { items: LocalizedPortfolioIt
   return (
     <>
       {/* ── HERO MAP ── */}
-      <section className="relative h-[85vh] overflow-hidden border-b border-white/[0.06]">
+      <PageHero
+        eyebrow="Our Projects"
+        title={
+          <>
+            Across<br />Thailand
+          </>
+        }
+        subtitle="คลิกจังหวัดเพื่อซูมดูรายละเอียด หรือกดหมุดเพื่อดูโครงการ"
+        align="left"
+        minHeight="85vh"
+        glow={false}
+        backgroundSlot={
+          <>
         <div className="absolute inset-0 bg-[#080808]" />
         <div
           className="pointer-events-none absolute inset-0 opacity-[0.04]"
@@ -397,7 +410,10 @@ export default function PortfolioClient({ items }: { items: LocalizedPortfolioIt
           <ThailandMap activePin={activePin} setActivePin={setActivePin} />
         </div>
 
-        <div className="pointer-events-none absolute left-8 top-1/2 -translate-y-1/2 sm:left-14">
+          </>
+        }
+      >
+        <div className="[&>div]:mt-0 [&>h1]:hidden [&>p]:hidden">
           <p className="eyebrow mb-4">Our Projects</p>
           <h1 className="max-w-xs text-5xl font-bold leading-tight tracking-tight sm:text-6xl">
             Across<br />Thailand
@@ -414,7 +430,7 @@ export default function PortfolioClient({ items }: { items: LocalizedPortfolioIt
             ))}
           </div>
         </div>
-      </section>
+      </PageHero>
 
       {/* ── FILTER + GRID ── */}
       <section className="container-site section-py">

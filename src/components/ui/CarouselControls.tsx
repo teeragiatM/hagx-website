@@ -13,7 +13,7 @@
  *   onNext       go to next
  *   onDotClick   jump to index
  *   actionSlot   ReactNode — CTA buttons, links, etc. on the left
- *   dotStyle     "line" (default) | "dot"
+ *   dotStyle     "dot" (default) | "line"
  *   canPrev      disable left arrow when false (default: index > 0)
  *   canNext      disable right arrow when false (default: index < total-1)
  */
@@ -48,7 +48,7 @@ export function CarouselControls({
   onNext,
   onDotClick,
   actionSlot,
-  dotStyle = "line",
+  dotStyle = "dot",
   canPrev,
   canNext,
   className,

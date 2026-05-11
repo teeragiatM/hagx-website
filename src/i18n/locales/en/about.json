@@ -1,18 +1,146 @@
 {
-  "eyebrow": "About HAGX",
-  "hero_title": "Building Better Spaces\nWith Better Materials",
-  "hero_sub": "A specialist team in architectural glass and aluminium — designing, fabricating, and installing to standards you can trust.",
-  "stats": {
-    "years": "Years of Experience",
-    "projects": "Projects Completed",
-    "clients": "Corporate Clients",
-    "standard": "One Standard"
+  "hero": {
+    "eyebrow": "About HAGX",
+    "title": "Precise glass and aluminium solutions",
+    "title_alt": "for architecture that demands reliability",
+    "subtitle": "HAGX is a specialist team for the design, fabrication, and installation of architectural glass and aluminium systems. We turn project requirements into durable, refined doors, windows, and facade systems engineered for lasting safety and performance.",
+    "trusted": "Trusted by leading developers and architects",
+    "clients": [
+      "Property Developer",
+      "Architecture Studio",
+      "Interior Design Company",
+      "Real Estate Group",
+      "Construction Company",
+      "Design Build Team",
+      "Premium Residences"
+    ]
   },
-  "pillars_title": "Principles We Believe In",
-  "pillars": {
-    "precision": { "title": "Precision", "sub": "Every detail matters", "body": "Every cut, every joint, every detail — inspected before delivery, every time." },
-    "reliability": { "title": "Reliability", "sub": "On time, every time", "body": "On time, on budget, to spec — because your project has deadlines that cannot move." },
-    "innovation": { "title": "Innovation", "sub": "Always evolving", "body": "We track new facade systems and materials continuously to offer the best options for every project." }
+  "stats": [
+    {
+      "n": "20+",
+      "label": "Years of Engineering Expertise",
+      "sub": "Over 20 years of engineering expertise in glass and aluminium."
+    },
+    {
+      "n": "600+",
+      "label": "High-Standard Projects",
+      "sub": "Delivered quality outcomes across more than 600 projects of all scales."
+    },
+    {
+      "n": "01",
+      "label": "Complete In-House Solutions",
+      "sub": "End-to-end service by HAGX's own team and factory."
+    }
+  ],
+  "intro": {
+    "title": "Precise\nReliable\nHAGX",
+    "body": "We work from consultation, design, fabrication, and installation through to final delivery, controlling every critical detail so each project meets its required function, budget, design intent, and quality standard."
   },
-  "cta": "Contact the HAGX Team"
+  "categories": [
+    {
+      "n": "01",
+      "title": "Curtain Wall\n& Facade",
+      "desc": "Curtain wall and glass facade systems for commercial and residential buildings, built with architectural-grade materials."
+    },
+    {
+      "n": "02",
+      "title": "Interior\nPartition",
+      "desc": "Frameless and framed glass partition systems for offices, hotels, and commercial interiors."
+    },
+    {
+      "n": "03",
+      "title": "Material\nSupply",
+      "desc": "Premium glass, aluminium profiles, and hardware supply with made-to-measure options."
+    }
+  ],
+  "journey_header": {
+    "eyebrow": "The HAGX Journey",
+    "heading": "From studio discipline to national scale",
+    "description": "A timeline of how HAGX grew from architectural thinking into a fully integrated glass, aluminium, manufacturing, and material supply partner."
+  },
+  "journey": [
+    {
+      "n": "01",
+      "year": "2014",
+      "phase": "Foundation",
+      "title": "The Birth of Precision",
+      "body": [
+        "HAGX Studio was founded with a vision to raise the standard of glass and aluminium installation in Thailand to an international level.",
+        "Beginning as an architectural design and material advisory team, we developed a deep understanding of structure, systems, and design intent."
+      ]
+    },
+    {
+      "n": "02",
+      "year": "2018",
+      "phase": "Professional Team & Factory",
+      "title": "Strength from In-House Expertise",
+      "body": [
+        "We expanded our capability with an in-house installation team and assembly factory to reduce outsourcing and keep craftsmanship under the HAGX standard.",
+        "Pre-delivery inspection became part of our production workflow, ensuring that every product and component is ready for real site conditions."
+      ]
+    },
+    {
+      "n": "03",
+      "year": "2021",
+      "phase": "Official Partnership",
+      "title": "Beyond Installation: A Trusted Partner",
+      "body": [
+        "HAGX became an official distributor for leading material brands, expanding from installation into complete material system support.",
+        "Our scope now covers ceiling, lightweight wall, and hardware products for clients who need a true one-stop service."
+      ]
+    },
+    {
+      "n": "04",
+      "year": "2026",
+      "phase": "Tech-Driven Future",
+      "title": "Innovation and National Scale",
+      "body": [
+        "Today, HAGX is more than a contractor. We are a key player in Thailand's glass and aluminium market, driven by precise operating systems.",
+        "We are ready to supply materials and deliver large-scale installation projects nationwide with speed and proven reliability."
+      ]
+    }
+  ],
+  "statement": {
+    "eyebrow": "Integrated Solutions",
+    "heading": "Complete solutions for every glass and aluminium requirement",
+    "description": "Our goal is to make every project align with its required function, budget, design, and quality."
+  },
+  "values": {
+    "eyebrow": "Our Values",
+    "title": "Standards that stay visible at every step",
+    "description": "Each HAGX value is carried through the work itself, from design to final delivery.",
+    "items": [
+      {
+        "n": "01",
+        "title": "Experience & Local Mastery",
+        "subtitle": "Long-standing expertise shaped by real local conditions.",
+        "description": "With more than 20 years across glass, aluminium, and interior works, we understand both technical detail and real site conditions."
+      },
+      {
+        "n": "02",
+        "title": "Reliable Accountability",
+        "subtitle": "Transparent advice and accountable delivery.",
+        "description": "HAGX is grounded in transparency, integrity, and long-term responsibility, helping clients choose the most worthwhile solution for every investment."
+      },
+      {
+        "n": "03",
+        "title": "Precision & Punctuality",
+        "subtitle": "Refined fabrication with disciplined delivery timelines.",
+        "description": "Every piece is checked through our in-house process to ensure accurate fit, clean execution, and delivery within the agreed schedule."
+      },
+      {
+        "n": "04",
+        "title": "Innovative Material Selection",
+        "subtitle": "Advanced materials selected for function, beauty, and performance.",
+        "description": "We source leading aluminium systems and high-spec glass technologies to create solutions that balance performance with architectural expression."
+      }
+    ]
+  },
+  "cta": {
+    "eyebrow": "Start a Project",
+    "title": "Ready to start your project?",
+    "description": "Let the HAGX team help assess the approach, materials, and preliminary budget for your project.",
+    "primary": "Contact HAGX",
+    "secondary": "View Work"
+  }
 }
