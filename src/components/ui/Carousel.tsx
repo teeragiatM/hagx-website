@@ -19,9 +19,10 @@
 import * as React from "react";
 import { useMemo, useState, useContext, createContext } from "react";
 import { motion } from "framer-motion";
-import { ArrowLeft, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { Button } from "@/components/ui/Button";
+import { CarouselControls } from "@/components/ui/CarouselControls";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -185,73 +186,44 @@ export function CarouselGrid({ className, renderCard }: CarouselGridProps) {
 }
 
 // ─── CarouselNav ──────────────────────────────────────────────────────────────
-// CTA buttons + dot indicators + prev/next arrows.
+// Unified nav: action slot (left) + dots + arrows (right)
 
 export type CarouselNavProps = {
   ctaPrimary?:   CarouselCta;
   ctaSecondary?: CarouselCta;
+  /** Extra content for the left action slot — overrides ctaPrimary/ctaSecondary */
+  actionSlot?:   React.ReactNode;
   className?: string;
 };
 
-export function CarouselNav({ ctaPrimary, ctaSecondary, className }: CarouselNavProps) {
+export function CarouselNav({ ctaPrimary, ctaSecondary, actionSlot, className }: CarouselNavProps) {
   const { items, startIndex, setStartIndex, safeVisibleCount, canSlide, maxStart, goPrev, goNext } = useCarousel();
 
+  const actions = actionSlot ?? (
+    <>
+      {ctaPrimary  && <Button variant="primary"   href={ctaPrimary.href}>{ctaPrimary.label}</Button>}
+      {ctaSecondary && <Button variant="secondary" href={ctaSecondary.href}>{ctaSecondary.label}</Button>}
+    </>
+  );
+
+  // dot index = first visible card's position among all items
+  const dotIndex = startIndex;
+  // total pages = max number of distinct starting positions + 1
+  const totalDots = maxStart + 1;
+
   return (
-    <div className={`mt-12 flex flex-col gap-8 sm:flex-row sm:items-center sm:justify-between ${className ?? ""}`}>
-      <div className="flex flex-wrap gap-4">
-        {ctaPrimary && (
-          <Link href={ctaPrimary.href} className="btn btn-primary">
-            {ctaPrimary.label}
-          </Link>
-        )}
-        {ctaSecondary && (
-          <Link href={ctaSecondary.href} className="btn btn-secondary">
-            {ctaSecondary.label}
-          </Link>
-        )}
-      </div>
-
-      {canSlide && (
-        <div className="flex items-center gap-6 sm:justify-end">
-          <div className="hidden gap-3 sm:flex">
-            {items.map((item, index) => (
-              <button
-                key={item.n}
-                type="button"
-                aria-label={`Go to slide ${index + 1}`}
-                onClick={() => setStartIndex(Math.min(index, maxStart))}
-                className={`h-[2px] w-8 transition-colors ${
-                  index >= startIndex && index < startIndex + safeVisibleCount
-                    ? "bg-[#ff8a00]"
-                    : "bg-white/35 hover:bg-white/60"
-                }`}
-              />
-            ))}
-          </div>
-
-          <div className="flex gap-3">
-            <button
-              type="button"
-              onClick={goPrev}
-              disabled={startIndex === 0}
-              aria-label="Previous"
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-white/40 transition-colors hover:border-white/40 hover:text-white disabled:opacity-20"
-            >
-              <ArrowLeft className="h-4 w-4" strokeWidth={1.5} />
-            </button>
-            <button
-              type="button"
-              onClick={goNext}
-              disabled={startIndex === maxStart}
-              aria-label="Next"
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-white/40 transition-colors hover:border-white/40 hover:text-white disabled:opacity-20"
-            >
-              <ArrowRight className="h-4 w-4" strokeWidth={1.5} />
-            </button>
-          </div>
-        </div>
-      )}
-    </div>
+    <CarouselControls
+      index={dotIndex}
+      total={canSlide ? totalDots : 0}
+      onPrev={goPrev}
+      onNext={goNext}
+      onDotClick={(i) => setStartIndex(Math.min(i, maxStart))}
+      canPrev={startIndex > 0}
+      canNext={startIndex < maxStart}
+      actionSlot={actions}
+      dotStyle="line"
+      className={`mt-12 ${className ?? ""}`}
+    />
   );
 }
 
