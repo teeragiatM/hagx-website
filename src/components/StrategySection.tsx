@@ -2,7 +2,6 @@
 
 import { motion, MotionValue, useScroll, useTransform } from "framer-motion";
 import { PenTool, RefreshCw, Sparkles } from "lucide-react";
-import Image from "next/image";
 import { useRef } from "react";
 import { useI18n } from "@/i18n/useI18n";
 
@@ -12,53 +11,58 @@ const pillars = [
     num: "01",
     label_th: "ออกแบบอย่างสมบูรณ์",
     label_en: "Design Integrity",
-    short: "Perfectly Designed",
+    short: "Perfectly\nDesigned",
     desc_th:
       "เราออกแบบด้วยความแม่นยำ ควบคุมทุกเส้น รายละเอียด รอยต่อ และวัสดุให้มีเหตุผลรองรับตั้งแต่ Shop Drawing จนถึงวันส่งมอบ",
     desc_en:
       "We design with precision, controlling every line, joint, and material from shop drawing to final handover.",
     tag: "DESIGN",
-    ghost: "PERFECTLY DESIGNED",
-    image: "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1800&q=85",
+    ghost: "PERFECTLY\nDESIGNED",
     Icon: PenTool,
-    overview: { x: "0vw", y: "-17vh" },
+    overview: { x: "0vw", y: "-19vh" },
   },
   {
     key: "planning",
     num: "02",
     label_th: "วางแผนอย่างรอบคอบ",
     label_en: "Careful Planning",
-    short: "Carefully Planned",
+    short: "Carefully\nPlanned",
     desc_th:
       "เราสำรวจ ประเมิน และวางแผนทุกโครงการให้ครอบคลุมตั้งแต่โครงสร้าง งบประมาณ ลำดับงาน ไปจนถึงข้อจำกัดของหน้างานจริง",
     desc_en:
       "We survey, assess, and plan every project comprehensively, from structure and budget to site constraints.",
     tag: "STRATEGY",
-    ghost: "CAREFULLY PLANNED",
-    image: "https://images.unsplash.com/photo-1494526585095-c41746248156?w=1800&q=85",
+    ghost: "CAREFULLY\nPLANNED",
     Icon: RefreshCw,
-    overview: { x: "-17vw", y: "16vh" },
+    overview: { x: "-17vw", y: "14vh" },
   },
   {
     key: "execution",
     num: "03",
     label_th: "ดำเนินงานอย่างชาญฉลาด",
     label_en: "Smart Execution",
-    short: "Smartly Executed",
+    short: "Smartly\nExecuted",
     desc_th:
       "ทีมหน้างานควบคุมคุณภาพ ส่งมอบตรงเวลา และประสานการผลิตจนถึงติดตั้งให้จบในมาตรฐานเดียวกันทุกโครงการ",
     desc_en:
       "Our site team controls quality and delivers every project on time, from fabrication to final inspection.",
     tag: "DELIVERY",
-    ghost: "SMARTLY EXECUTED",
-    image: "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=1800&q=85",
+    ghost: "SMARTLY\nEXECUTED",
     Icon: Sparkles,
-    overview: { x: "17vw", y: "16vh" },
+    overview: { x: "17vw", y: "14vh" },
   },
 ];
 
-const sectionProgress = [0, 0.2, 0.38, 0.62, 0.84, 1];
-const N = pillars.length;
+// Per-pillar scroll phases: [zoomInStart, zoomInEnd, activeEnd, zoomOutEnd]
+const PHASES = [
+  [0.03, 0.12, 0.27, 0.33],
+  [0.36, 0.44, 0.57, 0.63],
+  [0.66, 0.74, 0.88, 0.97],
+] as const;
+
+const OVERVIEW_SCALE = 0.52;
+const ACTIVE_SCALE = 1.74;
+const FINAL_OVERVIEW_START = 0.95;
 
 export default function StrategySection() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -68,36 +72,16 @@ export default function StrategySection() {
   });
   const { lang } = useI18n();
 
-  const introOpacity = useTransform(scrollYProgress, [0, 0.12, 0.2], [1, 1, 0]);
-  const introScale = useTransform(scrollYProgress, [0, 0.2], [1, 1.08]);
-  const circlesOpacity = useTransform(scrollYProgress, [0.14, 0.22], [0, 1]);
-  const circlesRotate = useTransform(scrollYProgress, [0.18, 1], [0, 18]);
-  const hintOpacity = useTransform(scrollYProgress, [0, 0.12], [1, 0]);
-
   return (
     <section
       ref={containerRef}
       className="relative border-t border-white/[0.06] bg-[#050505]"
-      style={{ height: "520vh" }}
+      style={{ height: "430vh" }}
     >
       <div className="sticky top-0 h-screen overflow-hidden bg-[#050505]">
-        <motion.div style={{ opacity: introOpacity, scale: introScale }} className="absolute inset-0">
-          <IntroStrategy progress={scrollYProgress} lang={lang} />
-        </motion.div>
+        <OrbitRings progress={scrollYProgress} />
 
-        <motion.div
-          style={{ opacity: circlesOpacity, rotate: circlesRotate }}
-          className="pointer-events-none absolute inset-0"
-          aria-hidden
-        >
-          <div className="absolute left-1/2 top-1/2 h-[68vmin] w-[68vmin] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#ff8a00]/10" />
-          <div className="absolute left-1/2 top-1/2 h-[46vmin] w-[46vmin] -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/[0.04]" />
-        </motion.div>
-
-        <motion.div
-          style={{ opacity: circlesOpacity }}
-          className="absolute inset-0 bg-[radial-gradient(circle_at_50%_45%,rgba(255,138,0,0.14),transparent_42%),linear-gradient(180deg,transparent_72%,#050505_100%)]"
-        />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_45%,rgba(255,138,0,0.12),transparent_42%),linear-gradient(180deg,transparent_72%,#050505_100%)]" />
 
         <div className="absolute inset-0">
           {pillars.map((pillar, index) => (
@@ -113,102 +97,32 @@ export default function StrategySection() {
 
         <StrategyRail progress={scrollYProgress} lang={lang} />
 
-        <motion.div
-          style={{ opacity: hintOpacity }}
-          className="absolute bottom-8 left-6 hidden items-center gap-3 text-[9px] font-light uppercase tracking-widest text-white/25 lg:flex"
-        >
-          <motion.span
-            animate={{ y: [0, 7, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-          >
-            ↓
-          </motion.span>
-          <span>Scroll</span>
-        </motion.div>
-
-        <div className="absolute right-6 top-8 hidden origin-right rotate-90 items-center gap-3 text-xs font-light text-white/55 lg:flex">
-          <span>Skip Section</span>
-          <span className="-rotate-90 text-lg">↓</span>
-        </div>
+        <ScrollHint progress={scrollYProgress} />
       </div>
     </section>
   );
 }
 
-function IntroStrategy({
-  progress,
-  lang,
-}: {
-  progress: MotionValue<number>;
-  lang: "th" | "en";
-}) {
-  const active = pillars[2];
-  const imageOpacity = useTransform(progress, [0, 0.16, 0.2], [0.44, 0.38, 0]);
-  const titleY = useTransform(progress, [0, 0.2], ["0px", "-54px"]);
+// ── Orbit rings ────────────────────────────────────────────────────────────────
 
+function OrbitRings({ progress }: { progress: MotionValue<number> }) {
+  const rotate = useTransform(progress, [0, 1], [0, 24]);
+  const opacity = useTransform(
+    progress,
+    [0, 0.02, PHASES[0][1], PHASES[0][2], PHASES[0][3],
+     PHASES[1][1], PHASES[1][2], PHASES[1][3],
+     PHASES[2][1], PHASES[2][2], PHASES[2][3], FINAL_OVERVIEW_START, 1],
+    [1, 1, 0.12, 0.12, 1, 0.12, 0.12, 1, 0.12, 0.12, 1, 1, 1]
+  );
   return (
-    <div className="grid h-full lg:grid-cols-[360px_1fr] xl:grid-cols-[420px_1fr]">
-      <div className="relative z-10 hidden flex-col justify-center border-r border-white/[0.06] bg-[#050505]/95 px-10 lg:flex xl:px-12">
-        <p className="mb-10 text-[10px] font-light uppercase tracking-widest text-white/25">
-          Our Strategy
-        </p>
-        <div>
-          {pillars.map((pillar, index) => (
-            <div
-              key={pillar.key}
-              className={`relative flex gap-5 border-b border-white/[0.06] py-7 last:border-b-0 ${
-                index === 2 ? "text-white" : "text-white/35"
-              }`}
-            >
-              {index === 2 && <span className="absolute left-0 top-0 h-full w-px bg-[#ff8a00]" />}
-              <span className="mt-1 text-xs font-light tabular-nums text-[#ff8a00]">{pillar.num}</span>
-              <div>
-                <p className="text-2xl font-light leading-snug tracking-normal">
-                  {lang === "th" ? pillar.label_th : pillar.label_en}
-                </p>
-                <p className="mt-2 text-[10px] font-light uppercase tracking-widest text-white/25">
-                  {pillar.tag}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="relative overflow-hidden">
-        <motion.div style={{ opacity: imageOpacity }} className="absolute inset-0">
-          <Image
-            src={active.image}
-            alt=""
-            fill
-            sizes="100vw"
-            priority={false}
-            className="object-cover"
-          />
-        </motion.div>
-        <div className="absolute inset-0 bg-[#050505]/55" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#050505]/45 via-[#050505]/30 to-[#050505]/70" />
-        <p className="pointer-events-none absolute right-5 top-1/2 -translate-y-1/2 select-none text-[24vw] font-black leading-none tracking-normal text-white/[0.04]">
-          03
-        </p>
-        <motion.div
-          style={{ y: titleY }}
-          className="relative flex h-full flex-col justify-center px-8 pt-16 sm:px-12 lg:px-20 xl:px-24"
-        >
-          <p className="mb-5 text-xs font-light uppercase tracking-widest text-[#ff8a00] lg:hidden">
-            Our Strategy
-          </p>
-          <h2 className="max-w-3xl text-6xl font-black leading-[0.92] tracking-normal text-white sm:text-7xl lg:text-8xl">
-            Smart<br />Execution
-          </h2>
-          <p className="mt-10 max-w-md text-sm font-light leading-8 text-white/55">
-            {lang === "th" ? active.desc_th : active.desc_en}
-          </p>
-        </motion.div>
-      </div>
-    </div>
+    <motion.div style={{ rotate, opacity }} className="pointer-events-none absolute inset-0" aria-hidden>
+      <div className="absolute left-1/2 top-1/2 h-[72vmin] w-[72vmin] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#ff8a00]/10" />
+      <div className="absolute left-1/2 top-1/2 h-[48vmin] w-[48vmin] -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/[0.04]" />
+    </motion.div>
   );
 }
+
+// ── Strategy circle ────────────────────────────────────────────────────────────
 
 function StrategyCircle({
   pillar,
@@ -221,53 +135,85 @@ function StrategyCircle({
   lang: "th" | "en";
   progress: MotionValue<number>;
 }) {
-  const step = index + 1;
-  const start = sectionProgress[step];
-  const mid = sectionProgress[step + 1] ?? 1;
-  const end = sectionProgress[step + 2] ?? 1;
+  const [zoomInStart, zoomInEnd, activeEnd, zoomOutEnd] = PHASES[index];
+  const isFirst = index === 0;
+  const isLast = index === pillars.length - 1;
+  const FADE = 0.02;
 
-  const nextX = index === N - 1 ? pillar.overview.x : pillars[index + 1].overview.x;
-  const nextY = index === N - 1 ? pillar.overview.y : pillars[index + 1].overview.y;
+  // ── Opacity: visible in initial overview, own phase, final overview ──────────
+  let opKeys: number[];
+  let opVals: number[];
 
-  const x = useTransform(progress, [0.18, start, mid, end], [pillar.overview.x, "0vw", "0vw", nextX]);
-  const y = useTransform(progress, [0.18, start, mid, end], [pillar.overview.y, "1vh", "1vh", nextY]);
-  const scale = useTransform(progress, [0.18, start, mid, end], [0.82, 1.72, 1.72, 0.82]);
-  const opacity = useTransform(progress, [0.12, 0.18, start, mid, end], [0, 1, 1, 1, index === N - 1 ? 1 : 0.28]);
-  const rotate = useTransform(progress, [0.18, 1], [0, index % 2 === 0 ? 34 : -34]);
-  const detailOpacity = useTransform(progress, [start, start + 0.04, mid - 0.04, mid], [0, 1, 1, 0]);
-  const summaryOpacity = useTransform(progress, [0.18, start - 0.02, start + 0.04], [1, 1, 0]);
-  const ghostOpacity = useTransform(progress, [start, start + 0.04, mid - 0.04, mid], [0, 1, 1, 0]);
-  const ghostX = useTransform(progress, [start, mid], ["-10vw", "5vw"]);
-  const circleZ = index + 2;
+  if (isFirst) {
+    // Pillar 0: initial overview seamlessly transitions into own phase
+    opKeys = [0, zoomOutEnd, zoomOutEnd + FADE, FINAL_OVERVIEW_START - FADE, FINAL_OVERVIEW_START, 1];
+    opVals = [1, 1,          0,                 0,                            1,                    1];
+  } else if (isLast) {
+    // Last pillar: brief in overview, then hidden until own phase
+    opKeys = [0, 0.02, 0.02 + FADE, zoomInStart - FADE, zoomInStart, 1];
+    opVals = [1, 1,    0,           0,                   1,           1];
+  } else {
+    // Middle pillars
+    opKeys = [
+      0, 0.02, 0.02 + FADE,
+      zoomInStart - FADE, zoomInStart,
+      zoomOutEnd, zoomOutEnd + FADE,
+      FINAL_OVERVIEW_START - FADE, FINAL_OVERVIEW_START, 1,
+    ];
+    opVals = [1, 1, 0, 0, 1, 1, 0, 0, 1, 1];
+  }
+
+  const opacity  = useTransform(progress, opKeys, opVals);
+  const x        = useTransform(progress, [0, zoomInStart, zoomInEnd, activeEnd, zoomOutEnd], [pillar.overview.x, pillar.overview.x, "0vw", "0vw", pillar.overview.x]);
+  const y        = useTransform(progress, [0, zoomInStart, zoomInEnd, activeEnd, zoomOutEnd], [pillar.overview.y, pillar.overview.y, "0vh", "0vh", pillar.overview.y]);
+  const scale    = useTransform(progress, [0, zoomInStart, zoomInEnd, activeEnd, zoomOutEnd], [OVERVIEW_SCALE, OVERVIEW_SCALE, ACTIVE_SCALE, ACTIVE_SCALE, OVERVIEW_SCALE]);
+  const iconRot  = useTransform(progress, [zoomInStart, zoomInEnd + 0.1], [0, index % 2 === 0 ? 28 : -28]);
+
+  // Text visibility
+  const summaryOp = useTransform(progress, [zoomInStart, zoomInStart + 0.05], [1, 0]);
+  const detailOp  = useTransform(progress, [zoomInStart + 0.04, zoomInEnd, activeEnd - 0.04, activeEnd], [0, 1, 1, 0]);
+
+  // Ghost text
+  const ghostOp = useTransform(progress, [zoomInStart, zoomInEnd, activeEnd - 0.04, activeEnd], [0, 1, 1, 0]);
+  const ghostX  = useTransform(progress, [zoomInStart, activeEnd], ["-8vw", "4vw"]);
 
   return (
     <>
+      {/* Ghost text behind the active circle */}
       <motion.p
-        style={{ opacity: ghostOpacity, x: ghostX }}
-        className="pointer-events-none absolute left-1/2 top-1/2 z-[1] hidden -translate-x-1/2 -translate-y-1/2 select-none whitespace-nowrap text-[11vw] font-black italic leading-none tracking-normal text-white/[0.07] lg:block"
+        style={{ opacity: ghostOp, x: ghostX }}
+        className="pointer-events-none absolute left-1/2 top-1/2 z-[1] hidden -translate-x-1/2 -translate-y-[55%] select-none whitespace-pre-line text-center text-[10vw] font-black italic leading-none tracking-normal text-white/[0.07] lg:block"
       >
         {pillar.ghost}
       </motion.p>
 
+      {/* Circle */}
       <motion.article
-        style={{ x, y, scale, opacity, zIndex: circleZ }}
-        className="absolute left-1/2 top-1/2 aspect-square w-[min(74vw,460px)] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#ff8a00]/80 bg-[radial-gradient(circle_at_42%_30%,rgba(255,164,47,0.22),rgba(113,52,0,0.92)_48%,rgba(16,12,8,0.98)_100%)] shadow-[0_36px_90px_rgba(0,0,0,0.58)] sm:w-[min(58vw,540px)] lg:w-[min(42vw,620px)]"
+        style={{ x, y, scale, opacity, zIndex: index + 2 }}
+        className="absolute left-1/2 top-1/2 aspect-square w-[min(76vw,470px)] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#ff8a00]/75 bg-[radial-gradient(circle_at_42%_30%,rgba(255,164,47,0.22),rgba(113,52,0,0.92)_48%,rgba(16,12,8,0.98)_100%)] shadow-[0_36px_90px_rgba(0,0,0,0.60)] sm:w-[min(60vw,550px)] lg:w-[min(44vw,630px)]"
       >
+        {/* Conic shimmer */}
         <motion.div
-          style={{ rotate }}
+          style={{ rotate: iconRot }}
           className="absolute inset-0 rounded-full bg-[conic-gradient(from_90deg,transparent,rgba(255,138,0,0.18),transparent_34%,rgba(255,255,255,0.05),transparent_70%)] opacity-60"
         />
+
         <div className="relative z-10 flex h-full flex-col items-center justify-center px-[16%] text-center">
+          {/* Icon */}
           <motion.div
-            style={{ rotate }}
-            className="mb-6 flex h-16 w-16 items-center justify-center text-[#ffb45a] drop-shadow-[10px_12px_0_rgba(0,0,0,0.26)]"
+            style={{ rotate: iconRot }}
+            className="mb-5 flex h-16 w-16 items-center justify-center text-[#ffb45a] drop-shadow-[8px_10px_0_rgba(0,0,0,0.28)]"
           >
-            <pillar.Icon strokeWidth={1.7} className="h-12 w-12" />
+            <pillar.Icon strokeWidth={1.6} className="h-12 w-12" />
           </motion.div>
 
-          <motion.div style={{ opacity: summaryOpacity }}>
+          {/* Summary title (overview) */}
+          <motion.div style={{ opacity: summaryOp }}>
+            <p className="mb-1 text-[10px] font-light uppercase tracking-widest text-[#ffb45a]/70">
+              {pillar.num}
+            </p>
             <h3 className="text-2xl font-semibold leading-tight tracking-normal text-white sm:text-3xl">
-              {pillar.short.split(" ").map((part) => (
+              {pillar.short.split("\n").map((part) => (
                 <span key={part} className="block">
                   {part}
                 </span>
@@ -275,30 +221,32 @@ function StrategyCircle({
             </h3>
           </motion.div>
 
+          {/* Detail (active) */}
           <motion.div
-            style={{ opacity: detailOpacity }}
-            className="absolute inset-x-[14%] top-1/2 -translate-y-[22%]"
+            style={{ opacity: detailOp }}
+            className="absolute inset-x-[12%] top-1/2 -translate-y-[24%]"
           >
-            <p className="mb-4 text-[11px] font-light uppercase tracking-widest text-[#ffb45a]/80">
+            <p className="mb-3 text-[11px] font-light uppercase tracking-widest text-[#ffb45a]/80">
               {pillar.num} / {pillar.tag}
             </p>
             <h3 className="text-2xl font-semibold leading-tight tracking-normal text-white sm:text-3xl">
-              {pillar.short.split(" ").map((part) => (
+              {pillar.short.split("\n").map((part) => (
                 <span key={part} className="block">
                   {part}
                 </span>
               ))}
             </h3>
-            <p className="mx-auto mt-7 max-w-md text-xs font-light leading-7 text-white/78 sm:text-sm">
+            <p className="mx-auto mt-6 max-w-sm text-xs font-light leading-7 text-white/75 sm:text-sm">
               {lang === "th" ? pillar.desc_th : pillar.desc_en}
             </p>
           </motion.div>
         </div>
       </motion.article>
-
     </>
   );
 }
+
+// ── Left rail ──────────────────────────────────────────────────────────────────
 
 function StrategyRail({
   progress,
@@ -309,11 +257,12 @@ function StrategyRail({
 }) {
   return (
     <div className="pointer-events-none absolute left-6 top-1/2 z-20 hidden -translate-y-1/2 lg:block">
-      <p className="mb-8 text-[10px] font-light uppercase tracking-widest text-white/25">Our Strategy</p>
+      <p className="mb-8 text-[10px] font-light uppercase tracking-widest text-white/25">
+        Our Strategy
+      </p>
       <div className="space-y-5 border-l border-white/10 pl-6">
         {pillars.map((pillar, index) => {
-          const s = sectionProgress[index + 1];
-          const e = sectionProgress[index + 2] ?? 1;
+          const [s, , e] = PHASES[index];
           return (
             <RailItem
               key={pillar.key}
@@ -343,11 +292,11 @@ function RailItem({
   start: number;
   end: number;
 }) {
-  const opacity = useTransform(progress, [start - 0.03, start, end, end + 0.03], [0.3, 1, 1, 0.3]);
+  const opacity  = useTransform(progress, [start - 0.04, start, end, end + 0.04], [0.25, 1, 1, 0.25]);
   const barScale = useTransform(progress, [start, end], [0, 1]);
 
   return (
-    <motion.div style={{ opacity }} className="relative min-w-[210px]">
+    <motion.div style={{ opacity }} className="relative min-w-[200px]">
       <motion.span
         style={{ scaleY: barScale }}
         className="absolute -left-[25px] top-0 h-full w-px origin-top bg-[#ff8a00]"
@@ -363,6 +312,26 @@ function RailItem({
           </p>
         </div>
       </div>
+    </motion.div>
+  );
+}
+
+// ── Scroll hint ────────────────────────────────────────────────────────────────
+
+function ScrollHint({ progress }: { progress: MotionValue<number> }) {
+  const opacity = useTransform(progress, [0, 0.04], [1, 0]);
+  return (
+    <motion.div
+      style={{ opacity }}
+      className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 lg:flex"
+    >
+      <motion.span
+        animate={{ y: [0, 8, 0] }}
+        transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+        className="text-[10px] font-light uppercase tracking-widest text-white/25"
+      >
+        ↓ Scroll
+      </motion.span>
     </motion.div>
   );
 }
