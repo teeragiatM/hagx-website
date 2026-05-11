@@ -15,8 +15,6 @@ export function getSupabaseClient() {
   return client;
 }
 
-// Single shared client, safe for Server Components because no auth state is kept here.
-export const supabase = getSupabaseClient();
 
 export type PortfolioRow = {
   id: string;

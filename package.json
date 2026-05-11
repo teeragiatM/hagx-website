@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@sanity/image-url": "latest",
-    "@supabase/supabase-js": "latest",
+    "@supabase/supabase-js": "^2.105.4",
     "@tailwindcss/postcss": "latest",
     "class-variance-authority": "latest",
     "clsx": "latest",
