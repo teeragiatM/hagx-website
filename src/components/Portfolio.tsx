@@ -1,7 +1,7 @@
-"use client";
+﻿"use client";
 
 import Image from "next/image";
-import ScrollReveal from "./ScrollReveal";
+import ScrollReveal from "./effects/ScrollReveal";
 
 const projects = [
   {
@@ -55,7 +55,7 @@ export default function Portfolio() {
         <ScrollReveal className="mb-20">
           <p className="text-[10px] tracking-[0.3em] uppercase text-slate-400 font-light mb-4">Selected Works</p>
           <h2 id="portfolio-heading" className="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight max-w-lg leading-tight">
-            ผลงานที่ผ่านมา
+            à¸œà¸¥à¸‡à¸²à¸™à¸—à¸µà¹ˆà¸œà¹ˆà¸²à¸™à¸¡à¸²
           </h2>
         </ScrollReveal>
 
@@ -90,3 +90,4 @@ export default function Portfolio() {
     </section>
   );
 }
+

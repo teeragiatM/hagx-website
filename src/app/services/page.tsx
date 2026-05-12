@@ -1,12 +1,12 @@
-"use client";
+﻿"use client";
 
 import CtaSection from "@/components/CtaSection";
+import { BorderGrid, BorderGridCell } from "@/components/ui/BorderGrid";
 import PageHero from "@/components/PageHero";
-import SectionHeader from "@/components/SectionHeader";
-import ServiceCarousel, {
-  type ServiceCarouselItem,
-} from "@/components/ServiceCarousel";
 import ScopeOfWorks, { type ScopeCategory } from "@/components/ScopeOfWorks";
+import SectionHeader from "@/components/SectionHeader";
+import { Carousel, type CarouselItem as ServiceCarouselItem } from "@/components/ui/Carousel";
+import { AppSection } from "@/components/ui/section";
 import SiteFooter from "@/components/SiteFooter";
 import SiteNav from "@/components/SiteNav";
 import { useI18n } from "@/i18n/useI18n";
@@ -81,7 +81,9 @@ export default function ServicesPage() {
     eyebrow: t("scope_of_works.eyebrow"),
     subtitle: t("scope_of_works.subtitle"),
     footer: t("scope_of_works.footer"),
-    categories: t("scope_of_works.categories", { returnObjects: true }) as unknown as ScopeCategory[],
+    categories: t("scope_of_works.categories", {
+      returnObjects: true,
+    }) as unknown as ScopeCategory[],
   };
 
   return (
@@ -95,45 +97,41 @@ export default function ServicesPage() {
         minHeight="70vh"
       />
 
-      <section className="border-b border-white/[0.06] px-4 py-20 sm:px-8 lg:px-10 lg:py-28">
-        <div className="mx-auto max-w-[1500px]">
+      <AppSection.Root spacing="md" border="bottom">
+        <AppSection.Container width="xl">
           <SectionHeader
             heading={t("expertise.heading")}
             description={t("expertise.description")}
           />
 
-          <div className="grid gap-px overflow-hidden border border-white/[0.08] bg-white/[0.08] lg:grid-cols-3">
+          <BorderGrid cols={3} borderColor="rgba(255,255,255,0.08)">
             {expertiseTracks.map((track, index) => (
-              <article
+              <BorderGridCell
                 key={track.n}
-                className={`relative overflow-hidden px-7 py-9 sm:px-10 sm:py-12 ${
-                  index === 0 ? "bg-[#120d08]" : "bg-[#0c0c0c]"
-                }`}
+                index={index}
+                bg={index === 0 ? "#120d08" : "#0c0c0c"}
+                glow="radial-gradient(ellipse 70% 55% at 80% 15%, rgba(255,138,0,0.16), transparent 64%)"
+                className="px-7 py-9 sm:px-10 sm:py-12"
               >
-                <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_55%_at_80%_15%,rgba(255,138,0,0.16),transparent_64%)]" />
-                <div className="relative">
-                  <div className="mb-8 flex items-center justify-between gap-6">
-                    <p className="text-xs font-light uppercase tracking-widest text-[#ff8a00]">
-                      {track.eyebrow}
-                    </p>
-                    <p className="text-4xl font-light text-white/10">
-                      {track.n}
-                    </p>
-                  </div>
-                  <h3 className="text-2xl font-light leading-tight text-white sm:text-3xl">
-                    {track.title}
-                  </h3>
-                  <p className="mt-5 text-sm font-light leading-8 text-white/50">
-                    {track.desc}
+                <div className="mb-8 flex items-center justify-between gap-6">
+                  <p className="text-xs font-light uppercase tracking-widest text-[#DB5828]">
+                    {track.eyebrow}
                   </p>
+                  <p className="text-4xl font-light text-white/10">{track.n}</p>
                 </div>
-              </article>
+                <h3 className="text-2xl font-light leading-tight text-white sm:text-3xl">
+                  {track.title}
+                </h3>
+                <p className="mt-5 text-sm font-light leading-8 text-white/50">
+                  {track.desc}
+                </p>
+              </BorderGridCell>
             ))}
-          </div>
-        </div>
-      </section>
+          </BorderGrid>
+        </AppSection.Container>
+      </AppSection.Root>
 
-      <ServiceCarousel
+      <Carousel
         eyebrow={installation.eyebrow}
         title={installation.title}
         description={installation.description}
@@ -150,7 +148,7 @@ export default function ServicesPage() {
         categories={scopeOfWorks.categories}
       />
 
-      <ServiceCarousel
+      <Carousel
         eyebrow={manufacturing.eyebrow}
         title={manufacturing.title}
         description={manufacturing.description}
@@ -160,7 +158,7 @@ export default function ServicesPage() {
         visibleCount={3}
       />
 
-      <ServiceCarousel
+      <Carousel
         eyebrow={supply.eyebrow}
         title={supply.title}
         description={supply.description}
@@ -182,3 +180,4 @@ export default function ServicesPage() {
     </main>
   );
 }
+

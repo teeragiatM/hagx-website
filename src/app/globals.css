@@ -11,8 +11,8 @@
   --color-ink:      #ffffff;
   --color-muted:    rgba(255, 255, 255, 0.45);
   --color-subtle:   rgba(255, 255, 255, 0.25);
-  --color-accent:   #ff8a00;
-  --color-accent-h: #e07a00;   /* hover */
+  --color-accent:   #E15F31;
+  --color-accent-h: ##F36D3D;   /* hover */
   --color-accent-d: rgba(255, 138, 0, 0.12); /* dim bg */
 
   /* Spacing — Section rhythm */
@@ -22,7 +22,8 @@
 
   /* Container */
   --container-max: 1500px;
-  --container-px:  2rem;        /* 32px mobile */
+  --site-inline-px: 1.25rem;    /* 20px mobile */
+  --container-px: var(--site-inline-px);
 
   /* Typography */
   --font-sans: var(--font-anuphan), ui-sans-serif, system-ui, sans-serif;
@@ -81,10 +82,12 @@ html, body {
     width: 100%;
     max-width: var(--container-max);
     margin-inline: auto;
-    padding-inline: var(--container-px);
+    padding-inline: var(--site-inline-px);
   }
-  @media (min-width: 640px)  { .container-site { padding-inline: 3rem; } }
-  @media (min-width: 1024px) { .container-site { padding-inline: 3.5rem; } }
+
+  .site-inline-px {
+    padding-inline: var(--site-inline-px);
+  }
 
   /* Section vertical rhythm */
   .section-py {
@@ -110,7 +113,7 @@ html, body {
     height: 3rem;           /* 48px */
     padding-inline: 2rem;
     font-size: 0.6875rem;
-    font-weight: 300;
+    font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.12em;
     transition: all var(--duration-s) var(--ease-out);
@@ -184,6 +187,24 @@ html, body {
 
   /* ── Fade-reveal (used with Framer Motion) ── */
   /* Uniform timing applied via JS: duration=0.7, ease=ease-out */
+}
+
+@media (min-width: 640px) {
+  :root {
+    --site-inline-px: 1.75rem;  /* 28px */
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --site-inline-px: 2.25rem;  /* 36px */
+  }
+}
+
+@media (min-width: 1440px) {
+  :root {
+    --site-inline-px: 2.5rem;   /* 40px */
+  }
 }
 
 /* ── Form inputs ──────────────────────────────────────────────────────────── */

@@ -117,7 +117,7 @@ export default function PageHero({
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         className={cn(
-          "hero-content-layer relative z-10 w-full px-6 pb-20 pt-32 sm:px-10 lg:px-16",
+          "hero-content-layer relative z-10 w-full px-[var(--site-inline-px)] pb-20 pt-32",
           isCenter ? "mx-auto max-w-5xl" : "max-w-[1500px]",
         )}
       >

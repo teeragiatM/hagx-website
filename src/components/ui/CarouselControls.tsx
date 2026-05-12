@@ -18,27 +18,27 @@
  *   canNext      disable right arrow when false (default: index < total-1)
  */
 
-import * as React from "react";
-import { ArrowLeft, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
+import { ArrowLeft, ArrowRight } from "lucide-react";
+import * as React from "react";
 
 export type CarouselControlsDotStyle = "line" | "dot";
 
 export type CarouselControlsProps = {
-  index:       number;
-  total:       number;
-  onPrev:      () => void;
-  onNext:      () => void;
+  index: number;
+  total: number;
+  onPrev: () => void;
+  onNext: () => void;
   onDotClick?: (i: number) => void;
   /** Rendered on the left — CTAs, links, any ReactNode */
   actionSlot?: React.ReactNode;
-  dotStyle?:   CarouselControlsDotStyle;
+  dotStyle?: CarouselControlsDotStyle;
   /** Override prev-disabled logic */
-  canPrev?:    boolean;
+  canPrev?: boolean;
   /** Override next-disabled logic */
-  canNext?:    boolean;
-  className?:  string;
+  canNext?: boolean;
+  className?: string;
 };
 
 export function CarouselControls({
@@ -57,11 +57,9 @@ export function CarouselControls({
   const nextDisabled = canNext !== undefined ? !canNext : index >= total - 1;
 
   return (
-    <div className={cn("flex items-center justify-between gap-6", className)}>
+    <div className={cn("ui-carousel-controls flex items-center justify-between gap-6", className)}>
       {/* ── Left: action slot ── */}
-      <div className="flex flex-wrap items-center gap-4">
-        {actionSlot}
-      </div>
+      <div className="flex flex-wrap items-center gap-4">{actionSlot}</div>
 
       {/* ── Right: dots + arrows ── */}
       <div className="flex shrink-0 items-center gap-5">
@@ -80,13 +78,13 @@ export function CarouselControls({
                     ? cn(
                         "h-[2px]",
                         i === index
-                          ? "w-8 bg-[#ff8a00]"
+                          ? "w-8 bg-[#DB5828]"
                           : "w-5 bg-white/30 hover:bg-white/55",
                       )
                     : cn(
                         "rounded-full",
                         i === index
-                          ? "h-2 w-2 bg-[#ff8a00]"
+                          ? "h-2 w-2 bg-[#DB5828]"
                           : "h-1.5 w-1.5 bg-white/25 hover:bg-white/50",
                       ),
                 )}

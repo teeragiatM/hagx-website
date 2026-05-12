@@ -65,12 +65,6 @@ const BENEFITS = [
   },
 ] as const;
 
-const PHASES = [
-  { start: 0.1, active: 0.16, hold: 0.34, end: 0.44 },
-  { start: 0.42, active: 0.5, hold: 0.66, end: 0.76 },
-  { start: 0.72, active: 0.8, hold: 0.92, end: 0.98 },
-] as const;
-
 const FINALE = 0.92;
 
 export default function StrategySection() {
@@ -97,6 +91,9 @@ export default function StrategySection() {
     ["0vh", "58vh", "58vh"],
   );
 
+  const expandProgress = scrollYProgress;
+  const descProgress = scrollYProgress;
+
   return (
     <section
       ref={containerRef}
@@ -110,7 +107,7 @@ export default function StrategySection() {
         <div className="relative mx-auto h-full max-w-[1500px] px-6 py-10 sm:px-10 lg:px-16">
           <div className="grid gap-10 pt-6 lg:grid-cols-[1.35fr_0.85fr] lg:pt-10">
             <div>
-              <p className="mb-5 text-[10px] font-light uppercase tracking-widest text-[#ff8a00]">
+              <p className="mb-5 text-[10px] font-light uppercase tracking-widest text-[#DB5828]">
                 {lang === "th"
                   ? "กลยุทธ์เชิงบูรณาการของเรา"
                   : "Our Integrated Strategy"}
@@ -140,7 +137,8 @@ export default function StrategySection() {
                 style={{ rotate, y: clusterY, transformOrigin: "50% 53%" }}
               >
                 <StrategyGraphic
-                  progress={scrollYProgress}
+                  progress={expandProgress}
+                  descProgress={descProgress}
                   counterRotate={counterRotate}
                   lang={lang}
                 />
@@ -157,53 +155,14 @@ export default function StrategySection() {
   );
 }
 
-function PillarCopy({
-  pillar,
-  index,
-  progress,
-  lang,
-}: {
-  pillar: (typeof PILLARS)[number];
-  index: number;
-  progress: MotionValue<number>;
-  lang: "th" | "en";
-}) {
-  const phase = PHASES[index];
-  const opacity = useTransform(
-    progress,
-    [phase.start, phase.active, phase.hold, phase.end],
-    [0, 1, 1, 0],
-  );
-  const y = useTransform(
-    progress,
-    [phase.start, phase.active, phase.end],
-    ["34px", "0px", "-18px"],
-  );
-
-  return (
-    <motion.div
-      style={{ opacity, y }}
-      className="absolute left-0 top-0 max-w-md"
-    >
-      <p className="mb-3 text-[10px] font-light uppercase tracking-widest text-[#ff8a00]">
-        {pillar.num} / {pillar.tag}
-      </p>
-      <h3 className="text-5xl font-light leading-none text-white sm:text-6xl">
-        {lang === "th" ? pillar.titleTh : pillar.titleEn}
-      </h3>
-      <p className="mt-6 text-sm font-light leading-8 text-white/55">
-        {lang === "th" ? pillar.descTh : pillar.descEn}
-      </p>
-    </motion.div>
-  );
-}
-
 function StrategyGraphic({
   progress,
+  descProgress,
   counterRotate,
   lang,
 }: {
   progress: MotionValue<number>;
+  descProgress: MotionValue<number>;
   counterRotate: MotionValue<number>;
   lang: "th" | "en";
 }) {
@@ -229,6 +188,7 @@ function StrategyGraphic({
           pillar={pillar}
           index={index}
           progress={progress}
+          descProgress={descProgress}
           counterRotate={counterRotate}
           lang={lang}
         />
@@ -241,36 +201,35 @@ function CirclePiece({
   pillar,
   index,
   progress,
+  descProgress,
   counterRotate,
   lang,
 }: {
   pillar: (typeof PILLARS)[number];
   index: number;
   progress: MotionValue<number>;
+  descProgress: MotionValue<number>;
   counterRotate: MotionValue<number>;
   lang: "th" | "en";
 }) {
   const cx = useTransform(
     progress,
-    [0, 0.26, 1],
+    [0, 0.2, 1],
     [pillar.circle.cx, pillar.circle.expandedCx, pillar.circle.expandedCx],
   );
   const cy = useTransform(
     progress,
-    [0, 0.26, 1],
+    [0, 0.2, 1],
     [pillar.circle.cy, pillar.circle.expandedCy, pillar.circle.expandedCy],
   );
-  const radius = useTransform(
-    progress,
-    [0, 0.18, 1],
-    [78, 168, 168],
+  const radius = useTransform(progress, [0, 0.2, 1], [78, 168, 168]);
+  // foreignObject covers the full circle area so flexbox centers content
+  const foOffset = useTransform(radius, (v) => -v);
+  const foDiameter = useTransform(radius, (v) => v * 2);
+  const descOpacity = useTransform(descProgress, [0.2, 0.26], [0, 1]);
+  const descDisplay = useTransform(descProgress, (v) =>
+    v >= 0.19 ? "block" : "none",
   );
-  const iconY = useTransform(radius, (v) => -v * 0.5);
-  const titleY = useTransform(radius, (v) => -v * 0.22);
-  const foWidth = 280;
-  const foHeight = 240;
-  const contentY = useTransform(radius, (v) => Math.max(-26, -v * 0.06));
-  const descOpacity = useTransform(progress, [0.14, 0.28], [0, 1]);
 
   return (
     <motion.g
@@ -296,43 +255,29 @@ function CirclePiece({
           transformOrigin: "0px 0px",
         }}
       >
-        <motion.text
-          x={0}
-          y={iconY}
-          textAnchor="middle"
-          fill="rgba(255,255,255,0.78)"
-          fontSize="28"
-          fontWeight="300"
-          fontFamily="var(--font-anuphan),sans-serif"
-        >
-          {pillar.icon}
-        </motion.text>
-        <motion.text
-          x={0}
-          y={titleY}
-          textAnchor="middle"
-          fill="rgba(255,255,255,0.92)"
-          fontSize="19"
-          fontWeight="300"
-          fontFamily="var(--font-anuphan),sans-serif"
-        >
-          {lang === "th" ? pillar.titleTh : pillar.titleEn}
-        </motion.text>
         <motion.foreignObject
-          x={-foWidth / 2}
-          y={contentY}
-          width={foWidth}
-          height={foHeight}
+          x={foOffset}
+          y={foOffset}
+          width={foDiameter}
+          height={foDiameter}
         >
-          <div className="flex h-full flex-col items-center justify-start pt-8 text-center font-sans text-white">
+          <div
+            style={{ width: "100%", height: "100%" }}
+            className="flex flex-col items-center justify-center gap-1 overflow-hidden text-center font-sans text-white"
+          >
+            <span className="text-2xl leading-none">{pillar.icon}</span>
             <p className="text-[10px] font-light uppercase tracking-widest text-white/55">
               {pillar.num} / {pillar.tag}
             </p>
-            <motion.div style={{ opacity: descOpacity }}>
-              <p className="mt-4 max-w-[235px] text-[10px] font-light leading-[1.75] text-white/75">
-                {lang === "th" ? pillar.descTh : pillar.descEn}
-              </p>
-            </motion.div>
+            <p className="text-sm font-light text-white/92">
+              {lang === "th" ? pillar.titleTh : pillar.titleEn}
+            </p>
+            <motion.p
+              style={{ opacity: descOpacity, display: descDisplay }}
+              className="mt-1 max-w-[70%] text-[9px] font-light leading-relaxed text-white/70"
+            >
+              {lang === "th" ? pillar.descTh : pillar.descEn}
+            </motion.p>
           </div>
         </motion.foreignObject>
       </motion.g>
@@ -355,7 +300,7 @@ function FinaleOverlay({
       style={{ opacity, y }}
       className="pointer-events-none absolute bottom-10 left-6 right-6 z-20 mx-auto max-w-5xl sm:left-10 sm:right-10 lg:left-16 lg:right-16"
     >
-      <p className="mb-4 text-[10px] font-light uppercase tracking-widest text-[#ff8a00]">
+      <p className="mb-4 text-[10px] font-light uppercase tracking-widest text-[#DB5828]">
         Seamless · Quality · Success
       </p>
       <div className="grid gap-4 md:grid-cols-3">

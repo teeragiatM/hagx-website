@@ -1,42 +1,42 @@
-"use client";
+﻿"use client";
 
 import Image from "next/image";
-import ScrollReveal from "./ScrollReveal";
+import ScrollReveal from "./effects/ScrollReveal";
 
 const services = [
   {
     title: "Curtain Wall",
-    subtitle: "ผนังกระจกโครงสร้าง",
+    subtitle: "à¸œà¸™à¸±à¸‡à¸à¸£à¸°à¸ˆà¸à¹‚à¸„à¸£à¸‡à¸ªà¸£à¹‰à¸²à¸‡",
     img: "https://images.unsplash.com/photo-1511818966892-d7d671e672a2?w=900&q=85",
     size: "lg",
   },
   {
     title: "Skylight",
-    subtitle: "หลังคากระจก",
+    subtitle: "à¸«à¸¥à¸±à¸‡à¸„à¸²à¸à¸£à¸°à¸ˆà¸",
     img: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=700&q=85",
     size: "sm",
   },
   {
     title: "Structural Glazing",
-    subtitle: "กระจกโครงสร้าง",
+    subtitle: "à¸à¸£à¸°à¸ˆà¸à¹‚à¸„à¸£à¸‡à¸ªà¸£à¹‰à¸²à¸‡",
     img: "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=700&q=85",
     size: "sm",
   },
   {
     title: "Glass Partition",
-    subtitle: "ฉากกั้นกระจก",
+    subtitle: "à¸‰à¸²à¸à¸à¸±à¹‰à¸™à¸à¸£à¸°à¸ˆà¸",
     img: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=900&q=85",
     size: "lg",
   },
   {
     title: "Aluminium Cladding",
-    subtitle: "หุ้มผนังอลูมิเนียม",
+    subtitle: "à¸«à¸¸à¹‰à¸¡à¸œà¸™à¸±à¸‡à¸­à¸¥à¸¹à¸¡à¸´à¹€à¸™à¸µà¸¢à¸¡",
     img: "https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=700&q=85",
     size: "sm",
   },
   {
     title: "Security Glazing",
-    subtitle: "กระจกนิรภัย",
+    subtitle: "à¸à¸£à¸°à¸ˆà¸à¸™à¸´à¸£à¸ à¸±à¸¢",
     img: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=700&q=85",
     size: "sm",
   },
@@ -49,7 +49,7 @@ export default function Services() {
         <ScrollReveal className="mb-20">
           <p className="text-[10px] tracking-[0.3em] uppercase text-slate-400 font-light mb-4">Our Services</p>
           <h2 id="services-heading" className="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight max-w-lg leading-tight">
-            บริการของเรา
+            à¸šà¸£à¸´à¸à¸²à¸£à¸‚à¸­à¸‡à¹€à¸£à¸²
           </h2>
         </ScrollReveal>
 
@@ -88,3 +88,4 @@ export default function Services() {
     </section>
   );
 }
+

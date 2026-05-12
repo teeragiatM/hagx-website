@@ -53,7 +53,7 @@ export default function SiteNav() {
           backdropFilter: scrolled ? "blur(16px)" : "none",
         }}
       >
-        <div className="mx-auto flex h-[68px] max-w-[1500px] items-center justify-between px-6 sm:px-10 lg:px-14">
+        <div className="mx-auto flex h-[68px] max-w-[1500px] items-center justify-between px-[var(--site-inline-px)]">
           <Link href="/" aria-label="HAGX" onClick={() => setOpen(false)}>
             <img
               src="/images/hagx-logo.svg"
@@ -127,7 +127,7 @@ export default function SiteNav() {
             transition={{ duration: 0.3 }}
             className="fixed inset-0 z-40 flex flex-col bg-[#080808] md:hidden"
           >
-            <div className="flex h-[68px] shrink-0 items-center justify-between border-b border-white/[0.06] px-6 sm:px-10">
+            <div className="flex h-[68px] shrink-0 items-center justify-between border-b border-white/[0.06] px-[var(--site-inline-px)]">
               <Link href="/" onClick={() => setOpen(false)}>
                 <img
                   src="/images/hagx-logo.svg"
@@ -156,7 +156,7 @@ export default function SiteNav() {
               </button>
             </div>
 
-            <nav className="flex flex-1 flex-col justify-center px-6 sm:px-10">
+            <nav className="flex flex-1 flex-col justify-center px-[var(--site-inline-px)]">
               <div className="space-y-1">
                 {navLinks.map((link, index) => (
                   <motion.div
@@ -189,7 +189,7 @@ export default function SiteNav() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
-              className="shrink-0 border-t border-white/[0.06] px-6 py-8 sm:px-10"
+              className="shrink-0 border-t border-white/[0.06] px-[var(--site-inline-px)] py-8"
             >
               <div className="grid grid-cols-2 gap-8">
                 <div>

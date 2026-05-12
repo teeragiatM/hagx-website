@@ -112,7 +112,7 @@ export default function ModalShell({
           <div className="flex shrink-0 items-start justify-between gap-4 border-b border-white/[0.08] px-7 py-6">
             <div className="min-w-0">
               {eyebrow && (
-                <p className="mb-1 text-[9px] font-light uppercase tracking-widest text-[#ff8a00]/80">{eyebrow}</p>
+                <p className="mb-1 text-[9px] font-light uppercase tracking-widest text-[#E15F31]/80">{eyebrow}</p>
               )}
               <h1 className="text-xl font-bold leading-tight tracking-tight text-white lg:text-2xl">{title}</h1>
               {subtitle && <p className="mt-1 text-sm font-light text-white/35">{subtitle}</p>}
@@ -128,7 +128,7 @@ export default function ModalShell({
           {/* Tagline */}
           {tagline && (
             <div className="shrink-0 border-b border-white/[0.06] px-7 py-5">
-              <p className="border-l-2 border-[#ff8a00] pl-4 text-sm font-light italic text-white/45">{tagline}</p>
+              <p className="border-l-2 border-[#E15F31] pl-4 text-sm font-light italic text-white/45">{tagline}</p>
             </div>
           )}
 
@@ -136,7 +136,7 @@ export default function ModalShell({
           {price && (
             <div className="shrink-0 border-b border-white/[0.06] px-7 py-5">
               <p className="mb-1 text-[9px] font-light uppercase tracking-widest text-white/20">ราคาเริ่มต้น</p>
-              <p className="text-2xl font-bold text-[#ff8a00]">
+              <p className="text-2xl font-bold text-[#E15F31]">
                 {price.amount}
                 <span className="ml-1 text-sm font-light text-white/30">/ {price.unit}</span>
               </p>
@@ -172,7 +172,7 @@ export default function ModalShell({
                   <button
                     key={tag.slug}
                     onClick={() => router.replace(tag.href)}
-                    className="border border-white/[0.12] bg-white/[0.04] px-3 py-1.5 text-[10px] font-light uppercase tracking-widest text-white/40 transition-colors hover:border-[#ff8a00]/50 hover:bg-[#ff8a00]/10 hover:text-[#ff8a00]"
+                    className="border border-white/[0.12] bg-white/[0.04] px-3 py-1.5 text-[10px] font-light uppercase tracking-widest text-white/40 transition-colors hover:border-[#E15F31]/50 hover:bg-[#E15F31]/10 hover:text-[#E15F31]"
                   >
                     {tag.label}
                   </button>
@@ -237,7 +237,7 @@ export default function ModalShell({
           {/* Thumbnail strip */}
           <div className="shrink-0 border-t border-white/[0.08] bg-[#0a0804] px-5 py-3">
             <div className="flex items-center gap-4">
-              <span className="shrink-0 text-xl font-bold leading-none text-[#ff8a00]">
+              <span className="shrink-0 text-xl font-bold leading-none text-[#E15F31]">
                 {imgIdx + 1}<span className="text-sm font-light text-white/25">/{imgs.length}</span>
               </span>
               <div className="flex gap-2 overflow-x-auto pb-0.5">
@@ -246,7 +246,7 @@ export default function ModalShell({
                     key={i}
                     onClick={() => setImgIdx(i)}
                     className={`relative h-14 w-[84px] shrink-0 overflow-hidden transition-all duration-200 ${
-                      i === imgIdx ? "ring-2 ring-[#ff8a00]" : "opacity-35 hover:opacity-65"
+                      i === imgIdx ? "ring-2 ring-[#E15F31]" : "opacity-35 hover:opacity-65"
                     }`}
                   >
                     <Image src={img.src} alt="" fill sizes="84px" className="object-cover" />

@@ -10,7 +10,7 @@ export default function PrivacyPage() {
       <SiteNav />
       <main className="min-h-screen bg-[#050505] px-8 pb-24 pt-40 sm:px-12 lg:px-16">
         <div className="mx-auto max-w-3xl">
-          <p className="mb-4 text-[10px] font-light uppercase tracking-widest text-[#ff8a00]">
+          <p className="mb-4 text-[10px] font-light uppercase tracking-widest text-[#DB5828]">
             Legal
           </p>
           <h1 className="mb-12 text-4xl font-light text-white sm:text-5xl">

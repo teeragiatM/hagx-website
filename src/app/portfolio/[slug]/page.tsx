@@ -1,6 +1,6 @@
+import CtaSection from "@/components/CtaSection";
 import SiteFooter from "@/components/SiteFooter";
 import SiteNav from "@/components/SiteNav";
-import CtaSection from "@/components/CtaSection";
 import {
   getPortfolioItemBySlug,
   getPortfolioItems,
@@ -61,8 +61,7 @@ export default async function ProjectPage({
   if (!item) notFound();
 
   const typeLabel =
-    typeOptions.find((t) => t.value === item.type)?.label ??
-    item.type;
+    typeOptions.find((t) => t.value === item.type)?.label ?? item.type;
   const related = allItems
     .filter((r) => r.type === item.type && r.slug !== item.slug)
     .slice(0, 3);
@@ -131,7 +130,7 @@ export default async function ProjectPage({
                         key={h}
                         className="border border-white/[0.07] bg-[#0c0c0c] p-4"
                       >
-                        <span className="mb-1 block h-0.5 w-6 bg-[#ff8a00]" />
+                        <span className="mb-1 block h-0.5 w-6 bg-[#DB5828]" />
                         <p className="text-xs font-light leading-5 text-white/60">
                           {h}
                         </p>
@@ -229,7 +228,7 @@ export default async function ProjectPage({
                 <Link
                   key={r.slug}
                   href={`/portfolio/${r.slug}`}
-                  className="group block border border-white/[0.07] bg-[#0c0c0c] transition-colors hover:border-[#ff8a00]/30"
+                  className="group block border border-white/[0.07] bg-[#0c0c0c] transition-colors hover:border-[#DB5828]/30"
                 >
                   <div className="relative aspect-[16/10] overflow-hidden">
                     <Image

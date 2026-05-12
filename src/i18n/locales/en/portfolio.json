@@ -1,22 +1,63 @@
 {
-  "eyebrow": "Portfolio",
-  "title": "Projects That Define Our Craft",
-  "subtitle": "Projects across Thailand — from high-rise Curtain Wall to residential Glass Facade.",
-  "filter_type": "Work Type",
-  "filter_category": "Category",
-  "filter_location": "Location",
-  "filter_clear": "Clear all ×",
-  "showing": "Showing",
-  "of": "/",
-  "items": "items",
-  "no_results": "No projects match the selected filters",
-  "clear_filter": "Clear filters",
-  "related_type": "Same work type",
-  "ask_similar": "Enquire about a similar project",
-  "cta_title": "Have a project in mind?\nLet's talk with HAGX",
-  "cta_desc": "We'll assess the approach, materials, and budget — free of charge.",
-  "start_project": "Start a Project",
-  "view_materials": "View Materials",
+  "hero": {
+    "eyebrow": "Our Projects",
+    "title_line1": "Across",
+    "title_line2": "Thailand",
+    "subtitle": "Click a province to zoom in, or select a pin to view project activity.",
+    "stats_projects": "Projects",
+    "stats_provinces": "Provinces",
+    "stats_years": "Years"
+  },
+  "map": {
+    "location": "Location",
+    "projects_completed": "Projects Completed",
+    "close": "Close",
+    "hint": "Click a province to zoom",
+    "zoom_in": "Zoom in",
+    "zoom_out": "Zoom out",
+    "reset": "Reset map",
+    "pins": {
+      "bangkok": "Bangkok",
+      "chonburi_pattaya": "Chonburi / Pattaya",
+      "chiang_mai": "Chiang Mai",
+      "hua_hin": "Hua Hin",
+      "phuket": "Phuket",
+      "khon_kaen": "Khon Kaen",
+      "chiang_rai": "Chiang Rai"
+    }
+  },
+  "filters": {
+    "title": "Filter",
+    "clear_all": "Clear all",
+    "project_type": "Project Type",
+    "scope": "Scope of Work",
+    "location": "Location",
+    "showing": "Showing",
+    "projects": "projects",
+    "no_results": "No projects match the selected filters",
+    "clear_filters": "Clear filters",
+    "type_options": {
+      "curtain-wall": "Curtain Wall",
+      "facade": "Glass Facade",
+      "partition": "Interior Partition",
+      "railing": "Railing System",
+      "supply": "Material Supply"
+    },
+    "category_options": {
+      "installation": "Installation Work",
+      "supply": "Supply & Sales"
+    }
+  },
+  "card": {
+    "view_details": "View details"
+  },
+  "cta": {
+    "eyebrow": "Start a Project",
+    "title": "Have a project in mind?",
+    "description": "We'll assess the approach, materials, and preliminary budget free of charge.",
+    "primary": "Contact HAGX",
+    "secondary": "View Materials"
+  },
   "modal": {
     "close": "Close",
     "description": "Description",

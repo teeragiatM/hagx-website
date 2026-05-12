@@ -1,29 +1,70 @@
 {
-  "eyebrow": "ผลงาน",
-  "title": "ผลงานที่สะท้อนความเป็นเรา",
-  "subtitle": "โครงการทั่วประเทศไทย — ตั้งแต่ Curtain Wall ระดับอาคารสูงถึงงาน Facade บ้านพักอาศัย",
-  "filter_type": "ประเภทงาน",
-  "filter_category": "หมวด",
-  "filter_location": "พื้นที่",
-  "filter_clear": "ล้างทั้งหมด ×",
-  "showing": "แสดง",
-  "of": "/",
-  "items": "รายการ",
-  "no_results": "ไม่พบโครงการที่ตรงกับ Filter ที่เลือก",
-  "clear_filter": "ล้าง Filter",
-  "related_type": "งานประเภทเดียวกัน",
-  "ask_similar": "สอบถามโครงการลักษณะนี้",
-  "cta_title": "มีโครงการในใจแล้ว?\nมาคุยกับทีม HAGX",
-  "cta_desc": "ประเมินแนวทาง วัสดุ และงบประมาณเบื้องต้น โดยไม่มีค่าใช้จ่าย",
-  "start_project": "เริ่มต้นโครงการ",
-  "view_materials": "ดูวัสดุ",
+  "hero": {
+    "eyebrow": "ผลงานของเรา",
+    "title_line1": "ครอบคลุม",
+    "title_line2": "ทั่วประเทศไทย",
+    "subtitle": "คลิกจังหวัดเพื่อซูมดูรายละเอียด หรือกดหมุดเพื่อดูโครงการ",
+    "stats_projects": "โครงการ",
+    "stats_provinces": "จังหวัด",
+    "stats_years": "ปี"
+  },
+  "map": {
+    "location": "พื้นที่",
+    "projects_completed": "โครงการที่ส่งมอบ",
+    "close": "ปิด",
+    "hint": "คลิกจังหวัดเพื่อซูม",
+    "zoom_in": "ซูมเข้า",
+    "zoom_out": "ซูมออก",
+    "reset": "รีเซ็ตแผนที่",
+    "pins": {
+      "bangkok": "กรุงเทพฯ",
+      "chonburi_pattaya": "ชลบุรี / พัทยา",
+      "chiang_mai": "เชียงใหม่",
+      "hua_hin": "หัวหิน",
+      "phuket": "ภูเก็ต",
+      "khon_kaen": "ขอนแก่น",
+      "chiang_rai": "เชียงราย"
+    }
+  },
+  "filters": {
+    "title": "ตัวกรอง",
+    "clear_all": "ล้างทั้งหมด",
+    "project_type": "ประเภทงาน",
+    "scope": "ขอบเขตงาน",
+    "location": "พื้นที่",
+    "showing": "แสดง",
+    "projects": "โครงการ",
+    "no_results": "ไม่พบโครงการที่ตรงกับตัวกรองที่เลือก",
+    "clear_filters": "ล้างตัวกรอง",
+    "type_options": {
+      "curtain-wall": "เคอร์เทนวอลล์",
+      "facade": "ฟาซาดกระจก",
+      "partition": "ผนังกั้นภายใน",
+      "railing": "ระบบราวกันตก",
+      "supply": "จัดหาวัสดุ"
+    },
+    "category_options": {
+      "installation": "งานติดตั้ง",
+      "supply": "งานจัดหาและจำหน่าย"
+    }
+  },
+  "card": {
+    "view_details": "ดูรายละเอียด"
+  },
+  "cta": {
+    "eyebrow": "เริ่มต้นโครงการ",
+    "title": "มีโครงการในใจแล้ว?",
+    "description": "ประเมินแนวทาง วัสดุ และงบประมาณเบื้องต้น โดยไม่มีค่าใช้จ่าย",
+    "primary": "ติดต่อทีม HAGX",
+    "secondary": "ดูวัสดุ"
+  },
   "modal": {
-    "close": "Close",
-    "description": "Description",
-    "location": "Location",
-    "year": "Year",
-    "scope": "Scope",
-    "highlights": "Highlights",
+    "close": "ปิด",
+    "description": "รายละเอียด",
+    "location": "พื้นที่",
+    "year": "ปี",
+    "scope": "ขอบเขตงาน",
+    "highlights": "จุดเด่น",
     "same_type": "งานประเภทเดียวกัน",
     "ask_cta": "สอบถามโครงการลักษณะนี้"
   }

@@ -7,64 +7,86 @@ export const hagxIdentity = {
 
 export const hagxStats = [
   {
-    n:       "20+",
+    n: "20+",
     labelEn: "Years of Engineering Expertise",
-    labelTh: "ปีแห่งความเชี่ยวชาญด้านวิศวกรรม",
-    sub:     "ประสบการณ์และความเชี่ยวชาญด้านวิศวกรรมกว่า 20 ปี",
-    subEn:   "Over 20 years of engineering expertise in glass and aluminium.",
+    labelTh: "ปีแห่งความเชี่ยวชาญ",
+    sub: "ประสบการณ์ด้านงานกระจกและอลูมิเนียมมากกว่า 20 ปี",
+    subEn: "Over 20 years of engineering expertise in glass and aluminium.",
   },
   {
-    n:       "600+",
-    labelEn: "High-Standard Projects",
-    labelTh: "โครงการมาตรฐานสูง",
-    sub:     "ส่งมอบผลงานคุณภาพสู่โครงการหลากหลายระดับกว่า 600 โครงการ",
-    subEn:   "Delivered quality outcomes across 600+ projects of all scales.",
+    n: "600+",
+    labelEn: "Trusted Projects",
+    labelTh: "โครงการที่ไว้วางใจ",
+    sub: "ส่งมอบผลงานคุณภาพให้กับโครงการหลากหลายขนาดมากกว่า 600 โครงการ",
+    subEn: "Delivered quality outcomes across 600+ projects of all scales.",
   },
   {
-    n:       "01",
-    labelEn: "Complete In-house Solutions",
-    labelTh: "โซลูชันครบวงจรในทีมเดียว",
-    sub:     "บริการเบ็ดเสร็จโดยทีมช่างและโรงงานของ HAGX เอง 100%",
-    subEn:   "End-to-end service by HAGX's own team and factory, 100%.",
+    n: "01",
+    labelEn: "Complete One-Stop Solutions",
+    labelTh: "โซลูชันครบวงจร จบในที่เดียว",
+    sub: "ครบจบในที่เดียว ทั้งวัสดุ ดีไซน์ และการติดตั้งมาตรฐานสูง พร้อมระบบการดูแลที่ได้มาตรฐาน",
+    subEn:
+      "A complete one-stop solution covering materials, design, high-standard installation, and reliable care.",
+  },
+  {
+    n: "100%",
+    labelEn: "Maximum Precision and Standards",
+    labelTh: "ความแม่นยำและมาตรฐานสูงสุด",
+    sub: "มอบความมั่นใจด้วยความละเอียดระดับมิลลิเมตร ตรวจสอบงานทุกขั้นตอนเพื่อผลลัพธ์ที่สมบูรณ์แบบ และการรับประกันที่เชื่อถือได้",
+    subEn:
+      "Confidence delivered through millimetre-level precision, step-by-step inspection, and dependable warranty support.",
   },
 ];
 
 /** legacy: keep `label` pointing to EN for backward compat */
 export const hagxValues = [
   {
-    n:      "01",
-    title:  "Experience & Local Mastery",
-    titleTh: "ประสบการณ์และความเชี่ยวชาญท้องถิ่น",
-    subTh:  "ความเชี่ยวชาญที่สั่งสมมาอย่างยาวนาน",
-    descTh: "ด้วยประสบการณ์กว่า 20 ปีในงานกระจก อลูมิเนียม และงานตกแต่งภายใน เรามีความเข้าใจลึกซึ้งในรายละเอียดเทคนิคและสภาพแวดล้อมจริงในพื้นที่หัวหิน ทำให้เราเป็นตัวจริงที่คนในพื้นที่ไว้วางใจเสมอมา",
-    subEn:  "Long-standing expertise shaped by real local conditions.",
-    descEn: "With more than 20 years across glass, aluminium, and interior works, HAGX understands both technical detail and the on-site realities of Hua Hin, earning long-term trust from local clients and project teams.",
+    n: "01",
+    title: "Experience & Local Mastery",
+    titleTh: "ประสบการณ์และความเชี่ยวชาญ",
+    subTh:
+      "กว่า 20 ปีในอุตสาหกรรมกระจกและอลูมิเนียม เราสั่งสมประสบการณ์จากโครงการหลากหลายสเกล ตั้งแต่ที่พักอาศัยจนถึงโครงการเชิงพาณิชย์ เพื่อส่งมอบงานที่ได้มาตรฐานสูงสุดในทุกรายละเอียด",
+    descTh:
+      "ด้วยประสบการณ์กว่า 20 ปีในงานกระจก อลูมิเนียม และงานตกแต่งภายใน เรามีความเข้าใจลึกซึ้งในรายละเอียดเทคนิคและสภาพแวดล้อมจริงในพื้นที่หัวหิน ทำให้เราเป็นตัวจริงที่คนในพื้นที่ไว้วางใจเสมอมา",
+    subEn: "Long-standing expertise shaped by real local conditions.",
+    descEn:
+      "With more than 20 years across glass, aluminium, and interior works, HAGX understands both technical detail and the on-site realities of Hua Hin, earning long-term trust from local clients and project teams.",
   },
   {
-    n:      "02",
-    title:  "Reliable Accountability",
+    n: "02",
+    title: "Reliable Accountability",
     titleTh: "ความน่าเชื่อถือและความรับผิดชอบ",
-    subTh:  "ความน่าเชื่อถือและความรับผิดชอบที่ตรวจสอบได้",
-    descTh: "ความซื่อสัตย์คือรากฐานของธุรกิจเรา HAGX ยึดมั่นในความโปร่งใสและการรับผิดชอบต่อผลงานในระยะยาว เราให้คำปรึกษาอย่างตรงไปตรงมา เพื่อให้ลูกค้าได้รับสิ่งที่คุ้มค่าที่สุดสำหรับการลงทุนในทุกโครงการ",
-    subEn:  "Transparent advice, accountable delivery, and long-term responsibility.",
-    descEn: "Integrity is the foundation of our work. We communicate clearly, take responsibility for long-term outcomes, and guide clients toward the most worthwhile solution for every investment.",
+    subTh:
+      "เรายึดมั่นในความโปร่งใสและรับผิดชอบในทุกขั้นตอน ด้วยระบบการทำงานที่ตรวจสอบได้จริง",
+    descTh:
+      "ความซื่อสัตย์คือรากฐานของธุรกิจเรา HAGX ยึดมั่นในความโปร่งใสและการรับผิดชอบต่อผลงานในระยะยาว เราให้คำปรึกษาอย่างตรงไปตรงมา เพื่อให้ลูกค้าได้รับสิ่งที่คุ้มค่าที่สุดสำหรับการลงทุนในทุกโครงการ",
+    subEn:
+      "Transparent advice, accountable delivery, and long-term responsibility.",
+    descEn:
+      "Integrity is the foundation of our work. We communicate clearly, take responsibility for long-term outcomes, and guide clients toward the most worthwhile solution for every investment.",
   },
   {
-    n:      "03",
-    title:  "Precision & Punctuality",
+    n: "03",
+    title: "Precision & Punctuality",
     titleTh: "ความแม่นยำและการตรงต่อเวลา",
-    subTh:  "ความแม่นยำในผลงานและการส่งมอบที่ตรงเวลา",
-    descTh: "เราเน้นความเนี๊ยบในทุกมิติ ชิ้นงานทุกชิ้นผ่านการทดสอบระบบ (Pre-engineering) จากโรงงานของเราเอง เพื่อให้มั่นใจว่าผลงานเป๊ะตามแบบแผน และส่งมอบถึงมือลูกค้าภายในกรอบเวลาที่กำหนดอย่างเคร่งครัด",
-    subEn:  "Refined fabrication with disciplined delivery timelines.",
-    descEn: "Every piece is prepared and checked through our in-house pre-engineering process, ensuring accurate fit, clean execution, and delivery within the agreed schedule.",
+    subTh:
+      "รักษามาตรฐานความละเอียด ควบคู่ไปกับการบริหารจัดการเวลาที่มีประสิทธิภาพ",
+    descTh:
+      "เราเน้นความเนี๊ยบในทุกมิติ ชิ้นงานทุกชิ้นผ่านการทดสอบระบบ (Pre-engineering) จากโรงงานของเราเอง เพื่อให้มั่นใจว่าผลงานเป๊ะตามแบบแผน และส่งมอบถึงมือลูกค้าภายในกรอบเวลาที่กำหนดอย่างเคร่งครัด",
+    subEn: "Refined fabrication with disciplined delivery timelines.",
+    descEn:
+      "Every piece is prepared and checked through our in-house pre-engineering process, ensuring accurate fit, clean execution, and delivery within the agreed schedule.",
   },
   {
-    n:      "04",
-    title:  "Innovative Material Selection",
-    titleTh: "นวัตกรรมการเลือกวัสดุ",
-    subTh:  "นวัตกรรมวัสดุและโซลูชันที่เหนือกว่า",
-    descTh: "เราคัดสรรนวัตกรรมวัสดุที่ทันสมัย ทั้งระบบอลูมิเนียมแบรนด์ชั้นนำและเทคโนโลยีกระจกสเปกสูง เพื่อมอบโซลูชันที่ตอบโจทย์ทั้งดีไซน์และการใช้งาน (Functional & Aesthetic) ช่วยเพิ่มความโดดเด่นและประสิทธิภาพสูงสุดให้กับอาคารของคุณ",
-    subEn:  "Advanced materials selected for function, beauty, and performance.",
-    descEn: "We source leading aluminium systems and high-spec glass technologies to create solutions that balance functional performance with architectural expression.",
+    n: "04",
+    title: "Innovative Material Selection",
+    titleTh: "มาตรฐานการทำงานที่ชัดเจนและต่อเนื่อง",
+    subTh:
+      "ผลงานที่สำเร็จอย่างต่อเนื่องคือบทพิสูจน์ถึงความสามารถ และความมุ่งมั่นในการรักษามาตรฐานคุณภาพงานในระดับสูงสุด",
+    descTh:
+      "ผลงานที่สำเร็จอย่างต่อเนื่องคือบทพิสูจน์ถึงความสามารถ และความมุ่งมั่นในการรักษามาตรฐานคุณภาพงานในระดับสูงสุด",
+    subEn: "Advanced materials selected for function, beauty, and performance.",
+    descEn:
+      "We source leading aluminium systems and high-spec glass technologies to create solutions that balance functional performance with architectural expression.",
   },
 ];

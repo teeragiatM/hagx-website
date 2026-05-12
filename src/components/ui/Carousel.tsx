@@ -19,6 +19,7 @@
 import * as React from "react";
 import { useMemo, useState, useContext, createContext } from "react";
 import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
@@ -91,7 +92,7 @@ export function CarouselRoot({
     <CarouselContext.Provider
       value={{ items, visibleItems, startIndex, setStartIndex, safeVisibleCount, canSlide, maxStart, goPrev, goNext }}
     >
-      <div className={className}>{children}</div>
+      <div className={cn("ui-carousel", className)}>{children}</div>
     </CarouselContext.Provider>
   );
 }
@@ -107,7 +108,7 @@ export type CarouselHeaderProps = {
 
 export function CarouselHeader({ eyebrow, title, description, className }: CarouselHeaderProps) {
   return (
-    <div className={`mb-16 grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-start ${className ?? ""}`}>
+    <div className={`ui-carousel-header mb-16 grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-start ${className ?? ""}`}>
       <div>
         {eyebrow && <p className="eyebrow mb-3">{eyebrow}</p>}
         <h2 className="max-w-4xl text-5xl font-light leading-none tracking-normal text-white sm:text-6xl lg:text-7xl">
@@ -138,7 +139,7 @@ export function CarouselCard({ item, className }: CarouselCardProps) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-      className={`group relative min-h-[500px] overflow-hidden bg-[#111] ${className ?? ""}`}
+      className={`ui-carousel-card group relative min-h-[500px] overflow-hidden bg-[#111] ${className ?? ""}`}
     >
       <Image
         src={item.image}
@@ -177,7 +178,7 @@ export function CarouselGrid({ className, renderCard }: CarouselGridProps) {
     "lg:grid-cols-2";
 
   return (
-    <div className={`grid gap-4 sm:grid-cols-2 ${colClass} ${className ?? ""}`}>
+    <div className={`ui-carousel-grid grid gap-4 sm:grid-cols-2 ${colClass} ${className ?? ""}`}>
       {visibleItems.map((item, i) =>
         renderCard ? renderCard(item, i) : <CarouselCard key={item.n} item={item} />,
       )}

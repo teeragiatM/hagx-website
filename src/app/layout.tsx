@@ -1,4 +1,4 @@
-import SmoothScroll from "@/components/SmoothScroll";
+import SmoothScroll from "@/components/effects/SmoothScroll";
 import type { Metadata } from "next";
 import { Anuphan } from "next/font/google";
 import "./globals.css";
@@ -12,11 +12,11 @@ const anuphan = Anuphan({
 
 export const metadata: Metadata = {
   title: {
-    default: "HAGX | Aluminium & Glass Solution",
+    default: "HAGX | Premium Aluminium & Glass",
     template: "%s | HAGX",
   },
   description:
-    "HAGX ตัวแทนจำหน่ายและติดตั้งระบบกระจก-อลูมิเนียมครบวงจร ออกแบบและผลิตด้วยทีมงานมืออาชีพ พร้อมโซลูชันอุปกรณ์ฮาร์ดแวร์มาตรฐานสูง ดูแลจบครบในที่เดียว",
+    "HAGX ผู้เชี่ยวชาญด้านงานอลูมิเนียมและกระจกสถาปัตยกรรม ออกแบบ ผลิต และติดตั้งด้วยความแม่นยำระดับอุตสาหกรรม",
   authors: [{ name: "HAGX" }],
   creator: "HAGX",
   metadataBase: new URL("https://hagx.co"),
@@ -35,18 +35,18 @@ export const metadata: Metadata = {
     locale: "th_TH",
     url: "https://hagx.co",
     siteName: "HAGX",
-    title: "HAGX | Aluminium & Glass Solution",
+    title: "HAGX | Premium Aluminium & Glass",
     description:
-      "HAGX ตัวแทนจำหน่ายและติดตั้งระบบกระจก-อลูมิเนียมครบวงจร ออกแบบและผลิตด้วยทีมงานมืออาชีพ พร้อมโซลูชันอุปกรณ์ฮาร์ดแวร์มาตรฐานสูง ดูแลจบครบในที่เดียว",
+      "HAGX ผู้เชี่ยวชาญด้านงานอลูมิเนียมและกระจกสถาปัตยกรรม ออกแบบ ผลิต และติดตั้งด้วยความแม่นยำระดับอุตสาหกรรม",
     images: [
       { url: "/images/hagx-logo.svg", width: 1200, height: 630, alt: "HAGX" },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "HAGX | Aluminium & Glass Solution",
+    title: "HAGX | Premium Aluminium & Glass",
     description:
-      "HAGX ตัวแทนจำหน่ายและติดตั้งระบบกระจก-อลูมิเนียมครบวงจร ออกแบบและผลิตด้วยทีมงานมืออาชีพ พร้อมโซลูชันอุปกรณ์ฮาร์ดแวร์มาตรฐานสูง ดูแลจบครบในที่เดียว",
+      "HAGX ผู้เชี่ยวชาญด้านงานอลูมิเนียมและกระจกสถาปัตยกรรม ออกแบบ ผลิต และติดตั้งด้วยความแม่นยำระดับอุตสาหกรรม",
     images: ["/images/hagx-logo.svg"],
   },
 };
@@ -62,6 +62,7 @@ export default function RootLayout({
     <html
       lang="th"
       className={`${anuphan.variable} scroll-smooth`}
+      data-scroll-behavior="smooth"
       suppressHydrationWarning
     >
       <head>
