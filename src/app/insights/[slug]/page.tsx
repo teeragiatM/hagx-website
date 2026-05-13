@@ -124,7 +124,7 @@ export default function InsightPostPage() {
               {title}
             </h1>
 
-            <div className="mt-5 flex flex-wrap items-center gap-5 text-[11px] font-light text-white/35">
+            <div className="mt-5 flex flex-wrap items-center gap-5 text-[11px] font-light text-muted">
               <span>{formatDate(post.date, lang)}</span>
               <span className="h-3 w-px bg-white/20" />
               <span>

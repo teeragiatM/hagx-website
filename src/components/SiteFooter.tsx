@@ -44,9 +44,9 @@ export default function SiteFooter() {
   ];
 
   return (
-    <footer className="border-t border-white/[0.06] bg-[#080808]">
+    <footer className="border-t">
       {/* top */}
-      <div className="mx-auto max-w-[1500px] px-8 pt-16 pb-10 sm:px-12 lg:px-16">
+      <div className="mx-auto ui-margin ui-padding">
         <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr_1fr]">
           {/* brand */}
           <div>
@@ -141,7 +141,7 @@ export default function SiteFooter() {
       <div className="mx-auto max-w-[1500px] border-t border-white/[0.06] px-8 sm:px-12 lg:px-16" />
 
       {/* bottom */}
-      <div className="mx-auto max-w-[1500px] px-8 py-6 sm:px-12 lg:px-16">
+      <div className="ui-r-px-4 ui-r-py-2">
         <div className="flex flex-col justify-between gap-3 text-[10px] font-light text-white/20 sm:flex-row sm:items-center">
           <div className="flex items-center gap-4">
             <Link

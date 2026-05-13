@@ -1,11 +1,11 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
 import LangSwitch from "@/components/LangSwitch";
 import { useI18n } from "@/i18n/useI18n";
+import { AnimatePresence, motion } from "framer-motion";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { Button, Text, Link } from "./ui";
 
 const navLinks = [
   { href: "/", key: "home" },
@@ -38,42 +38,40 @@ export default function SiteNav() {
 
   const isActive = (href: string) => {
     if (href === "/") return pathname === "/";
-    return pathname.startsWith(href.split("#")[0]) && href.split("#")[0] !== "/";
+    return (
+      pathname.startsWith(href.split("#")[0]) && href.split("#")[0] !== "/"
+    );
   };
 
   return (
     <>
-      <header
-        className="fixed inset-x-0 top-0 z-50 transition-all duration-500"
-        style={{
-          backgroundColor: scrolled ? "rgba(8,8,8,0.92)" : "rgba(8,8,8,0)",
-          borderBottom: scrolled
-            ? "1px solid rgba(255,255,255,0.06)"
-            : "1px solid transparent",
-          backdropFilter: scrolled ? "blur(16px)" : "none",
-        }}
-      >
-        <div className="mx-auto flex h-[68px] max-w-[1500px] items-center justify-between px-[var(--site-inline-px)]">
+      <header className="header-wrapper">
+        <div
+          className={`pointer-events-none absolute inset-0 transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] ${
+            scrolled ? "bg-background/95 backdrop-blur-xl" : "bg-transparent"
+          }`}
+        />
+        <div className="header-container relative z-10">
           <Link href="/" aria-label="HAGX" onClick={() => setOpen(false)}>
             <img
               src="/images/hagx-logo.svg"
               alt="HAGX"
               width="76"
               height="19"
-              className="h-[19px] w-[76px]"
             />
           </Link>
 
-          <nav className="hidden items-center gap-8 md:flex">
+          <nav className="header-nav-container">
             {navLinks.map((link) => (
               <Link
+                color="gray"
+                underline="none"
+                uppercase
+                weight={{ initial: "light" }}
                 key={link.href}
                 href={link.href}
-                className={`text-[11px] font-light uppercase tracking-[0.12em] transition-colors duration-200 ${
-                  isActive(link.href)
-                    ? "text-white"
-                    : "text-white/45 hover:text-white"
-                }`}
+                aria-current={isActive(link.href) ? "page" : undefined}
+                className="header-nav-link"
               >
                 {t(link.key)}
               </Link>
@@ -82,13 +80,14 @@ export default function SiteNav() {
             <div className="h-4 w-px bg-white/15" />
 
             <LangSwitch />
-
-            <Link
-              href="/contact"
-              className="inline-flex h-9 items-center border border-white/25 px-5 text-[11px] font-light uppercase tracking-[0.12em] text-white transition-all duration-200 hover:border-white hover:bg-white hover:text-[#080808]"
+            <Button
+              asChild
+              size={{ initial: "1" }}
+              variant="outline"
+              color="gray"
             >
-              {t("contact_cta")}
-            </Link>
+              <a href="/contact">{t("contact_cta")}</a>
+            </Button>
           </nav>
 
           <button
@@ -125,7 +124,7 @@ export default function SiteNav() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-40 flex flex-col bg-[#080808] md:hidden"
+            className="fixed inset-0 z-40 flex flex-col  md:hidden"
           >
             <div className="flex h-[68px] shrink-0 items-center justify-between border-b border-white/[0.06] px-[var(--site-inline-px)]">
               <Link href="/" onClick={() => setOpen(false)}>
@@ -196,7 +195,9 @@ export default function SiteNav() {
                   <p className="mb-3 text-[9px] font-light uppercase tracking-widest text-white/25">
                     {t("contact_heading")}
                   </p>
-                  <p className="text-xs font-light text-white/45">contact@hagx.co</p>
+                  <p className="text-xs font-light text-white/45">
+                    contact@hagx.co
+                  </p>
                   <p className="mt-1 text-xs font-light text-white/30">
                     {t("business_hours")}
                   </p>

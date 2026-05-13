@@ -1,68 +1,40 @@
 import type { ComponentPropsWithoutRef } from "react";
 
+import { responsiveClass, type Responsive } from "@/lib/responsive";
 import { cn } from "@/lib/utils";
 
-type SectionSpacing = "none" | "xs" | "sm" | "md" | "lg" | "xl";
-type SectionBorder = "none" | "top" | "bottom" | "y";
-type SectionWidth = "sm" | "md" | "lg" | "xl" | "full";
+export type SectionSize = "0" | "1" | "2" | "3" | "4";
+export type ContainerWidth = "sm" | "md" | "lg" | "xl" | "full";
+export type ContainerSize = "1" | "2" | "3" | "4" | "5" | "6" | "7";
+export type ContainerAlign = "left" | "center" | "right";
 
-const spacingClass: Record<SectionSpacing, string> = {
-  none: "",
-  xs: "py-5",
-  sm: "py-16 lg:py-20",
-  md: "py-20 lg:py-28",
-  lg: "py-24 lg:py-36",
-  xl: "py-28 lg:py-44",
-};
-
-const borderClass: Record<SectionBorder, string> = {
-  none: "",
-  top: "border-t border-white/[0.06]",
-  bottom: "border-b border-white/[0.06]",
-  y: "border-y border-white/[0.06]",
-};
-
-const widthClass: Record<SectionWidth, string> = {
-  sm: "max-w-5xl",
-  md: "max-w-[1500px]",
-  lg: "max-w-[1500px]",
-  xl: "max-w-[1500px]",
-  full: "max-w-none",
-};
-
-interface AppSectionRootProps extends ComponentPropsWithoutRef<"section"> {
-  spacing?: SectionSpacing;
-  border?: SectionBorder;
-  background?: string;
+export interface SectionProps extends ComponentPropsWithoutRef<"section"> {
+  size?: Responsive<SectionSize>;
 }
 
-interface AppSectionContainerProps extends ComponentPropsWithoutRef<"div"> {
-  width?: SectionWidth;
+export interface ContainerProps extends ComponentPropsWithoutRef<"div"> {
+  size?: Responsive<ContainerSize>;
+  align?: Responsive<ContainerAlign>;
+  innerClassName?: string;
+  /** @deprecated Use `size` instead. */
+  width?: ContainerWidth;
+  /** Adds the site inline padding to the outer container. */
   padded?: boolean;
 }
 
-function AppSectionRoot({
-  spacing = "lg",
-  border = "none",
-  background = "bg-[#080808]",
+export function Section({
+  size = "3",
   className,
   children,
   ...props
-}: AppSectionRootProps) {
+}: SectionProps) {
   return (
     <section
       className={cn(
-        "ui-section",
-        `ui-section-spacing-${spacing}`,
-        `ui-section-border-${border}`,
-        background,
-        borderClass[border],
-        spacingClass[spacing],
+        "ui-Section",
+        responsiveClass("ui-r-size", size),
         className,
       )}
-      data-ui="section"
-      data-spacing={spacing}
-      data-border={border}
       {...props}
     >
       {children}
@@ -70,63 +42,63 @@ function AppSectionRoot({
   );
 }
 
-function AppSectionContainer({
-  width = "md",
-  padded = false,
+const containerWidthSize: Record<ContainerWidth, ContainerSize> = {
+  sm: "1",
+  md: "2",
+  lg: "3",
+  xl: "4",
+  full: "4",
+};
+
+function resolveContainerSize(
+  size: Responsive<ContainerSize> | undefined,
+  width: ContainerWidth | undefined,
+): Responsive<ContainerSize> {
+  if (size) return size;
+  return containerWidthSize[width ?? "lg"];
+}
+
+export function Container({
+  size,
+  align = "center",
+  innerClassName,
+  width,
+  padded = true,
   className,
   children,
   ...props
-}: AppSectionContainerProps) {
+}: ContainerProps) {
   return (
     <div
+      data-slot="container"
       className={cn(
-        "ui-section-container mx-auto w-full",
-        `ui-section-container-${width}`,
-        padded && "ui-section-container-padded",
-        widthClass[width],
-        padded && "px-[var(--site-inline-px)]",
+        "ui-Container",
+        responsiveClass("ui-r-size", resolveContainerSize(size, width)),
+        responsiveClass("ui-r-align", align),
         className,
       )}
-      data-ui="section-container"
-      data-width={width}
-      data-padded={padded ? "true" : "false"}
       {...props}
     >
-      {children}
+      <div
+        data-slot="container-inner"
+        className={cn("ui-ContainerInner", innerClassName)}
+      >
+        {children}
+      </div>
     </div>
   );
 }
 
-function AppSectionBody({
+export function SectionBody({
   className,
   children,
   ...props
 }: ComponentPropsWithoutRef<"div">) {
   return (
-    <div
-      className={cn("ui-section-body relative", className)}
-      data-ui="section-body"
-      {...props}
-    >
+    <div className={cn("relative", className)} {...props}>
       {children}
     </div>
   );
 }
 
-const AppSection = Object.assign(AppSectionRoot, {
-  Root: AppSectionRoot,
-  Container: AppSectionContainer,
-  Body: AppSectionBody,
-});
-
-export {
-  AppSection,
-  AppSectionRoot,
-  AppSectionContainer,
-  AppSectionBody,
-  type SectionSpacing,
-  type SectionBorder,
-  type SectionWidth,
-};
-
-export default AppSection;
+export default Section;

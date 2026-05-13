@@ -46,7 +46,7 @@ export default async function ProductPage({
     .slice(0, 3);
 
   return (
-    <main className="min-h-screen bg-[#080808] text-white">
+    <main>
       <SiteNav />
 
       {/* Breadcrumb */}
@@ -117,9 +117,7 @@ export default async function ProductPage({
               <h1 className="mb-2 text-3xl font-bold leading-tight tracking-tight sm:text-4xl">
                 {p.name}
               </h1>
-              <p className="mb-6 text-sm font-light text-white/35">
-                {p.nameEn}
-              </p>
+              <p className="mb-6 text-sm font-light text-muted">{p.nameEn}</p>
 
               <div className="mb-6 border-l-2 border-[#DB5828] pl-4">
                 <p className="text-sm font-light italic text-white/50">
@@ -158,7 +156,7 @@ export default async function ProductPage({
                       key={s.label}
                       className="flex items-center justify-between px-4 py-3"
                     >
-                      <span className="text-xs font-light text-white/35">
+                      <span className="text-xs font-light text-muted">
                         {s.label}
                       </span>
                       <span className="text-xs font-light text-white/70">

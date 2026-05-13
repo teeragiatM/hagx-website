@@ -118,7 +118,7 @@ export function responsiveClass<T extends string>(
 }
 
 export function resolveFontWeight(value: Responsive<string> | undefined) {
-  return responsiveClass("font", value, FONT_WEIGHT_MAP);
+  return responsiveClass("", value, FONT_WEIGHT_MAP);
 }
 
 export function resolveSpaceProp(

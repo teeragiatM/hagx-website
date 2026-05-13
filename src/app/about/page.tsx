@@ -2,15 +2,22 @@
 
 import CtaSection from "@/components/CtaSection";
 import PageHero from "@/components/PageHero";
-import { AppSection } from "@/components/ui/section";
-import { ScrollStackSection, type ScrollStackDataItem } from "@/components/ui/scroll-stack";
-import { ScrollTimeline, type TimelineItem } from "@/components/ui/scroll-timeline";
+import { Container, Section } from "@/components/ui/section";
+import {
+  ScrollStackSection,
+  type ScrollStackDataItem,
+} from "@/components/ui/scroll-stack";
+import {
+  ScrollTimeline,
+  type TimelineItem,
+} from "@/components/ui/scroll-timeline";
 import SectionHeader from "@/components/SectionHeader";
 import SiteFooter from "@/components/SiteFooter";
 import SiteNav from "@/components/SiteNav";
 import { StatsGrid } from "@/components/ui/stats-grid";
 import { hagxStats } from "@/content/hagx";
 import { useI18n } from "@/i18n/useI18n";
+import { Text } from "@ui";
 type JourneyCopy = {
   n: string;
   year?: string;
@@ -151,7 +158,7 @@ export default function AboutPage() {
   }));
 
   return (
-    <main className="min-h-screen bg-[#080808] text-white">
+    <main>
       <SiteNav />
 
       <PageHero
@@ -160,10 +167,17 @@ export default function AboutPage() {
         titleAlt={t("hero.title_alt")}
         subtitle={t("hero.subtitle")}
         bottomSlot={
-          <div className="border-t border-white/[0.06] px-[var(--site-inline-px)] py-8 text-center">
-            <p className="mb-5 text-[10px] font-light uppercase tracking-widest text-white/25">
-              {t("hero.trusted")}
-            </p>
+          <div className="text-center">
+            <div className="mb-5">
+              <Text
+                as="p"
+                size={{ initial: "1" }}
+                weight={{ initial: "light" }}
+                uppercase
+              >
+                {t("hero.trusted")}
+              </Text>{" "}
+            </div>
             <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-3">
               {clients.map((client) => (
                 <span
@@ -178,43 +192,33 @@ export default function AboutPage() {
         }
       />
 
-      <AppSection.Root spacing="none" border="y">
-        <AppSection.Container width="xl" padded={false}>
+      <Section size="1">
+        <Container width="xl" padded={false}>
           <StatsGrid items={stats} />
-        </AppSection.Container>
-      </AppSection.Root>
+        </Container>
+      </Section>
 
+      <Section size="1" className="relative overflow-hidden pt-16 lg:pt-24">
+        <Container width="xl" padded={false}>
+          <SectionHeader
+            eyebrow={t("journey_header.eyebrow")}
+            heading={t("journey_header.heading")}
+            description={t("journey_header.description")}
+          />
+          <ScrollTimeline items={journey} />
+        </Container>
+      </Section>
 
-      <AppSection.Root
-        spacing="none"
-        border="bottom"
-        className="relative overflow-hidden px-[var(--site-inline-px)] pt-16 lg:pt-24"
-      >
-        <div className="sticky top-20 z-20 bg-[#080808]/80 py-4 backdrop-blur-md">
-          <AppSection.Container width="xl" padded={false}>
-            <SectionHeader
-              eyebrow={t("journey_header.eyebrow")}
-              heading={t("journey_header.heading")}
-              description={t("journey_header.description")}
-            />
-          </AppSection.Container>
-        </div>
-        <ScrollTimeline items={journey} />
-      </AppSection.Root>
-
-      <AppSection.Root
-        border="bottom"
-        className="px-8 text-center sm:px-12"
-      >
+      <Section size="4" className="px-8 text-center sm:px-12">
         <SectionHeader
           eyebrow={t("statement.eyebrow")}
           heading={t("statement.heading")}
           description={t("statement.description")}
           layout="stack"
-          className="mb-0 [&_h2]:text-4xl [&_h2]:font-bold [&_h2]:leading-tight [&_h2]:tracking-tight sm:[&_h2]:text-5xl lg:[&_h2]:text-6xl [&_p:last-child]:text-white/40"
+          className="mb-0 [&_h2]:text-4xl [&_h2]:font-bold [&_h2]:leading-tight [&_h2]:tracking-tight sm:[&_h2]:text-accentxl lg:[&_h2]:text-6xl [&_p:last-child]:text-white/40"
         />
         <div className="mx-auto mt-10 h-px max-w-2xl bg-gradient-to-r from-transparent via-[#DB5828]/60 to-transparent" />
-      </AppSection.Root>
+      </Section>
 
       <ScrollStackSection
         eyebrow={t("values.eyebrow")}

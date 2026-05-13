@@ -6,7 +6,7 @@ import PageHero from "@/components/PageHero";
 import ScopeOfWorks, { type ScopeCategory } from "@/components/ScopeOfWorks";
 import SectionHeader from "@/components/SectionHeader";
 import { Carousel, type CarouselItem as ServiceCarouselItem } from "@/components/ui/Carousel";
-import { AppSection } from "@/components/ui/section";
+import { Container, Section } from "@/components/ui/section";
 import SiteFooter from "@/components/SiteFooter";
 import SiteNav from "@/components/SiteNav";
 import { useI18n } from "@/i18n/useI18n";
@@ -87,7 +87,7 @@ export default function ServicesPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#080808] text-white">
+    <main>
       <SiteNav />
 
       <PageHero
@@ -97,8 +97,8 @@ export default function ServicesPage() {
         minHeight="70vh"
       />
 
-      <AppSection.Root spacing="md" border="bottom">
-        <AppSection.Container width="xl">
+      <Section size="4">
+        <Container width="xl">
           <SectionHeader
             heading={t("expertise.heading")}
             description={t("expertise.description")}
@@ -128,8 +128,8 @@ export default function ServicesPage() {
               </BorderGridCell>
             ))}
           </BorderGrid>
-        </AppSection.Container>
-      </AppSection.Root>
+        </Container>
+      </Section>
 
       <Carousel
         eyebrow={installation.eyebrow}

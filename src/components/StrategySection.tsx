@@ -3,6 +3,12 @@
 import { useI18n } from "@/i18n/useI18n";
 import { motion, MotionValue, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
+import {
+  SectionHeaderRoot,
+  SectionHeaderEyebrow,
+  SectionHeaderHeading,
+  SectionHeaderDescription,
+} from "@/components/SectionHeader";
 
 const PILLARS = [
   {
@@ -46,27 +52,6 @@ const PILLARS = [
   },
 ] as const;
 
-const BENEFITS = [
-  {
-    label: "Seamless Integration",
-    descTh: "การทำงานสอดประสานตั้งแต่แบบร่างจนถึงวันส่งมอบ",
-    descEn: "A coordinated workflow from first drawing to final handover.",
-  },
-  {
-    label: "Uncompromised Quality",
-    descTh: "มาตรฐานที่ไม่ยอมลดละ ทั้งวัสดุ งานผลิต และงานติดตั้ง",
-    descEn:
-      "Standards that do not compromise across materials, fabrication, and installation.",
-  },
-  {
-    label: "Client-Centric Success",
-    descTh: "ผลลัพธ์ของโครงการคือหลักฐานความสำเร็จของระบบการทำงานของเรา",
-    descEn: "The project outcome is the proof of how our system works.",
-  },
-] as const;
-
-const FINALE = 0.92;
-
 export default function StrategySection() {
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
@@ -95,24 +80,17 @@ export default function StrategySection() {
   const descProgress = scrollYProgress;
 
   return (
-    <section
-      ref={containerRef}
-      className="relative border-t border-white/[0.06] bg-[#050505]"
-      style={{ height: "470vh" }}
-    >
-      <div className="sticky top-0 h-screen overflow-hidden bg-[#050505]">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_55%_50%_at_52%_48%,rgba(255,138,0,0.08),transparent_68%)]" />
-        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.025)_1px,transparent_1px),linear-gradient(180deg,rgba(255,255,255,0.018)_1px,transparent_1px)] bg-[size:120px_120px] opacity-35" />
-
-        <div className="relative mx-auto h-full max-w-[1500px] px-6 py-10 sm:px-10 lg:px-16">
-          <div className="grid gap-10 pt-6 lg:grid-cols-[1.35fr_0.85fr] lg:pt-10">
+    <div ref={containerRef} className="relative" style={{ height: "470vh" }}>
+      <div className="sticky top-0 h-screen overflow-hidden">
+        <div className="relative mx-auto h-full pt-[var(--header-height)]">
+          <SectionHeaderRoot layout="split">
             <div>
-              <p className="mb-5 text-[10px] font-light uppercase tracking-widest text-[#DB5828]">
+              <SectionHeaderEyebrow>
                 {lang === "th"
                   ? "กลยุทธ์เชิงบูรณาการของเรา"
                   : "Our Integrated Strategy"}
-              </p>
-              <h2 className="max-w-4xl text-5xl font-light leading-[1.08] tracking-normal text-white sm:text-6xl lg:text-[5.8rem]">
+              </SectionHeaderEyebrow>
+              <SectionHeaderHeading>
                 {t("strategy.title")
                   .split("\n")
                   .map((line, i) => (
@@ -121,16 +99,16 @@ export default function StrategySection() {
                       {line}
                     </span>
                   ))}
-              </h2>
+              </SectionHeaderHeading>
             </div>
-            <p className="max-w-md text-sm font-light leading-8 text-white/55 lg:pt-8">
+            <SectionHeaderDescription>
               {lang === "th"
                 ? "ที่ HAGX เราผสาน 3 หัวใจหลัก เพื่อผลลัพธ์ที่แม่นยำทุกโครงการ"
                 : "At HAGX, three core disciplines work together to deliver precise outcomes on every project."}
-            </p>
-          </div>
+            </SectionHeaderDescription>
+          </SectionHeaderRoot>
 
-          <div className="absolute inset-x-0 bottom-[-18vh] mx-auto aspect-square w-[min(86vw,980px)]">
+          <div className="absolute inset-x-0 mx-auto aspect-square w-[min(86vw,980px)]">
             <div className="relative h-full w-full">
               <motion.div
                 className="absolute inset-0"
@@ -145,13 +123,11 @@ export default function StrategySection() {
               </motion.div>
             </div>
           </div>
-
-          <FinaleOverlay progress={scrollYProgress} lang={lang} />
         </div>
 
         <ScrollHint progress={scrollYProgress} />
       </div>
-    </section>
+    </div>
   );
 }
 
@@ -282,41 +258,6 @@ function CirclePiece({
         </motion.foreignObject>
       </motion.g>
     </motion.g>
-  );
-}
-
-function FinaleOverlay({
-  progress,
-  lang,
-}: {
-  progress: MotionValue<number>;
-  lang: "th" | "en";
-}) {
-  const opacity = useTransform(progress, [FINALE, 0.98], [0, 1]);
-  const y = useTransform(progress, [FINALE, 0.98], ["28px", "0px"]);
-
-  return (
-    <motion.div
-      style={{ opacity, y }}
-      className="pointer-events-none absolute bottom-10 left-6 right-6 z-20 mx-auto max-w-5xl sm:left-10 sm:right-10 lg:left-16 lg:right-16"
-    >
-      <p className="mb-4 text-[10px] font-light uppercase tracking-widest text-[#DB5828]">
-        Seamless · Quality · Success
-      </p>
-      <div className="grid gap-4 md:grid-cols-3">
-        {BENEFITS.map((benefit) => (
-          <div
-            key={benefit.label}
-            className="border border-white/[0.08] bg-[#080808]/55 p-5 backdrop-blur-md"
-          >
-            <p className="text-sm font-semibold text-white">{benefit.label}</p>
-            <p className="mt-2 text-xs font-light leading-6 text-white/45">
-              {lang === "th" ? benefit.descTh : benefit.descEn}
-            </p>
-          </div>
-        ))}
-      </div>
-    </motion.div>
   );
 }
 

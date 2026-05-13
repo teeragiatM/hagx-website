@@ -19,9 +19,10 @@
     "p3": "Smartly Executed"
   },
   "projects": {
-    "eyebrow": "hagx",
+    "eyebrow": "Latest Projects",
     "title": "Projects That Define\nOur Craft",
-    "view": "View Project"
+    "view": "View Project",
+    "see_all": "View All Projects"
   },
   "partnership": {
     "title": "Trusted\nPartnership",

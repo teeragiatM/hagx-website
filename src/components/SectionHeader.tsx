@@ -1,56 +1,33 @@
-import type { ComponentPropsWithoutRef, ReactNode } from "react";
-
+import type { HTMLAttributes, ReactNode } from "react";
+import { Text, Heading, type TextProps } from "./ui";
 import { cn } from "@/lib/utils";
 
 type HeadingTag = "h1" | "h2" | "h3";
-type SectionHeaderLayout = "split" | "stack";
+type SectionHeaderLayout = "split" | "stack" | "row";
 
 interface SectionHeaderProps {
   eyebrow?: string;
   heading: string;
   description?: string;
-  /** Heading semantic level for SEO, defaults to "h2" */
   as?: HeadingTag;
-  /** "split" is a two-column, two-row grid. "stack" centers content. */
   layout?: SectionHeaderLayout;
   className?: string;
+  /** Slot for the right-side content in split/row layouts — accepts any ReactNode */
+  action?: ReactNode;
 }
 
-interface SectionHeaderRootProps extends ComponentPropsWithoutRef<"div"> {
-  layout?: SectionHeaderLayout;
-}
-
-interface SectionHeaderHeadingProps
-  extends Omit<ComponentPropsWithoutRef<"h2">, "as"> {
-  as?: HeadingTag;
-  children: ReactNode;
-}
-
-function renderHeadingLines(heading: string) {
-  return heading.split("\n").map((line, index) => (
-    <span key={`${line}-${index}`}>
-      {index > 0 && <br />}
-      {line}
-    </span>
-  ));
-}
+// ============ Compound Components ============
 
 function SectionHeaderRoot({
   layout = "split",
   className,
   children,
   ...props
-}: SectionHeaderRootProps) {
+}: HTMLAttributes<HTMLDivElement> & { layout?: SectionHeaderLayout }) {
   return (
     <div
-      data-section-header=""
       data-layout={layout}
-      className={cn(
-        layout === "stack"
-          ? "mb-14 text-center"
-          : "mb-16 grid gap-x-8 gap-y-5 lg:grid-cols-[1.15fr_0.85fr] lg:items-start",
-        className,
-      )}
+      className={cn("section-header-root", className)}
       {...props}
     >
       {children}
@@ -62,39 +39,48 @@ function SectionHeaderEyebrow({
   className,
   children,
   ...props
-}: ComponentPropsWithoutRef<"p">) {
+}: TextProps & { children: ReactNode }) {
   return (
-    <p
-      data-section-header-eyebrow=""
-      className={cn(
-        "text-[10px] font-light uppercase tracking-widest text-[#DB5828]",
-        "lg:col-span-2",
-        className,
-      )}
+    <Text
+      as="p"
+      size="1"
+      weight="light"
+      uppercase
+      color="brand"
+      className={cn("section-header-eyebrow", className)}
       {...props}
     >
       {children}
-    </p>
+    </Text>
   );
 }
 
 function SectionHeaderHeading({
-  as: Tag = "h2",
+  as = "h2",
   className,
   children,
   ...props
-}: SectionHeaderHeadingProps) {
+}: { as?: HeadingTag; children: ReactNode } & Omit<TextProps, "as">) {
+  const headingLines =
+    typeof children === "string"
+      ? children.split("\n").map((line, i) => (
+          <span key={i}>
+            {i > 0 && <br />}
+            {line}
+          </span>
+        ))
+      : children;
+
   return (
-    <Tag
-      data-section-header-heading=""
-      className={cn(
-        "max-w-4xl text-5xl font-light leading-none tracking-normal text-white sm:text-6xl lg:text-7xl",
-        className,
-      )}
+    <Heading
+      as={as}
+      size="8"
+      weight="light"
+      className={cn("section-header-heading", className)}
       {...props}
     >
-      {children}
-    </Tag>
+      {headingLines}
+    </Heading>
   );
 }
 
@@ -102,70 +88,111 @@ function SectionHeaderDescription({
   className,
   children,
   ...props
-}: ComponentPropsWithoutRef<"p">) {
+}: TextProps & { children: ReactNode }) {
   return (
-    <p
-      data-section-header-description=""
-      className={cn(
-        "max-w-xl text-sm font-light leading-7 text-white/55 lg:ml-auto lg:pt-1 lg:text-right",
-        className,
-      )}
+    <Text
+      as="p"
+      size="2"
+      weight="light"
+      color="gray"
+      className={cn("section-header-description", className)}
       {...props}
     >
       {children}
-    </p>
+    </Text>
   );
 }
 
-function SectionHeaderBase({
+/**
+ * Left slot — wraps eyebrow + heading (and description for split layout).
+ * Useful when composing via compound API.
+ */
+function SectionHeaderLeft({
+  className,
+  children,
+  ...props
+}: HTMLAttributes<HTMLDivElement>) {
+  return (
+    <div className={cn("section-header-left", className)} {...props}>
+      {children}
+    </div>
+  );
+}
+
+/**
+ * Right slot — accepts any ReactNode: button, component, text, etc.
+ * Renders in the right column for split/row layouts.
+ */
+function SectionHeaderRight({
+  className,
+  children,
+  ...props
+}: HTMLAttributes<HTMLDivElement>) {
+  return (
+    <div className={cn("section-header-right", className)} {...props}>
+      {children}
+    </div>
+  );
+}
+
+/**
+ * Action slot — shorthand alias for SectionHeaderRight when used inside
+ * the opinionated <SectionHeader> convenience wrapper via the `action` prop.
+ */
+function SectionHeaderAction({
+  className,
+  children,
+  ...props
+}: HTMLAttributes<HTMLDivElement>) {
+  return (
+    <div className={cn("section-header-action", className)} {...props}>
+      {children}
+    </div>
+  );
+}
+
+// ============ Main Component ============
+
+function SectionHeader({
   eyebrow,
   heading,
   description,
   as = "h2",
   layout = "split",
-  className = "",
+  className,
+  action,
 }: SectionHeaderProps) {
   return (
     <SectionHeaderRoot layout={layout} className={className}>
-      {eyebrow && (
-        <SectionHeaderEyebrow
-          className={layout === "stack" ? "mx-auto mb-4" : undefined}
-        >
-          {eyebrow}
-        </SectionHeaderEyebrow>
-      )}
-      <SectionHeaderHeading
-        as={as}
-        className={layout === "stack" ? "mx-auto" : undefined}
-      >
-        {renderHeadingLines(heading)}
-      </SectionHeaderHeading>
+      {eyebrow && <SectionHeaderEyebrow>{eyebrow}</SectionHeaderEyebrow>}
+      <SectionHeaderHeading as={as}>{heading}</SectionHeaderHeading>
       {description && (
-        <SectionHeaderDescription
-          className={
-            layout === "stack" ? "mx-auto mt-6 text-center lg:text-center" : ""
-          }
-        >
-          {description}
-        </SectionHeaderDescription>
+        <SectionHeaderDescription>{description}</SectionHeaderDescription>
       )}
+      {action && <SectionHeaderAction>{action}</SectionHeaderAction>}
     </SectionHeaderRoot>
   );
 }
 
-const SectionHeader = Object.assign(SectionHeaderBase, {
+// ============ Export ============
+
+const SectionHeaderCompound = Object.assign(SectionHeader, {
   Root: SectionHeaderRoot,
   Eyebrow: SectionHeaderEyebrow,
   Heading: SectionHeaderHeading,
   Description: SectionHeaderDescription,
+  Left: SectionHeaderLeft,
+  Right: SectionHeaderRight,
+  Action: SectionHeaderAction,
 });
 
+export default SectionHeaderCompound;
 export {
-  SectionHeader,
   SectionHeaderRoot,
   SectionHeaderEyebrow,
   SectionHeaderHeading,
   SectionHeaderDescription,
+  SectionHeaderLeft,
+  SectionHeaderRight,
+  SectionHeaderAction,
 };
-
-export default SectionHeader;

@@ -22,8 +22,11 @@ import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
+import SectionHeader from "@/components/SectionHeader";
 import { Button } from "@/components/ui/Button";
 import { CarouselControls } from "@/components/ui/CarouselControls";
+import { Container, Section } from "@/components/ui/section";
+import { useSwipe } from "@/hooks/useSwipe";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -55,7 +58,8 @@ const CarouselContext = createContext<CarouselContextValue | null>(null);
 
 function useCarousel() {
   const ctx = useContext(CarouselContext);
-  if (!ctx) throw new Error("Carousel sub-component used outside <CarouselRoot>");
+  if (!ctx)
+    throw new Error("Carousel sub-component used outside <CarouselRoot>");
   return ctx;
 }
 
@@ -76,8 +80,8 @@ export function CarouselRoot({
   className,
 }: CarouselRootProps) {
   const safeVisibleCount = Math.max(1, Math.min(visibleCount, items.length));
-  const maxStart         = Math.max(0, items.length - safeVisibleCount);
-  const canSlide         = items.length > safeVisibleCount;
+  const maxStart = Math.max(0, items.length - safeVisibleCount);
+  const canSlide = items.length > safeVisibleCount;
   const [startIndex, setStartIndex] = useState(0);
 
   const visibleItems = useMemo(
@@ -90,7 +94,17 @@ export function CarouselRoot({
 
   return (
     <CarouselContext.Provider
-      value={{ items, visibleItems, startIndex, setStartIndex, safeVisibleCount, canSlide, maxStart, goPrev, goNext }}
+      value={{
+        items,
+        visibleItems,
+        startIndex,
+        setStartIndex,
+        safeVisibleCount,
+        canSlide,
+        maxStart,
+        goPrev,
+        goNext,
+      }}
     >
       <div className={cn("ui-carousel", className)}>{children}</div>
     </CarouselContext.Provider>
@@ -106,21 +120,19 @@ export type CarouselHeaderProps = {
   className?: string;
 };
 
-export function CarouselHeader({ eyebrow, title, description, className }: CarouselHeaderProps) {
+export function CarouselHeader({
+  eyebrow,
+  title,
+  description,
+  className,
+}: CarouselHeaderProps) {
   return (
-    <div className={`ui-carousel-header mb-16 grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-start ${className ?? ""}`}>
-      <div>
-        {eyebrow && <p className="eyebrow mb-3">{eyebrow}</p>}
-        <h2 className="max-w-4xl text-5xl font-light leading-none tracking-normal text-white sm:text-6xl lg:text-7xl">
-          {title}
-        </h2>
-      </div>
-      {description && (
-        <p className="max-w-xl text-sm font-light leading-7 text-white/55 lg:ml-auto lg:pt-3 lg:text-right">
-          {description}
-        </p>
-      )}
-    </div>
+    <SectionHeader
+      eyebrow={eyebrow}
+      heading={title}
+      description={description}
+      className={className}
+    />
   );
 }
 
@@ -150,11 +162,13 @@ export function CarouselCard({ item, className }: CarouselCardProps) {
       />
       <div className="absolute inset-0 bg-gradient-to-t from-black via-black/35 to-transparent" />
       <div className="absolute inset-x-0 bottom-0 p-6 sm:p-7">
-        <p className="mb-4 text-xs font-light text-white/35">{item.n}</p>
+        <p className="mb-4 text-xs font-light text-muted">{item.n}</p>
         <h3 className="max-w-[15rem] text-2xl font-light leading-tight text-white">
           {item.title}
         </h3>
-        <p className="mt-4 text-xs font-light leading-6 text-white/55">{item.desc}</p>
+        <p className="mt-4 text-xs font-light leading-6 text-white/55">
+          {item.desc}
+        </p>
       </div>
     </motion.article>
   );
@@ -170,17 +184,27 @@ export type CarouselGridProps = {
 };
 
 export function CarouselGrid({ className, renderCard }: CarouselGridProps) {
-  const { visibleItems, safeVisibleCount } = useCarousel();
+  const { visibleItems, safeVisibleCount, goPrev, goNext } = useCarousel();
+  const swipe = useSwipe({ onSwipeLeft: goNext, onSwipeRight: goPrev });
 
   const colClass =
-    safeVisibleCount >= 4 ? "lg:grid-cols-4" :
-    safeVisibleCount === 3 ? "lg:grid-cols-3" :
-    "lg:grid-cols-2";
+    safeVisibleCount >= 4
+      ? "lg:grid-cols-4"
+      : safeVisibleCount === 3
+        ? "lg:grid-cols-3"
+        : "lg:grid-cols-2";
 
   return (
-    <div className={`ui-carousel-grid grid gap-4 sm:grid-cols-2 ${colClass} ${className ?? ""}`}>
+    <div
+      {...swipe}
+      className={`ui-carousel-grid grid gap-4 sm:grid-cols-2 ${colClass} ${className ?? ""} touch-pan-y select-none`}
+    >
       {visibleItems.map((item, i) =>
-        renderCard ? renderCard(item, i) : <CarouselCard key={item.n} item={item} />,
+        renderCard ? (
+          renderCard(item, i)
+        ) : (
+          <CarouselCard key={item.n} item={item} />
+        ),
       )}
     </div>
   );
@@ -190,20 +214,42 @@ export function CarouselGrid({ className, renderCard }: CarouselGridProps) {
 // Unified nav: action slot (left) + dots + arrows (right)
 
 export type CarouselNavProps = {
-  ctaPrimary?:   CarouselCta;
+  ctaPrimary?: CarouselCta;
   ctaSecondary?: CarouselCta;
   /** Extra content for the left action slot — overrides ctaPrimary/ctaSecondary */
-  actionSlot?:   React.ReactNode;
+  actionSlot?: React.ReactNode;
   className?: string;
 };
 
-export function CarouselNav({ ctaPrimary, ctaSecondary, actionSlot, className }: CarouselNavProps) {
-  const { items, startIndex, setStartIndex, safeVisibleCount, canSlide, maxStart, goPrev, goNext } = useCarousel();
+export function CarouselNav({
+  ctaPrimary,
+  ctaSecondary,
+  actionSlot,
+  className,
+}: CarouselNavProps) {
+  const {
+    items,
+    startIndex,
+    setStartIndex,
+    safeVisibleCount,
+    canSlide,
+    maxStart,
+    goPrev,
+    goNext,
+  } = useCarousel();
 
   const actions = actionSlot ?? (
     <>
-      {ctaPrimary  && <Button variant="primary"   href={ctaPrimary.href}>{ctaPrimary.label}</Button>}
-      {ctaSecondary && <Button variant="secondary" href={ctaSecondary.href}>{ctaSecondary.label}</Button>}
+      {ctaPrimary && (
+        <Button asChild variant="default">
+          <Link href={ctaPrimary.href}>{ctaPrimary.label}</Link>
+        </Button>
+      )}
+      {ctaSecondary && (
+        <Button asChild variant="secondary">
+          <Link href={ctaSecondary.href}>{ctaSecondary.label}</Link>
+        </Button>
+      )}
     </>
   );
 
@@ -236,7 +282,7 @@ export type CarouselProps = {
   title: string;
   description?: string;
   items: CarouselItem[];
-  ctaPrimary?:   CarouselCta;
+  ctaPrimary?: CarouselCta;
   ctaSecondary?: CarouselCta;
   visibleCount?: number;
   className?: string;
@@ -254,13 +300,20 @@ export function Carousel({
 }: CarouselProps) {
   return (
     <CarouselRoot items={items} visibleCount={visibleCount}>
-      <section className={`border-b border-white/[0.06] px-4 py-20 sm:px-8 lg:px-10 lg:py-28 ${className ?? ""}`}>
-        <div className="mx-auto max-w-[1500px]">
-          <CarouselHeader eyebrow={eyebrow} title={title} description={description} />
+      <Section
+        size={{ initial: "3", lg: "4" }}
+        className={cn("border-b border-white/[0.06]", className)}
+      >
+        <Container size="4">
+          <CarouselHeader
+            eyebrow={eyebrow}
+            title={title}
+            description={description}
+          />
           <CarouselGrid />
           <CarouselNav ctaPrimary={ctaPrimary} ctaSecondary={ctaSecondary} />
-        </div>
-      </section>
+        </Container>
+      </Section>
     </CarouselRoot>
   );
 }

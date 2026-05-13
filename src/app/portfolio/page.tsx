@@ -26,7 +26,7 @@ export default async function PortfolioPage() {
   ]);
 
   return (
-    <main className="min-h-screen bg-[#080808] text-white">
+    <main>
       <SiteNav />
 
       {/*

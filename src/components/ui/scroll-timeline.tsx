@@ -27,8 +27,9 @@ type ScrollTimelineContextValue = {
   scrollYProgress: MotionValue<number>;
 };
 
-const ScrollTimelineContext =
-  createContext<ScrollTimelineContextValue | null>(null);
+const ScrollTimelineContext = createContext<ScrollTimelineContextValue | null>(
+  null,
+);
 
 function useScrollTimelineContext() {
   const context = useContext(ScrollTimelineContext);
@@ -147,7 +148,7 @@ export function ScrollTimelineItem({
         }}
         viewport={{ once: false, amount: 0.65 }}
         transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-        className="absolute left-5 top-2 z-20 flex h-6 w-6 -translate-x-1/2 items-center justify-center rounded-full border border-[#E15F31]/60 bg-[#080808] text-[10px] font-medium text-[#E15F31] shadow-[0_0_18px_rgba(255,138,0,0.3)] lg:left-1/2 lg:-translate-x-1/2"
+        className="absolute left-5 top-2 z-20 flex h-6 w-6 -translate-x-1/2 items-center justify-center rounded-full border border-[#E15F31]/60  text-[10px] font-medium text-[#E15F31] shadow-[0_0_18px_rgba(255,138,0,0.3)] lg:left-1/2 lg:-translate-x-1/2"
       >
         {item.n}
       </motion.div>
@@ -225,7 +226,7 @@ export function ScrollTimelineItem({
                 key={text}
                 className={cn(
                   "max-w-lg text-xs font-light leading-7 transition-colors duration-500",
-                  isActive ? "text-white/62" : "text-white/35",
+                  isActive ? "text-white/62" : "text-muted",
                 )}
               >
                 {text}

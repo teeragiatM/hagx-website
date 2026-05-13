@@ -84,7 +84,7 @@ export default function ShopPage() {
   }, [selectedCats, inStockOnly, search, sort]);
 
   return (
-    <main className="min-h-screen bg-[#080808] text-white">
+    <main>
       <SiteNav />
 
       <PageHero
@@ -177,7 +177,7 @@ export default function ShopPage() {
         <div className="flex-1 px-8 py-10 sm:px-14 lg:px-10">
           {/* toolbar */}
           <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
-            <p className="text-sm font-light text-white/35">
+            <p className="text-sm font-light text-muted">
               แสดง <span className="text-white">{filtered.length}</span> /{" "}
               {products.length} รายการ
             </p>
@@ -247,31 +247,52 @@ export default function ShopPage() {
                     <MediaCardImage src={p.image} alt={p.nameEn} aspect="wide">
                       <div className="absolute left-4 top-4 flex gap-2">
                         <MediaCardBadge position="top-left" className="static">
-                          {categories.find((c) => c.value === p.category)?.label.split(" ")[0]}
+                          {
+                            categories
+                              .find((c) => c.value === p.category)
+                              ?.label.split(" ")[0]
+                          }
                         </MediaCardBadge>
                         {!p.inStock && (
-                          <MediaCardBadge position="top-left" className="static bg-black/70 text-white/40">
+                          <MediaCardBadge
+                            position="top-left"
+                            className="static bg-black/70 text-white/40"
+                          >
                             สั่งจอง
                           </MediaCardBadge>
                         )}
                       </div>
                       {p.featured && (
-                        <MediaCardBadge position="top-right" variant="accent">Popular</MediaCardBadge>
+                        <MediaCardBadge position="top-right" variant="accent">
+                          Popular
+                        </MediaCardBadge>
                       )}
                     </MediaCardImage>
 
                     <MediaCardBody>
-                      <MediaCardEyebrow className="text-[9px] text-white/25">{p.subcategory}</MediaCardEyebrow>
-                      <MediaCardTitle className="mb-1 text-sm">{p.name}</MediaCardTitle>
-                      <p className="mb-2 text-[11px] font-light text-white/35">{p.nameEn}</p>
-                      <p className="mb-3 line-clamp-2 text-[11px] font-light leading-5 text-white/30">{p.tagline}</p>
+                      <MediaCardEyebrow className="text-[9px] text-white/25">
+                        {p.subcategory}
+                      </MediaCardEyebrow>
+                      <MediaCardTitle className="mb-1 text-sm">
+                        {p.name}
+                      </MediaCardTitle>
+                      <p className="mb-2 text-[11px] font-light text-muted">
+                        {p.nameEn}
+                      </p>
+                      <p className="mb-3 line-clamp-2 text-[11px] font-light leading-5 text-white/30">
+                        {p.tagline}
+                      </p>
                       <MediaCardFooter
                         left={
                           <div>
-                            <p className="text-[9px] font-light uppercase tracking-widest text-white/20">เริ่มต้น</p>
+                            <p className="text-[9px] font-light uppercase tracking-widest text-white/20">
+                              เริ่มต้น
+                            </p>
                             <p className="text-base font-semibold text-[#DB5828]">
                               ฿{Number(p.priceFrom).toLocaleString()}
-                              <span className="ml-1 text-[10px] font-light text-white/30">/{p.unit}</span>
+                              <span className="ml-1 text-[10px] font-light text-white/30">
+                                /{p.unit}
+                              </span>
                             </p>
                           </div>
                         }

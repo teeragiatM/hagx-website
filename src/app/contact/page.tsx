@@ -31,7 +31,7 @@ export default function ContactPage() {
   }) as unknown as string[];
 
   return (
-    <main className="min-h-screen bg-[#080808] text-white">
+    <main>
       <SiteNav />
 
       <div className="hero-bottom-shadow relative overflow-hidden">
@@ -73,7 +73,7 @@ export default function ContactPage() {
               </div>
             </div>
 
-            <div className="mt-12 space-y-3 text-sm font-light text-white/35">
+            <div className="mt-12 space-y-3 text-sm font-light text-muted">
               <p>{t("hero.location")}</p>
               <p>{t("hero.email")}</p>
               <p>{t("hero.hours")}</p>
@@ -113,7 +113,7 @@ export default function ContactPage() {
               >
                 <div className="grid gap-8 sm:grid-cols-2">
                   <div>
-                    <label className="mb-2 block text-[10px] font-light uppercase tracking-widest text-white/35">
+                    <label className="mb-2 block text-[10px] font-light uppercase tracking-widest text-muted">
                       {requiredLabel(t("form.first_name"))}
                     </label>
                     <input
@@ -124,7 +124,7 @@ export default function ContactPage() {
                     />
                   </div>
                   <div>
-                    <label className="mb-2 block text-[10px] font-light uppercase tracking-widest text-white/35">
+                    <label className="mb-2 block text-[10px] font-light uppercase tracking-widest text-muted">
                       {requiredLabel(t("form.last_name"))}
                     </label>
                     <input
@@ -138,7 +138,7 @@ export default function ContactPage() {
 
                 <div className="grid gap-8 sm:grid-cols-2">
                   <div>
-                    <label className="mb-2 block text-[10px] font-light uppercase tracking-widest text-white/35">
+                    <label className="mb-2 block text-[10px] font-light uppercase tracking-widest text-muted">
                       {requiredLabel(t("form.email"))}
                     </label>
                     <input
@@ -149,7 +149,7 @@ export default function ContactPage() {
                     />
                   </div>
                   <div>
-                    <label className="mb-2 block text-[10px] font-light uppercase tracking-widest text-white/35">
+                    <label className="mb-2 block text-[10px] font-light uppercase tracking-widest text-muted">
                       {t("form.industry")}
                     </label>
                     <select className="contact-input cursor-pointer appearance-none bg-[#111]">
@@ -163,7 +163,7 @@ export default function ContactPage() {
 
                 <div className="grid gap-8 sm:grid-cols-2">
                   <div>
-                    <label className="mb-2 block text-[10px] font-light uppercase tracking-widest text-white/35">
+                    <label className="mb-2 block text-[10px] font-light uppercase tracking-widest text-muted">
                       {requiredLabel(t("form.company"))}
                     </label>
                     <input
@@ -174,7 +174,7 @@ export default function ContactPage() {
                     />
                   </div>
                   <div>
-                    <label className="mb-2 block text-[10px] font-light uppercase tracking-widest text-white/35">
+                    <label className="mb-2 block text-[10px] font-light uppercase tracking-widest text-muted">
                       {requiredLabel(t("form.phone"))}
                     </label>
                     <input
@@ -187,7 +187,7 @@ export default function ContactPage() {
                 </div>
 
                 <div>
-                  <label className="mb-2 block text-[10px] font-light uppercase tracking-widest text-white/35">
+                  <label className="mb-2 block text-[10px] font-light uppercase tracking-widest text-muted">
                     {requiredLabel(t("form.topic"))}
                   </label>
                   <select
@@ -202,7 +202,7 @@ export default function ContactPage() {
                 </div>
 
                 <div>
-                  <label className="mb-2 block text-[10px] font-light uppercase tracking-widest text-white/35">
+                  <label className="mb-2 block text-[10px] font-light uppercase tracking-widest text-muted">
                     {t("form.details")}
                   </label>
                   <textarea

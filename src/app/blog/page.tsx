@@ -3,6 +3,7 @@ import { postsQuery } from "@/lib/queries";
 import { urlFor } from "@/lib/sanity";
 import Image from "next/image";
 import Link from "next/link";
+import { Heading } from "@/components/ui";
 
 type Post = {
   _id: string;
@@ -27,9 +28,9 @@ export default async function BlogPage() {
           <p className="text-[10px] tracking-[0.3em] uppercase text-slate-400 font-light mb-4">
             Insights
           </p>
-          <h1 className="text-5xl font-bold text-slate-900 tracking-tight">
+          <Heading as="h1" className="text-5xl text-slate-900 tracking-tight">
             บทความ
-          </h1>
+          </Heading>
         </div>
 
         {posts.length === 0 ? (
@@ -47,7 +48,11 @@ export default async function BlogPage() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {posts.map((post) => (
-              <Link key={post._id} href={`/blog/${post.slug.current}`} className="group">
+              <Link
+                key={post._id}
+                href={`/blog/${post.slug.current}`}
+                className="group"
+              >
                 <article>
                   {post.mainImage && (
                     <div className="relative aspect-[16/9] overflow-hidden mb-5">

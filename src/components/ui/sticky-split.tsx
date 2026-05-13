@@ -16,12 +16,15 @@ type StickySplitItemBase = {
   id: string;
 };
 
-type StickySplitContextValue<TItem extends StickySplitItemBase = StickySplitItemBase> = {
+type StickySplitContextValue<
+  TItem extends StickySplitItemBase = StickySplitItemBase,
+> = {
   items: TItem[];
   activeIndex: number;
   activeItem: TItem;
   pinnedSide: "left" | "right";
   setActiveIndex: (index: number) => void;
+  innerClassName?: string;
 };
 
 const StickySplitContext =
@@ -30,23 +33,32 @@ const StickySplitContext =
 function useStickySplitContext() {
   const context = useContext(StickySplitContext);
   if (!context) {
-    throw new Error("StickySplit components must be used inside <StickySplit>.");
+    throw new Error(
+      "StickySplit components must be used inside <StickySplit>.",
+    );
   }
   return context;
 }
 
-export type StickySplitProps<TItem extends StickySplitItemBase> =
-  Omit<HTMLAttributes<HTMLElement>, "children"> & {
-    items: TItem[];
-    pinnedSide?: "left" | "right";
-    children: ReactNode;
-  };
+export type StickySplitProps<TItem extends StickySplitItemBase> = Omit<
+  HTMLAttributes<HTMLElement>,
+  "children"
+> & {
+  items: TItem[];
+  pinnedSide?: "left" | "right";
+  as?: React.ElementType;
+  /** Class applied to the inner content wrapper inside each column (pinned + items) */
+  innerClassName?: string;
+  children: ReactNode;
+};
 
 export function StickySplit<TItem extends StickySplitItemBase>({
   id,
   items,
   pinnedSide = "left",
+  as: Component = "div",
   className,
+  innerClassName,
   children,
   ...props
 }: StickySplitProps<TItem>) {
@@ -60,26 +72,22 @@ export function StickySplit<TItem extends StickySplitItemBase>({
       activeItem,
       pinnedSide,
       setActiveIndex,
+      innerClassName,
     }),
-    [activeIndex, activeItem, items, pinnedSide],
+    [activeIndex, activeItem, innerClassName, items, pinnedSide],
   );
 
   return (
     <StickySplitContext.Provider
       value={context as StickySplitContextValue<StickySplitItemBase>}
     >
-      <section
+      <Component
         id={id}
-        className={cn(
-          "ui-sticky-split relative border-y border-white/[0.06] bg-[#080808]",
-          className,
-        )}
+        className={cn("ui-sticky-split relative", className)}
         {...props}
       >
-        <div className="mx-auto grid max-w-[1500px] lg:grid-cols-[49%_51%]">
-          {children}
-        </div>
-      </section>
+        <div className="mx-auto grid lg:grid-cols-2">{children}</div>
+      </Component>
     </StickySplitContext.Provider>
   );
 }
@@ -88,9 +96,9 @@ export type StickySplitRenderContext<
   TItem extends StickySplitItemBase = StickySplitItemBase,
 > = StickySplitContextValue<TItem>;
 
-type RenderableChildren<TItem extends StickySplitItemBase = StickySplitItemBase> =
-  | ReactNode
-  | ((context: StickySplitRenderContext<TItem>) => ReactNode);
+type RenderableChildren<
+  TItem extends StickySplitItemBase = StickySplitItemBase,
+> = ReactNode | ((context: StickySplitRenderContext<TItem>) => ReactNode);
 
 function renderChildren<TItem extends StickySplitItemBase>(
   children: RenderableChildren<TItem>,
@@ -101,10 +109,12 @@ function renderChildren<TItem extends StickySplitItemBase>(
     : children;
 }
 
-export type StickySplitPinnedProps<TItem extends StickySplitItemBase> =
-  Omit<HTMLAttributes<HTMLDivElement>, "children"> & {
-    children: RenderableChildren<TItem>;
-  };
+export type StickySplitPinnedProps<TItem extends StickySplitItemBase> = Omit<
+  HTMLAttributes<HTMLDivElement>,
+  "children"
+> & {
+  children: RenderableChildren<TItem>;
+};
 
 export function StickySplitPinned<TItem extends StickySplitItemBase>({
   className,
@@ -117,21 +127,25 @@ export function StickySplitPinned<TItem extends StickySplitItemBase>({
   return (
     <div
       className={cn(
-          "ui-sticky-split-pinned border-white/[0.06] px-[var(--site-inline-px)] py-20 lg:sticky lg:top-0 lg:flex lg:h-screen lg:flex-col lg:justify-center",
-        pinnedFirst ? "lg:order-1 lg:border-r" : "lg:order-2 lg:border-l",
+        "ui-sticky-split-pinned ui-padding ui-margin lg:sticky lg:top-0 lg:flex lg:h-screen lg:flex-col",
+        pinnedFirst ? "lg:order-1" : "lg:order-2",
         className,
       )}
       {...props}
     >
-      {renderChildren(children, context)}
+      <div className={cn("flex flex-col gap-5", context.innerClassName)}>
+        {renderChildren(children, context)}
+      </div>
     </div>
   );
 }
 
-export type StickySplitNavProps<TItem extends StickySplitItemBase> =
-  Omit<HTMLAttributes<HTMLElement>, "children"> & {
-    children: RenderableChildren<TItem>;
-  };
+export type StickySplitNavProps<TItem extends StickySplitItemBase> = Omit<
+  HTMLAttributes<HTMLElement>,
+  "children"
+> & {
+  children: RenderableChildren<TItem>;
+};
 
 export function StickySplitNav<TItem extends StickySplitItemBase>({
   className,
@@ -142,7 +156,10 @@ export function StickySplitNav<TItem extends StickySplitItemBase>({
 
   return (
     <nav
-      className={cn("ui-sticky-split-nav mb-12 flex flex-wrap gap-x-10 gap-y-5", className)}
+      className={cn(
+        "ui-sticky-split-nav flex flex-wrap gap-x-2 gap-y-1",
+        className,
+      )}
       {...props}
     >
       {renderChildren(children, context)}
@@ -150,12 +167,14 @@ export function StickySplitNav<TItem extends StickySplitItemBase>({
   );
 }
 
-export type StickySplitNavItemProps =
-  Omit<ButtonHTMLAttributes<HTMLButtonElement>, "children" | "type"> & {
-    index: number;
-    targetId?: string;
-    children: ReactNode;
-  };
+export type StickySplitNavItemProps = Omit<
+  ButtonHTMLAttributes<HTMLButtonElement>,
+  "children" | "type"
+> & {
+  index: number;
+  targetId?: string;
+  children: ReactNode;
+};
 
 export function StickySplitNavItem({
   index,
@@ -220,7 +239,7 @@ export function StickySplitContent({
     >
       <div
         className={cn(
-          "pointer-events-none absolute top-0 z-20 hidden h-full w-px bg-[#DB5828]/80 lg:block",
+          "pointer-events-none absolute top-0 z-20 hidden h-full w-px lg:block",
           pinnedFirst ? "left-0" : "right-0",
         )}
       />
@@ -229,14 +248,13 @@ export function StickySplitContent({
   );
 }
 
-export type StickySplitItemProps<TItem extends StickySplitItemBase> =
-  {
-    id?: string;
-    className?: string;
-    index: number;
-    item?: TItem;
-    children: RenderableChildren<TItem>;
-  };
+export type StickySplitItemProps<TItem extends StickySplitItemBase> = {
+  id?: string;
+  className?: string;
+  index: number;
+  item?: TItem;
+  children: RenderableChildren<TItem>;
+};
 
 export function StickySplitItem<TItem extends StickySplitItemBase>({
   id,
@@ -253,11 +271,13 @@ export function StickySplitItem<TItem extends StickySplitItemBase>({
       onViewportEnter={() => context.setActiveIndex(index)}
       viewport={{ amount: 0.55 }}
       className={cn(
-        "ui-sticky-split-item flex min-h-screen items-center px-[var(--site-inline-px)] py-20 lg:px-[calc(var(--site-inline-px)*1.35)]",
+        "flex min-h-screen items-center ui-padding ui-margin",
         className,
       )}
     >
-      {renderChildren(children, context)}
+      <div className={cn("w-full", context.innerClassName)}>
+        {renderChildren(children, context)}
+      </div>
     </motion.article>
   );
 }
@@ -279,7 +299,11 @@ export type StickySplitSectionProps<TItem extends StickySplitItemBase> = {
   renderPinned: (context: StickySplitRenderContext<TItem>) => ReactNode;
   renderPinnedFooter?: (context: StickySplitRenderContext<TItem>) => ReactNode;
   renderNavLabel: (item: TItem, index: number) => ReactNode;
-  renderItem: (item: TItem, index: number, context: StickySplitRenderContext<TItem>) => ReactNode;
+  renderItem: (
+    item: TItem,
+    index: number,
+    context: StickySplitRenderContext<TItem>,
+  ) => ReactNode;
 };
 
 export function StickySplitSection<TItem extends StickySplitItemBase>({
@@ -296,7 +320,12 @@ export function StickySplitSection<TItem extends StickySplitItemBase>({
   renderItem,
 }: StickySplitSectionProps<TItem>) {
   return (
-    <StickySplit id={id} items={items} pinnedSide={pinnedSide} className={className}>
+    <StickySplit
+      id={id}
+      items={items}
+      pinnedSide={pinnedSide}
+      className={className}
+    >
       <StickySplitPinned<TItem> className={pinnedClassName}>
         {(context) => (
           <>

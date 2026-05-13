@@ -1,0 +1,880 @@
+/* #region Layout variants */
+@layer base {
+  /* #region button */
+
+.ui-BaseButton {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    vertical-align: top;
+    -webkit-user-select: none;
+    user-select: none;
+    font-style: normal;
+    @apply transition-all duration-200;
+}
+  .ui-BaseButton {
+    height: var(--base-button-height);
+  }
+  .ui-BaseButton:where(.ui-r-size-1) {
+    --base-button-height: var(--spacing-5);
+  }
+  .ui-BaseButton:where(.ui-r-size-2) {
+    --base-button-height: var(--spacing-6);
+  }
+  .ui-BaseButton:where(.ui-r-size-3) {
+    --base-button-height: var(--spacing-7);
+  }
+  .ui-BaseButton:where(.ui-r-size-4) {
+    --base-button-height: var(--spacing-8);
+  }
+
+  .ui-BaseButton:where(.ui-variant-default) {
+    background-color: var(--accent-9);
+    color: var(--accent-contrast);
+  }
+
+  @media (hover: hover) {
+    .ui-BaseButton:where(.ui-variant-default):where(:hover) {
+      background-color: var(--accent-10);
+    }
+  }
+
+  .ui-BaseButton:where(.ui-variant-default):where(
+      [data-state="open"],
+      [data-state="on"],
+    ) {
+    background-color: var(--accent-10);
+  }
+  .ui-BaseButton:where(.ui-variant-default):where(
+      :active:not([data-state="open"]):not([data-state="on"])
+    ) {
+    background-color: var(--accent-10);
+    filter: var(--base-button-solid-active-filter);
+  }
+
+  @media (pointer: coarse) {
+    .ui-BaseButton:where(.ui-variant-default):where(
+        :active:not([data-state="open"]):not([data-state="on"])
+      ) {
+      outline: 0.5em solid var(--accent-a4);
+      outline-offset: 0;
+    }
+  }
+
+  .ui-BaseButton:where(.ui-variant-default):where(:focus-visible) {
+    outline: 2px solid var(--focus-8);
+    outline-offset: 2px;
+  }
+
+  .ui-BaseButton:where(.ui-variant-default):where(.ui-high-contrast) {
+    background-color: var(--accent-12);
+    color: var(--gray-1);
+  }
+
+  @media (hover: hover) {
+    .ui-BaseButton:where(.ui-variant-default):where(.ui-high-contrast):where(
+        :hover
+      ) {
+      background-color: var(--accent-12);
+      filter: var(--base-button-solid-high-contrast-hover-filter);
+    }
+  }
+
+  .ui-BaseButton:where(.ui-variant-default):where(.ui-high-contrast):where(
+      [data-state="open"],
+      [data-state="on"]
+    ) {
+    background-color: var(--accent-12);
+    filter: var(--base-button-solid-high-contrast-hover-filter);
+  }
+
+  .ui-BaseButton:where(.ui-variant-default):where(.ui-high-contrast):where(
+      :active:not([data-state="open"]):not([data-state="on"])
+    ) {
+    background-color: var(--accent-12);
+    filter: var(--base-button-solid-high-contrast-active-filter);
+  }
+
+  .ui-BaseButton:where(.ui-variant-default):where([data-disabled]) {
+    color: var(--gray-a8);
+    background-color: var(--gray-a3);
+    outline: none;
+    filter: none;
+  }
+
+  .ui-BaseButton:where(.ui-variant-outline) {
+    /* กำหนดค่าเริ่มต้น (ทุกด้าน) */
+    --shadow-color: var(--accent-a8);
+    /* กำหนดค่าเริ่มต้น (ทุกด้าน) */
+    --shadow-top: inset 0 1px 0 0 var(--shadow-color);
+    --shadow-right: inset -1px 0 0 0 var(--shadow-color);
+    --shadow-bottom: inset 0 -1px 0 0 var(--shadow-color);
+    --shadow-left: inset 1px 0 0 0 var(--shadow-color);
+    /* รวมทุกด้าน */
+    box-shadow:
+      var(--shadow-top), var(--shadow-right), var(--shadow-bottom),
+      var(--shadow-left);
+    color: var(--accent-a11);
+  }
+  /* กรณีไม่มี spacing และมีปุ่ม 2 ปุ่มขึ้นไป */
+
+  @media (hover: hover) {
+    .ui-BaseButton:where(.ui-variant-outline):where(:hover) {
+      background-color: var(--accent-a2);
+    }
+  }
+
+  /* state ที่ต้องการให้มีสีเดียวกัน */
+  .ui-BaseButton:where(.ui-variant-outline):where(
+      [data-state="open"],
+      [data-state="on"],
+      [data-state="selected"]
+    ) {
+    background-color: var(--accent-a2);
+  }
+
+  /* active เฉพาะที่ไม่มี state เหล่านั้น */
+  .ui-BaseButton:where(.ui-variant-outline):where(
+      :active:not([data-state="open"]):not([data-state="on"])
+    ) {
+    background-color: var(--accent-a3);
+  }
+
+  .ui-BaseButton:where(.ui-variant-outline):where(:focus-visible) {
+    outline: 2px solid var(--focus-8);
+    outline-offset: -1px;
+  }
+
+  .ui-BaseButton:where(.ui-variant-outline):where(.ui-high-contrast) {
+    box-shadow:
+      inset 0 0 0 1px var(--accent-a7),
+      inset 0 0 0 1px var(--gray-a11);
+    color: var(--accent-12);
+  }
+
+  .ui-BaseButton:where(.ui-variant-outline):where([data-disabled]) {
+    color: var(--gray-a8);
+    box-shadow: inset 0 0 0 1px var(--gray-a7);
+    background-color: initial;
+  }
+  /* ── secondary — neutral border, fills white on hover ── */
+  .ui-BaseButton:where(.ui-variant-secondary) {
+    border: 1px solid rgba(255,255,255,0.22);
+    background-color: transparent;
+    color: rgba(255,255,255,0.70);
+  }
+  @media (hover: hover) {
+    .ui-BaseButton:where(.ui-variant-secondary):where(:hover) {
+      border-color: #fff;
+      background-color: #fff;
+      color: #080808;
+    }
+  }
+  .ui-BaseButton:where(.ui-variant-secondary):where(:focus-visible) { outline: 2px solid var(--focus-8); outline-offset: 2px; }
+  .ui-BaseButton:where(.ui-variant-secondary):where([data-disabled]) { color: var(--gray-a8); border-color: var(--gray-a7); }
+
+  /* ── ghost — brand border, fills brand on hover ── */
+  .ui-BaseButton:where(.ui-variant-ghost) {
+    border: 1px solid var(--accent-9);
+    background-color: transparent;
+    color: var(--accent-9);
+  }
+  @media (hover: hover) {
+    .ui-BaseButton:where(.ui-variant-ghost):where(:hover) {
+      background-color: var(--accent-9);
+      color: var(--accent-contrast);
+    }
+  }
+  .ui-BaseButton:where(.ui-variant-ghost):where(:focus-visible) { outline: 2px solid var(--focus-8); outline-offset: 2px; }
+  .ui-BaseButton:where(.ui-variant-ghost):where([data-disabled]) { color: var(--gray-a8); border-color: var(--gray-a7); }
+
+  .ui-Button:where(.ui-r-size-1) {
+    gap: var(--spacing-1);
+    font-size: var(--font-size-1);
+    line-height: var(--line-height-1);
+    letter-spacing: var(--letter-spacing-1);
+    padding-left: var(--spacing-2);
+    padding-right: var(--spacing-2);
+  }
+
+  .ui-Button:where(.ui-r-size-2) {
+    gap: var(--spacing-2);
+    font-size: var(--font-size-2);
+    line-height: var(--line-height-2);
+    letter-spacing: var(--letter-spacing-2);
+    padding-left: var(--spacing-3);
+    padding-right: var(--spacing-3);
+  }
+
+  .ui-Button:where(.ui-r-size-3) {
+    gap: var(--spacing-3);
+    font-size: var(--font-size-3);
+    line-height: var(--line-height-3);
+    letter-spacing: var(--letter-spacing-3);
+    padding-left: var(--spacing-4);
+    padding-right: var(--spacing-4);
+
+  }
+  .ui-Button:where(.ui-r-size-4) {
+    gap: var(--spacing-3);
+    font-size: var(--font-size-4);
+    line-height: var(--line-height-4);
+    letter-spacing: var(--letter-spacing-4);
+    padding-left: var(--spacing-5);
+    padding-right: var(--spacing-5);
+    
+  }
+  .ui-IconButton {
+    padding: 0;
+  }
+
+  .ui-IconButton:where(.ui-r-size-1) {
+    width: var(--spacing-5);
+    min-width: var(--spacing-5);
+  }
+
+  .ui-IconButton:where(.ui-r-size-2) {
+    width: var(--spacing-6);
+    min-width: var(--spacing-6);
+  }
+
+  .ui-IconButton:where(.ui-r-size-3) {
+    width: var(--spacing-7);
+    min-width: var(--spacing-7);
+  }
+
+  .ui-IconButton:where(.ui-r-size-4) {
+    width: var(--spacing-8);
+    min-width: var(--spacing-8);
+  }
+
+/* #endregion button */
+
+
+/* #region Section */
+  .ui-Section {
+    box-sizing: border-box;
+    flex-shrink: 0;
+  }
+
+  .ui-Section:where(.ui-r-size-0) {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .ui-Section:where(.ui-r-size-1){
+    padding-top: var(--spacing-5);
+    padding-bottom: var(--spacing-5);
+  }
+
+  .ui-Section:where(.ui-r-size-2) {
+    padding-top: var(--spacing-7);
+    padding-bottom: var(--spacing-7);
+  }
+
+  .ui-Section:where(.ui-r-size-3) {
+    padding-top: var(--spacing-9);
+    padding-bottom: var(--spacing-9);
+  }
+
+  .ui-Section:where(.ui-r-size-4){
+    padding-top: 80px;
+    padding-bottom: 80px;
+  }
+
+  @media (min-width: 520px) {
+    .ui-Section:where(.xs\:ui-r-size-0) {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+
+    .ui-Section:where(.xs\:ui-r-size-1) {
+      padding-top: var(--spacing-5);
+      padding-bottom: var(--spacing-5);
+    }
+
+    .ui-Section:where(.xs\:ui-r-size-2) {
+      padding-top: var(--spacing-7);
+      padding-bottom: var(--spacing-7);
+    }
+
+    .ui-Section:where(.xs\:ui-r-size-3) {
+      padding-top: var(--spacing-9);
+      padding-bottom: var(--spacing-9);
+    }
+
+    .ui-Section:where(.xs\:ui-r-size-4) {
+      padding-top: 80px;
+      padding-bottom: 80px;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .ui-Section:where(.sm\:ui-r-size-0) {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+
+    .ui-Section:where(.sm\:ui-r-size-1) {
+      padding-top: var(--spacing-5);
+      padding-bottom: var(--spacing-5);
+    }
+
+    .ui-Section:where(.sm\:ui-r-size-2) {
+      padding-top: var(--spacing-7);
+      padding-bottom: var(--spacing-7);
+    }
+
+    .ui-Section:where(.sm\:ui-r-size-3) {
+      padding-top: var(--spacing-9);
+      padding-bottom: var(--spacing-9);
+    }
+
+    .ui-Section:where(.sm\:ui-r-size-4) {
+      padding-top: 80px;
+      padding-bottom: 80px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .ui-Section:where(.md\:ui-r-size-0) {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+
+    .ui-Section:where(.md\:ui-r-size-1) {
+      padding-top: var(--spacing-5);
+      padding-bottom: var(--spacing-5);
+    }
+
+    .ui-Section:where(.md\:ui-r-size-2) {
+      padding-top: var(--spacing-7);
+      padding-bottom: var(--spacing-7);
+    }
+
+    .ui-Section:where(.md\:ui-r-size-3) {
+      padding-top: var(--spacing-9);
+      padding-bottom: var(--spacing-9);
+    }
+
+    .ui-Section:where(.md\:ui-r-size-4) {
+      padding-top: 80px;
+      padding-bottom: 80px;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .ui-Section:where(.lg\:ui-r-size-0) {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+
+    .ui-Section:where(.lg\:ui-r-size-1) {
+      padding-top: var(--spacing-5);
+      padding-bottom: var(--spacing-5);
+    }
+
+    .ui-Section:where(.lg\:ui-r-size-2) {
+      padding-top: var(--spacing-7);
+      padding-bottom: var(--spacing-7);
+    }
+
+    .ui-Section:where(.lg\:ui-r-size-3) {
+      padding-top: var(--spacing-9);
+      padding-bottom: var(--spacing-9);
+    }
+
+    .ui-Section:where(.lg\:ui-r-size-4) {
+      padding-top: 80px;
+      padding-bottom: 80px;
+    }
+  }
+
+  @media (min-width: 1640px) {
+    .ui-Section:where(.xl\:ui-r-size-0) {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+
+    .ui-Section:where(.xl\:ui-r-size-1) {
+      padding-top: var(--spacing-5);
+      padding-bottom: var(--spacing-5);
+    }
+
+    .ui-Section:where(.xl\:ui-r-size-2) {
+      padding-top: var(--spacing-7);
+      padding-bottom: var(--spacing-7);
+    }
+
+    .ui-Section:where(.xl\:ui-r-size-3) {
+      padding-top: var(--spacing-9);
+      padding-bottom: var(--spacing-9);
+    }
+
+    .ui-Section:where(.xl\:ui-r-size-4) {
+      padding-top: 80px;
+      padding-bottom: 80px;
+    }
+  }
+  
+  .ui-Container {
+    @apply flex shrink-0 flex-grow flex-col items-center;
+
+    @apply [&.ui-r-size-1_>_.ui-ContainerInner]:max-w-(--container-1) [&.ui-r-size-2_>_.ui-ContainerInner]:max-w-(--container-2) [&.ui-r-size-3_>_.ui-ContainerInner]:max-w-(--container-3) [&.ui-r-size-4_>_.ui-ContainerInner]:max-w-(--container-4) [&.ui-r-size-5_>_.ui-ContainerInner]:max-w-(--container-5) [&.ui-r-size-6_>_.ui-ContainerInner]:max-w-(--container-6) [&.ui-r-size-7_>_.ui-ContainerInner]:max-w-(--container-7);
+
+    @apply [&.ui-r-align-center_>_.ui-ContainerInner]:mx-auto [&.ui-r-align-left]:ml-0 [&.ui-r-align-left_>_.ui-ContainerInner]:mr-auto [&.ui-r-align-right]:mr-0 [&.ui-r-align-right_>_.ui-ContainerInner]:ml-auto;
+  }
+
+  .ui-ContainerInner {
+    @apply w-full;
+  }
+
+  @media (min-width: 520px) {
+    .ui-Container:where(.xs\:ui-r-size-1) > .ui-ContainerInner { max-width: var(--container-1); }
+    .ui-Container:where(.xs\:ui-r-size-2) > .ui-ContainerInner { max-width: var(--container-2); }
+    .ui-Container:where(.xs\:ui-r-size-3) > .ui-ContainerInner { max-width: var(--container-3); }
+    .ui-Container:where(.xs\:ui-r-size-4) > .ui-ContainerInner { max-width: var(--container-4); }
+    .ui-Container:where(.xs\:ui-r-size-5) > .ui-ContainerInner { max-width: var(--container-5); }
+    .ui-Container:where(.xs\:ui-r-size-6) > .ui-ContainerInner { max-width: var(--container-6); }
+    .ui-Container:where(.xs\:ui-r-size-7) > .ui-ContainerInner { max-width: var(--container-7); }
+    .ui-Container:where(.xs\:ui-r-align-left) { margin-left: 0; }
+    .ui-Container:where(.xs\:ui-r-align-left) > .ui-ContainerInner { margin-right: auto; }
+    .ui-Container:where(.xs\:ui-r-align-center) > .ui-ContainerInner { margin-inline: auto; }
+    .ui-Container:where(.xs\:ui-r-align-right) { margin-right: 0; }
+    .ui-Container:where(.xs\:ui-r-align-right) > .ui-ContainerInner { margin-left: auto; }
+  }
+
+  @media (min-width: 768px) {
+    .ui-Container:where(.sm\:ui-r-size-1) > .ui-ContainerInner { max-width: var(--container-1); }
+    .ui-Container:where(.sm\:ui-r-size-2) > .ui-ContainerInner { max-width: var(--container-2); }
+    .ui-Container:where(.sm\:ui-r-size-3) > .ui-ContainerInner { max-width: var(--container-3); }
+    .ui-Container:where(.sm\:ui-r-size-4) > .ui-ContainerInner { max-width: var(--container-4); }
+    .ui-Container:where(.sm\:ui-r-size-5) > .ui-ContainerInner { max-width: var(--container-5); }
+    .ui-Container:where(.sm\:ui-r-size-6) > .ui-ContainerInner { max-width: var(--container-6); }
+    .ui-Container:where(.sm\:ui-r-size-7) > .ui-ContainerInner { max-width: var(--container-7); }
+    .ui-Container:where(.sm\:ui-r-align-left) { margin-left: 0; }
+    .ui-Container:where(.sm\:ui-r-align-left) > .ui-ContainerInner { margin-right: auto; }
+    .ui-Container:where(.sm\:ui-r-align-center) > .ui-ContainerInner { margin-inline: auto; }
+    .ui-Container:where(.sm\:ui-r-align-right) { margin-right: 0; }
+    .ui-Container:where(.sm\:ui-r-align-right) > .ui-ContainerInner { margin-left: auto; }
+  }
+
+  @media (min-width: 1024px) {
+    .ui-Container:where(.md\:ui-r-size-1) > .ui-ContainerInner { max-width: var(--container-1); }
+    .ui-Container:where(.md\:ui-r-size-2) > .ui-ContainerInner { max-width: var(--container-2); }
+    .ui-Container:where(.md\:ui-r-size-3) > .ui-ContainerInner { max-width: var(--container-3); }
+    .ui-Container:where(.md\:ui-r-size-4) > .ui-ContainerInner { max-width: var(--container-4); }
+    .ui-Container:where(.md\:ui-r-size-5) > .ui-ContainerInner { max-width: var(--container-5); }
+    .ui-Container:where(.md\:ui-r-size-6) > .ui-ContainerInner { max-width: var(--container-6); }
+    .ui-Container:where(.md\:ui-r-size-7) > .ui-ContainerInner { max-width: var(--container-7); }
+    .ui-Container:where(.md\:ui-r-align-left) { margin-left: 0; }
+    .ui-Container:where(.md\:ui-r-align-left) > .ui-ContainerInner { margin-right: auto; }
+    .ui-Container:where(.md\:ui-r-align-center) > .ui-ContainerInner { margin-inline: auto; }
+    .ui-Container:where(.md\:ui-r-align-right) { margin-right: 0; }
+    .ui-Container:where(.md\:ui-r-align-right) > .ui-ContainerInner { margin-left: auto; }
+  }
+
+  @media (min-width: 1280px) {
+    .ui-Container:where(.lg\:ui-r-size-1) > .ui-ContainerInner { max-width: var(--container-1); }
+    .ui-Container:where(.lg\:ui-r-size-2) > .ui-ContainerInner { max-width: var(--container-2); }
+    .ui-Container:where(.lg\:ui-r-size-3) > .ui-ContainerInner { max-width: var(--container-3); }
+    .ui-Container:where(.lg\:ui-r-size-4) > .ui-ContainerInner { max-width: var(--container-4); }
+    .ui-Container:where(.lg\:ui-r-size-5) > .ui-ContainerInner { max-width: var(--container-5); }
+    .ui-Container:where(.lg\:ui-r-size-6) > .ui-ContainerInner { max-width: var(--container-6); }
+    .ui-Container:where(.lg\:ui-r-size-7) > .ui-ContainerInner { max-width: var(--container-7); }
+    .ui-Container:where(.lg\:ui-r-align-left) { margin-left: 0; }
+    .ui-Container:where(.lg\:ui-r-align-left) > .ui-ContainerInner { margin-right: auto; }
+    .ui-Container:where(.lg\:ui-r-align-center) > .ui-ContainerInner { margin-inline: auto; }
+    .ui-Container:where(.lg\:ui-r-align-right) { margin-right: 0; }
+    .ui-Container:where(.lg\:ui-r-align-right) > .ui-ContainerInner { margin-left: auto; }
+  }
+
+  @media (min-width: 1640px) {
+    .ui-Container:where(.xl\:ui-r-size-1) > .ui-ContainerInner { max-width: var(--container-1); }
+    .ui-Container:where(.xl\:ui-r-size-2) > .ui-ContainerInner { max-width: var(--container-2); }
+    .ui-Container:where(.xl\:ui-r-size-3) > .ui-ContainerInner { max-width: var(--container-3); }
+    .ui-Container:where(.xl\:ui-r-size-4) > .ui-ContainerInner { max-width: var(--container-4); }
+    .ui-Container:where(.xl\:ui-r-size-5) > .ui-ContainerInner { max-width: var(--container-5); }
+    .ui-Container:where(.xl\:ui-r-size-6) > .ui-ContainerInner { max-width: var(--container-6); }
+    .ui-Container:where(.xl\:ui-r-size-7) > .ui-ContainerInner { max-width: var(--container-7); }
+    .ui-Container:where(.xl\:ui-r-align-left) { margin-left: 0; }
+    .ui-Container:where(.xl\:ui-r-align-left) > .ui-ContainerInner { margin-right: auto; }
+    .ui-Container:where(.xl\:ui-r-align-center) > .ui-ContainerInner { margin-inline: auto; }
+    .ui-Container:where(.xl\:ui-r-align-right) { margin-right: 0; }
+    .ui-Container:where(.xl\:ui-r-align-right) > .ui-ContainerInner { margin-left: auto; }
+  }
+/* #endregion Section */
+
+/* #endregion Layout variants */
+
+/* #region Typography variants */
+.ui-Text {
+  line-height: var(--line-height, var(--default-line-height));
+  letter-spacing: var(--letter-spacing, inherit);
+}
+
+:where(.ui-Text, .ui-Heading) {
+  margin: 0;
+}
+
+.ui-Text:where([data-accent-color]),
+.ui-Heading:where([data-accent-color]) {
+  color: var(--accent-a11, var(--color-accent));
+}
+
+.ui-Text:where([data-accent-color].ui-high-contrast),
+.ui-Heading:where([data-accent-color].ui-high-contrast) {
+  color: var(--accent-12, var(--color-foreground));
+}
+
+.ui-Heading {
+  --leading-trim-start: var(--heading-leading-trim-start);
+  --leading-trim-end: var(--heading-leading-trim-end);
+  font-family: var(--heading-font-family, var(--font-sans));
+  font-style: var(--heading-font-style, normal);
+  font-weight: 400;
+  line-height: var(--line-height);
+}
+
+.ui-Link {
+  cursor: pointer;
+  text-decoration-thickness: max(1px, 0.05em);
+  text-underline-offset: 0.18em;
+}
+
+.ui-Link:where(:focus-visible) {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+.ui-underline-auto,
+.ui-underline-always {
+  text-decoration-line: underline;
+}
+
+.ui-underline-hover,
+.ui-underline-none {
+  text-decoration-line: none;
+}
+
+.ui-underline-hover:where(:hover) {
+  text-decoration-line: underline;
+}
+
+.trim-normal {
+  text-box-trim: none;
+}
+
+.trim-start {
+  text-box-trim: trim-start;
+}
+
+.trim-end {
+  text-box-trim: trim-end;
+}
+
+.trim-both {
+  text-box-trim: trim-both;
+}
+
+.ui-Text:where(.ui-r-size-1) {
+  font-size: var(--font-size-1);
+  --line-height: var(--line-height-1);
+  --letter-spacing: var(--letter-spacing-1);
+}
+
+.ui-Text:where(.ui-r-size-2) {
+  font-size: var(--font-size-2);
+  --line-height: var(--line-height-2);
+  --letter-spacing: var(--letter-spacing-2);
+}
+
+.ui-Text:where(.ui-r-size-3) {
+  font-size: var(--font-size-3);
+  --line-height: var(--line-height-3);
+  --letter-spacing: var(--letter-spacing-3);
+}
+
+.ui-Text:where(.ui-r-size-4) {
+  font-size: var(--font-size-4);
+  --line-height: var(--line-height-4);
+  --letter-spacing: var(--letter-spacing-4);
+}
+
+.ui-Text:where(.ui-r-size-5) {
+  font-size: var(--font-size-5);
+  --line-height: var(--line-height-5);
+  --letter-spacing: var(--letter-spacing-5);
+}
+
+.ui-Text:where(.ui-r-size-6) {
+  font-size: var(--font-size-6);
+  --line-height: var(--line-height-6);
+  --letter-spacing: var(--letter-spacing-6);
+}
+
+.ui-Text:where(.ui-r-size-7) {
+  font-size: var(--font-size-7);
+  --line-height: var(--line-height-7);
+  --letter-spacing: var(--letter-spacing-7);
+}
+
+.ui-Text:where(.ui-r-size-8) {
+  font-size: var(--font-size-8);
+  --line-height: var(--line-height-8);
+  --letter-spacing: var(--letter-spacing-8);
+}
+
+.ui-Text:where(.ui-r-size-9) {
+  font-size: var(--font-size-9);
+  --line-height: var(--line-height-9);
+  --letter-spacing: var(--letter-spacing-9);
+}
+
+.ui-Heading:where(.ui-r-size-1) {
+  font-size: calc(var(--font-size-1) * var(--heading-font-size-adjust));
+  --line-height: var(--heading-line-height-1);
+  letter-spacing: calc(var(--letter-spacing-1) + var(--heading-letter-spacing));
+}
+
+.ui-Heading:where(.ui-r-size-2) {
+  font-size: calc(var(--font-size-2) * var(--heading-font-size-adjust));
+  --line-height: var(--heading-line-height-2);
+  letter-spacing: calc(var(--letter-spacing-2) + var(--heading-letter-spacing));
+}
+
+.ui-Heading:where(.ui-r-size-3) {
+  font-size: calc(var(--font-size-3) * var(--heading-font-size-adjust));
+  --line-height: var(--heading-line-height-3);
+  letter-spacing: calc(var(--letter-spacing-3) + var(--heading-letter-spacing));
+}
+
+.ui-Heading:where(.ui-r-size-4) {
+  font-size: calc(var(--font-size-4) * var(--heading-font-size-adjust));
+  --line-height: var(--heading-line-height-4);
+  letter-spacing: calc(var(--letter-spacing-4) + var(--heading-letter-spacing));
+}
+
+.ui-Heading:where(.ui-r-size-5) {
+  font-size: calc(var(--font-size-5) * var(--heading-font-size-adjust));
+  --line-height: var(--heading-line-height-5);
+  letter-spacing: calc(var(--letter-spacing-5) + var(--heading-letter-spacing));
+}
+
+.ui-Heading:where(.ui-r-size-6) {
+  font-size: calc(var(--font-size-6) * var(--heading-font-size-adjust));
+  --line-height: var(--heading-line-height-6);
+  letter-spacing: calc(var(--letter-spacing-6) + var(--heading-letter-spacing));
+}
+
+.ui-Heading:where(.ui-r-size-7) {
+  font-size: calc(var(--font-size-7) * var(--heading-font-size-adjust));
+  --line-height: var(--heading-line-height-7);
+  letter-spacing: calc(var(--letter-spacing-7) + var(--heading-letter-spacing));
+}
+
+.ui-Heading:where(.ui-r-size-8) {
+  font-size: calc(var(--font-size-8) * var(--heading-font-size-adjust));
+  --line-height: var(--heading-line-height-8);
+  letter-spacing: calc(var(--letter-spacing-8) + var(--heading-letter-spacing));
+}
+
+.ui-Heading:where(.ui-r-size-9) {
+  font-size: calc(var(--font-size-9) * var(--heading-font-size-adjust));
+  --line-height: var(--heading-line-height-9);
+  letter-spacing: calc(var(--letter-spacing-9) + var(--heading-letter-spacing));
+}
+
+@media (min-width: 520px) {
+  .ui-Text:where(.xs\:ui-r-size-1) { font-size: var(--font-size-1); --line-height: var(--line-height-1); --letter-spacing: var(--letter-spacing-1); }
+  .ui-Text:where(.xs\:ui-r-size-2) { font-size: var(--font-size-2); --line-height: var(--line-height-2); --letter-spacing: var(--letter-spacing-2); }
+  .ui-Text:where(.xs\:ui-r-size-3) { font-size: var(--font-size-3); --line-height: var(--line-height-3); --letter-spacing: var(--letter-spacing-3); }
+  .ui-Text:where(.xs\:ui-r-size-4) { font-size: var(--font-size-4); --line-height: var(--line-height-4); --letter-spacing: var(--letter-spacing-4); }
+  .ui-Text:where(.xs\:ui-r-size-5) { font-size: var(--font-size-5); --line-height: var(--line-height-5); --letter-spacing: var(--letter-spacing-5); }
+  .ui-Text:where(.xs\:ui-r-size-6) { font-size: var(--font-size-6); --line-height: var(--line-height-6); --letter-spacing: var(--letter-spacing-6); }
+  .ui-Text:where(.xs\:ui-r-size-7) { font-size: var(--font-size-7); --line-height: var(--line-height-7); --letter-spacing: var(--letter-spacing-7); }
+  .ui-Text:where(.xs\:ui-r-size-8) { font-size: var(--font-size-8); --line-height: var(--line-height-8); --letter-spacing: var(--letter-spacing-8); }
+  .ui-Text:where(.xs\:ui-r-size-9) { font-size: var(--font-size-9); --line-height: var(--line-height-9); --letter-spacing: var(--letter-spacing-9); }
+  .ui-Heading:where(.xs\:ui-r-size-1) { font-size: calc(var(--font-size-1) * var(--heading-font-size-adjust)); --line-height: var(--heading-line-height-1); letter-spacing: calc(var(--letter-spacing-1) + var(--heading-letter-spacing)); }
+  .ui-Heading:where(.xs\:ui-r-size-2) { font-size: calc(var(--font-size-2) * var(--heading-font-size-adjust)); --line-height: var(--heading-line-height-2); letter-spacing: calc(var(--letter-spacing-2) + var(--heading-letter-spacing)); }
+  .ui-Heading:where(.xs\:ui-r-size-3) { font-size: calc(var(--font-size-3) * var(--heading-font-size-adjust)); --line-height: var(--heading-line-height-3); letter-spacing: calc(var(--letter-spacing-3) + var(--heading-letter-spacing)); }
+  .ui-Heading:where(.xs\:ui-r-size-4) { font-size: calc(var(--font-size-4) * var(--heading-font-size-adjust)); --line-height: var(--heading-line-height-4); letter-spacing: calc(var(--letter-spacing-4) + var(--heading-letter-spacing)); }
+  .ui-Heading:where(.xs\:ui-r-size-5) { font-size: calc(var(--font-size-5) * var(--heading-font-size-adjust)); --line-height: var(--heading-line-height-5); letter-spacing: calc(var(--letter-spacing-5) + var(--heading-letter-spacing)); }
+  .ui-Heading:where(.xs\:ui-r-size-6) { font-size: calc(var(--font-size-6) * var(--heading-font-size-adjust)); --line-height: var(--heading-line-height-6); letter-spacing: calc(var(--letter-spacing-6) + var(--heading-letter-spacing)); }
+  .ui-Heading:where(.xs\:ui-r-size-7) { font-size: calc(var(--font-size-7) * var(--heading-font-size-adjust)); --line-height: var(--heading-line-height-7); letter-spacing: calc(var(--letter-spacing-7) + var(--heading-letter-spacing)); }
+  .ui-Heading:where(.xs\:ui-r-size-8) { font-size: calc(var(--font-size-8) * var(--heading-font-size-adjust)); --line-height: var(--heading-line-height-8); letter-spacing: calc(var(--letter-spacing-8) + var(--heading-letter-spacing)); }
+  .ui-Heading:where(.xs\:ui-r-size-9) { font-size: calc(var(--font-size-9) * var(--heading-font-size-adjust)); --line-height: var(--heading-line-height-9); letter-spacing: calc(var(--letter-spacing-9) + var(--heading-letter-spacing)); }
+}
+
+@media (min-width: 768px) {
+  .ui-Text:where(.sm\:ui-r-size-1) { font-size: var(--font-size-1); --line-height: var(--line-height-1); --letter-spacing: var(--letter-spacing-1); }
+  .ui-Text:where(.sm\:ui-r-size-2) { font-size: var(--font-size-2); --line-height: var(--line-height-2); --letter-spacing: var(--letter-spacing-2); }
+  .ui-Text:where(.sm\:ui-r-size-3) { font-size: var(--font-size-3); --line-height: var(--line-height-3); --letter-spacing: var(--letter-spacing-3); }
+  .ui-Text:where(.sm\:ui-r-size-4) { font-size: var(--font-size-4); --line-height: var(--line-height-4); --letter-spacing: var(--letter-spacing-4); }
+  .ui-Text:where(.sm\:ui-r-size-5) { font-size: var(--font-size-5); --line-height: var(--line-height-5); --letter-spacing: var(--letter-spacing-5); }
+  .ui-Text:where(.sm\:ui-r-size-6) { font-size: var(--font-size-6); --line-height: var(--line-height-6); --letter-spacing: var(--letter-spacing-6); }
+  .ui-Text:where(.sm\:ui-r-size-7) { font-size: var(--font-size-7); --line-height: var(--line-height-7); --letter-spacing: var(--letter-spacing-7); }
+  .ui-Text:where(.sm\:ui-r-size-8) { font-size: var(--font-size-8); --line-height: var(--line-height-8); --letter-spacing: var(--letter-spacing-8); }
+  .ui-Text:where(.sm\:ui-r-size-9) { font-size: var(--font-size-9); --line-height: var(--line-height-9); --letter-spacing: var(--letter-spacing-9); }
+  .ui-Heading:where(.sm\:ui-r-size-1) { font-size: calc(var(--font-size-1) * var(--heading-font-size-adjust)); --line-height: var(--heading-line-height-1); letter-spacing: calc(var(--letter-spacing-1) + var(--heading-letter-spacing)); }
+  .ui-Heading:where(.sm\:ui-r-size-2) { font-size: calc(var(--font-size-2) * var(--heading-font-size-adjust)); --line-height: var(--heading-line-height-2); letter-spacing: calc(var(--letter-spacing-2) + var(--heading-letter-spacing)); }
+  .ui-Heading:where(.sm\:ui-r-size-3) { font-size: calc(var(--font-size-3) * var(--heading-font-size-adjust)); --line-height: var(--heading-line-height-3); letter-spacing: calc(var(--letter-spacing-3) + var(--heading-letter-spacing)); }
+  .ui-Heading:where(.sm\:ui-r-size-4) { font-size: calc(var(--font-size-4) * var(--heading-font-size-adjust)); --line-height: var(--heading-line-height-4); letter-spacing: calc(var(--letter-spacing-4) + var(--heading-letter-spacing)); }
+  .ui-Heading:where(.sm\:ui-r-size-5) { font-size: calc(var(--font-size-5) * var(--heading-font-size-adjust)); --line-height: var(--heading-line-height-5); letter-spacing: calc(var(--letter-spacing-5) + var(--heading-letter-spacing)); }
+  .ui-Heading:where(.sm\:ui-r-size-6) { font-size: calc(var(--font-size-6) * var(--heading-font-size-adjust)); --line-height: var(--heading-line-height-6); letter-spacing: calc(var(--letter-spacing-6) + var(--heading-letter-spacing)); }
+  .ui-Heading:where(.sm\:ui-r-size-7) { font-size: calc(var(--font-size-7) * var(--heading-font-size-adjust)); --line-height: var(--heading-line-height-7); letter-spacing: calc(var(--letter-spacing-7) + var(--heading-letter-spacing)); }
+  .ui-Heading:where(.sm\:ui-r-size-8) { font-size: calc(var(--font-size-8) * var(--heading-font-size-adjust)); --line-height: var(--heading-line-height-8); letter-spacing: calc(var(--letter-spacing-8) + var(--heading-letter-spacing)); }
+  .ui-Heading:where(.sm\:ui-r-size-9) { font-size: calc(var(--font-size-9) * var(--heading-font-size-adjust)); --line-height: var(--heading-line-height-9); letter-spacing: calc(var(--letter-spacing-9) + var(--heading-letter-spacing)); }
+}
+
+@media (min-width: 1024px) {
+  .ui-Text:where(.md\:ui-r-size-1) { font-size: var(--font-size-1); --line-height: var(--line-height-1); --letter-spacing: var(--letter-spacing-1); }
+  .ui-Text:where(.md\:ui-r-size-2) { font-size: var(--font-size-2); --line-height: var(--line-height-2); --letter-spacing: var(--letter-spacing-2); }
+  .ui-Text:where(.md\:ui-r-size-3) { font-size: var(--font-size-3); --line-height: var(--line-height-3); --letter-spacing: var(--letter-spacing-3); }
+  .ui-Text:where(.md\:ui-r-size-4) { font-size: var(--font-size-4); --line-height: var(--line-height-4); --letter-spacing: var(--letter-spacing-4); }
+  .ui-Text:where(.md\:ui-r-size-5) { font-size: var(--font-size-5); --line-height: var(--line-height-5); --letter-spacing: var(--letter-spacing-5); }
+  .ui-Text:where(.md\:ui-r-size-6) { font-size: var(--font-size-6); --line-height: var(--line-height-6); --letter-spacing: var(--letter-spacing-6); }
+  .ui-Text:where(.md\:ui-r-size-7) { font-size: var(--font-size-7); --line-height: var(--line-height-7); --letter-spacing: var(--letter-spacing-7); }
+  .ui-Text:where(.md\:ui-r-size-8) { font-size: var(--font-size-8); --line-height: var(--line-height-8); --letter-spacing: var(--letter-spacing-8); }
+  .ui-Text:where(.md\:ui-r-size-9) { font-size: var(--font-size-9); --line-height: var(--line-height-9); --letter-spacing: var(--letter-spacing-9); }
+  .ui-Heading:where(.md\:ui-r-size-1) { font-size: calc(var(--font-size-1) * var(--heading-font-size-adjust)); --line-height: var(--heading-line-height-1); letter-spacing: calc(var(--letter-spacing-1) + var(--heading-letter-spacing)); }
+  .ui-Heading:where(.md\:ui-r-size-2) { font-size: calc(var(--font-size-2) * var(--heading-font-size-adjust)); --line-height: var(--heading-line-height-2); letter-spacing: calc(var(--letter-spacing-2) + var(--heading-letter-spacing)); }
+  .ui-Heading:where(.md\:ui-r-size-3) { font-size: calc(var(--font-size-3) * var(--heading-font-size-adjust)); --line-height: var(--heading-line-height-3); letter-spacing: calc(var(--letter-spacing-3) + var(--heading-letter-spacing)); }
+  .ui-Heading:where(.md\:ui-r-size-4) { font-size: calc(var(--font-size-4) * var(--heading-font-size-adjust)); --line-height: var(--heading-line-height-4); letter-spacing: calc(var(--letter-spacing-4) + var(--heading-letter-spacing)); }
+  .ui-Heading:where(.md\:ui-r-size-5) { font-size: calc(var(--font-size-5) * var(--heading-font-size-adjust)); --line-height: var(--heading-line-height-5); letter-spacing: calc(var(--letter-spacing-5) + var(--heading-letter-spacing)); }
+  .ui-Heading:where(.md\:ui-r-size-6) { font-size: calc(var(--font-size-6) * var(--heading-font-size-adjust)); --line-height: var(--heading-line-height-6); letter-spacing: calc(var(--letter-spacing-6) + var(--heading-letter-spacing)); }
+  .ui-Heading:where(.md\:ui-r-size-7) { font-size: calc(var(--font-size-7) * var(--heading-font-size-adjust)); --line-height: var(--heading-line-height-7); letter-spacing: calc(var(--letter-spacing-7) + var(--heading-letter-spacing)); }
+  .ui-Heading:where(.md\:ui-r-size-8) { font-size: calc(var(--font-size-8) * var(--heading-font-size-adjust)); --line-height: var(--heading-line-height-8); letter-spacing: calc(var(--letter-spacing-8) + var(--heading-letter-spacing)); }
+  .ui-Heading:where(.md\:ui-r-size-9) { font-size: calc(var(--font-size-9) * var(--heading-font-size-adjust)); --line-height: var(--heading-line-height-9); letter-spacing: calc(var(--letter-spacing-9) + var(--heading-letter-spacing)); }
+}
+
+@media (min-width: 1280px) {
+  .ui-Text:where(.lg\:ui-r-size-1) { font-size: var(--font-size-1); --line-height: var(--line-height-1); --letter-spacing: var(--letter-spacing-1); }
+  .ui-Text:where(.lg\:ui-r-size-2) { font-size: var(--font-size-2); --line-height: var(--line-height-2); --letter-spacing: var(--letter-spacing-2); }
+  .ui-Text:where(.lg\:ui-r-size-3) { font-size: var(--font-size-3); --line-height: var(--line-height-3); --letter-spacing: var(--letter-spacing-3); }
+  .ui-Text:where(.lg\:ui-r-size-4) { font-size: var(--font-size-4); --line-height: var(--line-height-4); --letter-spacing: var(--letter-spacing-4); }
+  .ui-Text:where(.lg\:ui-r-size-5) { font-size: var(--font-size-5); --line-height: var(--line-height-5); --letter-spacing: var(--letter-spacing-5); }
+  .ui-Text:where(.lg\:ui-r-size-6) { font-size: var(--font-size-6); --line-height: var(--line-height-6); --letter-spacing: var(--letter-spacing-6); }
+  .ui-Text:where(.lg\:ui-r-size-7) { font-size: var(--font-size-7); --line-height: var(--line-height-7); --letter-spacing: var(--letter-spacing-7); }
+  .ui-Text:where(.lg\:ui-r-size-8) { font-size: var(--font-size-8); --line-height: var(--line-height-8); --letter-spacing: var(--letter-spacing-8); }
+  .ui-Text:where(.lg\:ui-r-size-9) { font-size: var(--font-size-9); --line-height: var(--line-height-9); --letter-spacing: var(--letter-spacing-9); }
+  .ui-Heading:where(.lg\:ui-r-size-1) { font-size: calc(var(--font-size-1) * var(--heading-font-size-adjust)); --line-height: var(--heading-line-height-1); letter-spacing: calc(var(--letter-spacing-1) + var(--heading-letter-spacing)); }
+  .ui-Heading:where(.lg\:ui-r-size-2) { font-size: calc(var(--font-size-2) * var(--heading-font-size-adjust)); --line-height: var(--heading-line-height-2); letter-spacing: calc(var(--letter-spacing-2) + var(--heading-letter-spacing)); }
+  .ui-Heading:where(.lg\:ui-r-size-3) { font-size: calc(var(--font-size-3) * var(--heading-font-size-adjust)); --line-height: var(--heading-line-height-3); letter-spacing: calc(var(--letter-spacing-3) + var(--heading-letter-spacing)); }
+  .ui-Heading:where(.lg\:ui-r-size-4) { font-size: calc(var(--font-size-4) * var(--heading-font-size-adjust)); --line-height: var(--heading-line-height-4); letter-spacing: calc(var(--letter-spacing-4) + var(--heading-letter-spacing)); }
+  .ui-Heading:where(.lg\:ui-r-size-5) { font-size: calc(var(--font-size-5) * var(--heading-font-size-adjust)); --line-height: var(--heading-line-height-5); letter-spacing: calc(var(--letter-spacing-5) + var(--heading-letter-spacing)); }
+  .ui-Heading:where(.lg\:ui-r-size-6) { font-size: calc(var(--font-size-6) * var(--heading-font-size-adjust)); --line-height: var(--heading-line-height-6); letter-spacing: calc(var(--letter-spacing-6) + var(--heading-letter-spacing)); }
+  .ui-Heading:where(.lg\:ui-r-size-7) { font-size: calc(var(--font-size-7) * var(--heading-font-size-adjust)); --line-height: var(--heading-line-height-7); letter-spacing: calc(var(--letter-spacing-7) + var(--heading-letter-spacing)); }
+  .ui-Heading:where(.lg\:ui-r-size-8) { font-size: calc(var(--font-size-8) * var(--heading-font-size-adjust)); --line-height: var(--heading-line-height-8); letter-spacing: calc(var(--letter-spacing-8) + var(--heading-letter-spacing)); }
+  .ui-Heading:where(.lg\:ui-r-size-9) { font-size: calc(var(--font-size-9) * var(--heading-font-size-adjust)); --line-height: var(--heading-line-height-9); letter-spacing: calc(var(--letter-spacing-9) + var(--heading-letter-spacing)); }
+}
+
+@media (min-width: 1640px) {
+  .ui-Text:where(.xl\:ui-r-size-1) { font-size: var(--font-size-1); --line-height: var(--line-height-1); --letter-spacing: var(--letter-spacing-1); }
+  .ui-Text:where(.xl\:ui-r-size-2) { font-size: var(--font-size-2); --line-height: var(--line-height-2); --letter-spacing: var(--letter-spacing-2); }
+  .ui-Text:where(.xl\:ui-r-size-3) { font-size: var(--font-size-3); --line-height: var(--line-height-3); --letter-spacing: var(--letter-spacing-3); }
+  .ui-Text:where(.xl\:ui-r-size-4) { font-size: var(--font-size-4); --line-height: var(--line-height-4); --letter-spacing: var(--letter-spacing-4); }
+  .ui-Text:where(.xl\:ui-r-size-5) { font-size: var(--font-size-5); --line-height: var(--line-height-5); --letter-spacing: var(--letter-spacing-5); }
+  .ui-Text:where(.xl\:ui-r-size-6) { font-size: var(--font-size-6); --line-height: var(--line-height-6); --letter-spacing: var(--letter-spacing-6); }
+  .ui-Text:where(.xl\:ui-r-size-7) { font-size: var(--font-size-7); --line-height: var(--line-height-7); --letter-spacing: var(--letter-spacing-7); }
+  .ui-Text:where(.xl\:ui-r-size-8) { font-size: var(--font-size-8); --line-height: var(--line-height-8); --letter-spacing: var(--letter-spacing-8); }
+  .ui-Text:where(.xl\:ui-r-size-9) { font-size: var(--font-size-9); --line-height: var(--line-height-9); --letter-spacing: var(--letter-spacing-9); }
+  .ui-Heading:where(.xl\:ui-r-size-1) { font-size: calc(var(--font-size-1) * var(--heading-font-size-adjust)); --line-height: var(--heading-line-height-1); letter-spacing: calc(var(--letter-spacing-1) + var(--heading-letter-spacing)); }
+  .ui-Heading:where(.xl\:ui-r-size-2) { font-size: calc(var(--font-size-2) * var(--heading-font-size-adjust)); --line-height: var(--heading-line-height-2); letter-spacing: calc(var(--letter-spacing-2) + var(--heading-letter-spacing)); }
+  .ui-Heading:where(.xl\:ui-r-size-3) { font-size: calc(var(--font-size-3) * var(--heading-font-size-adjust)); --line-height: var(--heading-line-height-3); letter-spacing: calc(var(--letter-spacing-3) + var(--heading-letter-spacing)); }
+  .ui-Heading:where(.xl\:ui-r-size-4) { font-size: calc(var(--font-size-4) * var(--heading-font-size-adjust)); --line-height: var(--heading-line-height-4); letter-spacing: calc(var(--letter-spacing-4) + var(--heading-letter-spacing)); }
+  .ui-Heading:where(.xl\:ui-r-size-5) { font-size: calc(var(--font-size-5) * var(--heading-font-size-adjust)); --line-height: var(--heading-line-height-5); letter-spacing: calc(var(--letter-spacing-5) + var(--heading-letter-spacing)); }
+  .ui-Heading:where(.xl\:ui-r-size-6) { font-size: calc(var(--font-size-6) * var(--heading-font-size-adjust)); --line-height: var(--heading-line-height-6); letter-spacing: calc(var(--letter-spacing-6) + var(--heading-letter-spacing)); }
+  .ui-Heading:where(.xl\:ui-r-size-7) { font-size: calc(var(--font-size-7) * var(--heading-font-size-adjust)); --line-height: var(--heading-line-height-7); letter-spacing: calc(var(--letter-spacing-7) + var(--heading-letter-spacing)); }
+  .ui-Heading:where(.xl\:ui-r-size-8) { font-size: calc(var(--font-size-8) * var(--heading-font-size-adjust)); --line-height: var(--heading-line-height-8); letter-spacing: calc(var(--letter-spacing-8) + var(--heading-letter-spacing)); }
+  .ui-Heading:where(.xl\:ui-r-size-9) { font-size: calc(var(--font-size-9) * var(--heading-font-size-adjust)); --line-height: var(--heading-line-height-9); letter-spacing: calc(var(--letter-spacing-9) + var(--heading-letter-spacing)); }
+}
+/* #endregion Typography variants */
+
+}
+
+/* ui-r-px-1 (padding) - specificity 0,0,0,0 */
+
+
+
+
+:where(.ui-r-py-1) {
+    padding-top: var(--spacing-5);
+    padding-bottom: var(--spacing-5);
+  }
+:where(.ui-r-py-2) {
+    padding-top: var(--spacing-7);
+    padding-bottom: var(--spacing-7);
+  }
+
+:where(.ui-r-py-3) {
+    padding-top: var(--spacing-9);
+    padding-bottom: var(--spacing-9);
+  }
+
+:where(.ui-r-py-4) {
+    padding-top: 80px;
+    padding-bottom: 80px;
+  }
+
+  :where(.ui-r-px-1) {
+  padding-left: var(--spacing-5);
+  padding-right: var(--spacing-5);
+}
+
+:where(.ui-r-px-2) {
+  padding-left: var(--spacing-7);
+  padding-right: var(--spacing-7);
+}
+
+:where(.ui-r-px-3) {
+  padding-left: var(--spacing-9);
+  padding-right: var(--spacing-9);
+}
+
+:where(.ui-r-px-4) {
+  padding-left: 80px;
+  padding-right: 80px;
+}
+
+
+.ui-padding {
+    padding-top: var(--spacing-5);
+    padding-bottom: var(--spacing-5);
+}
+@media (min-width: 1024px) {
+  .ui-padding {
+    padding-top: var(--spacing-9);
+    padding-bottom: var(--spacing-9);
+  }
+}
+
+.ui-margin {
+  margin-left:var(--spacing-5);
+  margin-right: var(--spacing-5);
+}
+
+@media (min-width: 520px) {
+  .ui-margin {
+    margin-left: var(--spacing-6);
+    margin-right: var(--spacing-6);
+  }
+}
+
+@media (min-width: 768px) {
+  .ui-margin {
+    margin-left: var(--spacing-7);
+    margin-right: var(--spacing-7);
+  }
+}
+
+@media (min-width: 1024px) {
+  .ui-margin {
+    margin-left: var(--spacing-9);
+    margin-right: var(--spacing-9);
+  }
+}
+
+

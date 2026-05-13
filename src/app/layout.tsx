@@ -82,7 +82,7 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-title" content="HAGX" />
         <link rel="manifest" href="/site.webmanifest" />
       </head>
-      <body className="min-h-screen antialiased">
+      <body data-accent-color="brand" data-radius="small">
         <SmoothScroll>{children}</SmoothScroll>
         {modal}
       </body>

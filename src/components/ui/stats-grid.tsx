@@ -26,7 +26,9 @@ export function StatsGrid({
   return (
     <BorderGrid
       cols={4}
-      borderColor={isAccent ? "rgba(255,255,255,0.2)" : "rgba(255,255,255,0.06)"}
+      borderColor={
+        isAccent ? "rgba(255,255,255,0.2)" : "rgba(255,255,255,0.06)"
+      }
       className={cn("ui-stats-grid", className)}
     >
       {items
@@ -64,8 +66,8 @@ export function StatsGridItem({
   return (
     <div
       className={cn(
-        "ui-stats-grid-item flex min-h-[230px] flex-col items-start px-10 py-12",
-        isAccent ? "bg-[#DB5828]" : "bg-[#080808] lg:px-16 lg:py-14",
+        "ui-stats-grid-item flex min-h-[230px] flex-col items-start px-10 py-12 border",
+        isAccent ? "bg-[#DB5828]" : " lg:px-16 lg:py-14",
         className,
       )}
       {...props}
@@ -84,7 +86,7 @@ export function StatsGridItem({
         className={cn(
           isAccent
             ? "mb-1 text-base font-semibold text-white"
-            : "mt-4 text-xs font-light uppercase tracking-widest text-white/35",
+            : "mt-4 text-xs font-light uppercase tracking-widest text-muted",
         )}
       >
         {label}

@@ -95,14 +95,13 @@ export function Marquee<T extends MarqueeItem = MarqueeItem>({
   pauseOnHover = true,
   className,
 }: MarqueeProps<T>) {
-  const doubled = [...items, ...items];
-  const isLeft = direction === "left";
+  const animName = direction === "left" ? "marquee-left" : "marquee-right";
+  const segmentItems = items;
 
   return (
     <div
       className={cn(
         "ui-marquee group relative overflow-hidden",
-        pauseOnHover && "[&:hover_div]:animation-play-state-paused",
         className,
       )}
       style={{
@@ -110,22 +109,98 @@ export function Marquee<T extends MarqueeItem = MarqueeItem>({
           "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
       }}
     >
-      <motion.div
-        animate={{ x: isLeft ? ["0%", "-50%"] : ["-50%", "0%"] }}
-        transition={{ duration: speed, repeat: Infinity, ease: "linear" }}
-        className="flex w-max"
-        style={{ gap }}
+      <div
+        className={cn(
+          "flex w-max",
+          pauseOnHover && "group-hover:[animation-play-state:paused]",
+        )}
+        style={{
+          animation: `${animName} ${speed}s linear infinite`,
+          willChange: "transform",
+        }}
       >
-        {doubled.map((item, i) => (
-          <div key={i} className="shrink-0">
-            {renderItem ? (
-              renderItem(item as T, i)
-            ) : (
-              <DefaultCard item={item} />
-            )}
+        {[0, 1].map((segment) => (
+          <div
+            key={segment}
+            className="flex shrink-0"
+            aria-hidden={segment === 1}
+            style={{ gap, paddingRight: gap }}
+          >
+            {segmentItems.map((item, i) => (
+              <div key={`${segment}-${i}`} className="shrink-0">
+                {renderItem ? (
+                  renderItem(item as T, i)
+                ) : (
+                  <DefaultCard item={item} />
+                )}
+              </div>
+            ))}
           </div>
         ))}
-      </motion.div>
+      </div>
+    </div>
+  );
+}
+
+// ─── TextMarquee ─────────────────────────────────────────────────────────────
+// Simple string-array ticker — no id/label shape needed.
+
+export type TextMarqueeProps = {
+  items: string[];
+  /** px/s scroll speed, default 32 */
+  speed?: number;
+  /** "left" (default) | "right" */
+  direction?: "left" | "right";
+  /** Gap between items in px, default 96 */
+  gap?: number;
+  /** Class on the overflow wrapper */
+  className?: string;
+  /** Class on each text span */
+  itemClassName?: string;
+};
+
+export function TextMarquee({
+  items,
+  speed = 32,
+  direction = "left",
+  gap = 96,
+  className,
+  itemClassName,
+}: TextMarqueeProps) {
+  const animName = direction === "left" ? "marquee-left" : "marquee-right";
+  const segmentCopies = 4;
+  const segmentItems = Array.from({ length: segmentCopies }, () => items).flat();
+
+  return (
+    <div className={cn("ui-marquee-text relative overflow-hidden", className)}>
+      <div
+        className="flex w-max items-center"
+        style={{
+          animation: `${animName} ${speed * segmentCopies}s linear infinite`,
+          willChange: "transform",
+        }}
+      >
+        {[0, 1].map((segment) => (
+          <div
+            key={segment}
+            className="flex shrink-0 items-center"
+            aria-hidden={segment === 1}
+            style={{ gap, paddingRight: gap }}
+          >
+            {segmentItems.map((item, i) => (
+              <span
+                key={`${segment}-${i}`}
+                className={cn(
+                  "whitespace-nowrap text-xs font-light uppercase tracking-widest text-white/20",
+                  itemClassName,
+                )}
+              >
+                {item}
+              </span>
+            ))}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

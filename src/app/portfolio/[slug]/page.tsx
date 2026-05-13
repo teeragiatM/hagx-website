@@ -67,7 +67,7 @@ export default async function ProjectPage({
     .slice(0, 3);
 
   return (
-    <main className="min-h-screen bg-[#080808] text-white">
+    <main>
       <SiteNav />
 
       {/* Breadcrumb */}
@@ -98,7 +98,7 @@ export default async function ProjectPage({
           sizes="100vw"
           className="object-cover opacity-60"
         />
-        <div className="absolute inset-0 bg-[#080808]/18" />
+        <div className="absolute inset-0" />
         <div className="absolute bottom-0 left-0 right-0 px-8 pb-12 sm:px-14">
           <div className="mx-auto max-w-[1500px]">
             <p className="eyebrow mb-3">{typeLabel}</p>

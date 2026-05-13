@@ -9,8 +9,10 @@ import { BorderGrid, BorderGridCell } from "@/components/ui/BorderGrid";
 import type { TestimonialItem } from "@/components/ui/ReviewSection";
 import { MarqueeGrid, type MarqueeItem } from "@/components/ui/Marquee";
 import { ReviewSection } from "@/components/ui/ReviewSection";
+import { Spinner } from "@/components/ui/Spinner";
 import { hagxStats } from "@/content/hagx";
 import { useI18n } from "@/i18n/useI18n";
+import { useEffect, useState } from "react";
 
 type TestimonialCopy = Omit<TestimonialItem, "bg" | "accent">;
 
@@ -32,6 +34,9 @@ function lines(text: string) {
 }
 
 export default function ClientsPage() {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
+
   const { t, lang } = useI18n("clients");
   const clients = t("clients", {
     returnObjects: true,
@@ -50,7 +55,7 @@ export default function ClientsPage() {
   }));
 
   return (
-    <main className="min-h-screen bg-[#080808] text-white">
+    <main>
       <SiteNav />
 
       <PageHero
@@ -64,12 +69,18 @@ export default function ClientsPage() {
         }
         subtitle={t("hero.subtitle")}
         backgroundSlot={
-          <MarqueeGrid
-            items={clients}
-            columns={5}
-            columnSpeeds={[38, 44, 36, 50, 42]}
-            className="h-full px-3"
-          />
+          mounted ? (
+            <MarqueeGrid
+              items={clients}
+              columns={5}
+              columnSpeeds={[38, 44, 36, 50, 42]}
+              className="h-full px-3"
+            />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center">
+              <Spinner size="lg" className="opacity-30" />
+            </div>
+          )
         }
       />
 
@@ -103,13 +114,24 @@ export default function ClientsPage() {
           <h2 className="mb-12 text-3xl font-bold tracking-tight">
             {t("all.title")}
           </h2>
-          <BorderGrid cols={4} className="sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
+          <BorderGrid
+            cols={4}
+            className="sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6"
+          >
             {clients.map((client, i) => (
-              <BorderGridCell key={client.id} index={i} bg="#0c0c0c" animate={false}
+              <BorderGridCell
+                key={client.id}
+                index={i}
+                bg="#0c0c0c"
+                animate={false}
                 className="flex flex-col items-center justify-center gap-2 px-4 py-8"
               >
-                <span className="text-base font-bold text-white/70">{client.label}</span>
-                <span className="text-[9px] font-light uppercase tracking-widest text-white/25">{client.sub}</span>
+                <span className="text-base font-bold text-white/70">
+                  {client.label}
+                </span>
+                <span className="text-[9px] font-light uppercase tracking-widest text-white/25">
+                  {client.sub}
+                </span>
               </BorderGridCell>
             ))}
           </BorderGrid>

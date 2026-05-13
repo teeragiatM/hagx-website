@@ -97,7 +97,7 @@ export function CarouselControls({
         <div className="flex gap-2">
           <Button
             variant="outline"
-            size="md"
+            size="2"
             iconOnly
             rounded
             onClick={onPrev}
@@ -108,7 +108,7 @@ export function CarouselControls({
           </Button>
           <Button
             variant="outline"
-            size="md"
+            size="2"
             iconOnly
             rounded
             onClick={onNext}

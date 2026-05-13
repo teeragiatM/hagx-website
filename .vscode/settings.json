@@ -1,0 +1,72 @@
+{
+  "tailwindCSS.codeActions": false,
+  "tailwindCSS.codeLens": false,
+  "tailwindCSS.validate": false,
+  "emeraldwalk.runonsave": {
+    "commands": []
+  },
+  "search.exclude": {
+    "**/.next": true,
+    "**/node_modules": true,
+    "**/out": true,
+    "**/dist": true,
+    "**/.turbo": true
+  },
+  "files.watcherExclude": {
+    "**/.next/**": true,
+    "**/node_modules/**": true,
+    "**/out/**": true,
+    "**/dist/**": true,
+    "**/.turbo/**": true
+  },
+  "editor.codeActionsOnSave": {
+    "source.addMissingImports": "never",
+    "source.fixAll": "never",
+    "source.organizeImports": "never",
+    "source.organizeImports.ts": "never"
+  },
+  "[typescript]": {
+    "editor.codeActionsOnSave": {
+      "source.addMissingImports": "never",
+      "source.fixAll": "never",
+      "source.organizeImports": "never",
+      "source.organizeImports.ts": "never"
+    }
+  },
+  "[typescriptreact]": {
+    "editor.codeActionsOnSave": {
+      "source.addMissingImports": "never",
+      "source.fixAll": "never",
+      "source.organizeImports": "never",
+      "source.organizeImports.ts": "never"
+    }
+  },
+  "[javascript]": {
+    "editor.codeActionsOnSave": {
+      "source.addMissingImports": "never",
+      "source.fixAll": "never",
+      "source.organizeImports": "never",
+      "source.organizeImports.ts": "never"
+    }
+  },
+  "[javascriptreact]": {
+    "editor.codeActionsOnSave": {
+      "source.addMissingImports": "never",
+      "source.fixAll": "never",
+      "source.organizeImports": "never",
+      "source.organizeImports.ts": "never"
+    }
+  },
+  "[css]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "never",
+      "source.fixAll.stylelint": "never"
+    }
+  },
+  "[scss]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "never",
+      "source.fixAll.stylelint": "never"
+    }
+  }
+}

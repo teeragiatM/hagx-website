@@ -4,10 +4,10 @@ import {
   TestimonialCarousel,
   TestimonialContent,
   TestimonialControls,
-  TestimonialHeader,
   type TestimonialCarouselItem,
 } from "@/components/ui/testimonial-carousel";
 import { cn } from "@/lib/utils";
+import SectionHeader from "@/components/SectionHeader";
 
 export type TestimonialItem = TestimonialCarouselItem;
 
@@ -40,10 +40,11 @@ export function ReviewSection({
       autoPlayDirection={autoPlayDirection}
       className={className}
     >
-      <TestimonialHeader
+      <SectionHeader
         eyebrow={eyebrow}
-        title={title}
+        heading={title}
         description={description}
+        layout="row"
       />
       <div className="relative">
         <TestimonialContent />

@@ -89,11 +89,8 @@ export function TestimonialCarousel({
   useEffect(() => {
     const el = viewportRef.current;
     if (!el) return;
-    const update = (w: number) =>
-      setSlotWidth((w + GAP_PX) / visibleCount);
-    const ro = new ResizeObserver(([entry]) =>
-      update(entry.contentRect.width),
-    );
+    const update = (w: number) => setSlotWidth((w + GAP_PX) / visibleCount);
+    const ro = new ResizeObserver(([entry]) => update(entry.contentRect.width));
     ro.observe(el);
     update(el.offsetWidth);
     return () => ro.disconnect();
@@ -124,7 +121,7 @@ export function TestimonialCarousel({
     // Modulo normalisation: always bring position back into [cloneCount, cloneCount+N-1]
     // regardless of how many rapid clicks accumulated before this event fired.
     const normalized =
-      ((p - cloneCount) % items.length + items.length) % items.length +
+      ((((p - cloneCount) % items.length) + items.length) % items.length) +
       cloneCount;
     if (normalized !== p) {
       setTransitionEnabled(false);
@@ -174,7 +171,9 @@ export function TestimonialCarousel({
     const clonesBefore = Array.from(
       { length: cloneCount },
       (_, i) =>
-        items[((i - cloneCount) % items.length + items.length) % items.length],
+        items[
+          (((i - cloneCount) % items.length) + items.length) % items.length
+        ],
     );
     // clonesAfter: the SIDE_BUFFER items immediately *after* items[N-1] in the circle.
     const clonesAfter = Array.from(
@@ -253,13 +252,11 @@ export function TestimonialHeader({
       {...props}
     >
       <div>
-        {eyebrow && <p className="eyebrow mb-3">{eyebrow}</p>}
-        <h2 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">
-          {title}
-        </h2>
+        {eyebrow && <p className="sh-eyebrow mb-3">{eyebrow}</p>}
+        <h2 className="ui-Section-Heading">{title}</h2>
       </div>
       {description && (
-        <p className="max-w-md text-sm font-light leading-8 text-white/40 lg:text-right">
+        <p className="section-header-description max-w-md leading-8 text-white/40 lg:text-right">
           {description}
         </p>
       )}
@@ -353,7 +350,11 @@ export function TestimonialContent({
                 useLoopTrack && hasMeasured
                   ? { width: slotWidth - GAP_PX, flexShrink: 0 }
                   : useLoopTrack
-                    ? { flexBasis: `${100 / displayItems.length}%`, flexShrink: 0, minWidth: 0 }
+                    ? {
+                        flexBasis: `${100 / displayItems.length}%`,
+                        flexShrink: 0,
+                        minWidth: 0,
+                      }
                     : undefined
               }
             >

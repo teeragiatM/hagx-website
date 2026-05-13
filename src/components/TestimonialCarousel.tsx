@@ -4,9 +4,9 @@ import {
   TestimonialCarousel as TestimonialCarouselRoot,
   TestimonialContent,
   TestimonialControls,
-  TestimonialHeader,
   type TestimonialCarouselItem,
 } from "@/components/ui/testimonial-carousel";
+import SectionHeader from "@/components/SectionHeader";
 
 export type TestimonialItem = TestimonialCarouselItem;
 
@@ -39,10 +39,11 @@ export default function TestimonialCarousel({
       autoPlayDirection={autoPlayDirection}
       className={className}
     >
-      <TestimonialHeader
+      <SectionHeader
         eyebrow={eyebrow}
-        title={title}
+        heading={title}
         description={description}
+        layout="row"
       />
       <div className="relative">
         <TestimonialContent />

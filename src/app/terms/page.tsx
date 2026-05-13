@@ -8,7 +8,7 @@ export default function TermsPage() {
   return (
     <>
       <SiteNav />
-      <main className="min-h-screen bg-[#050505] px-8 pb-24 pt-40 sm:px-12 lg:px-16">
+      <main className="px-8 pb-24 pt-40 sm:px-12 lg:px-16">
         <div className="mx-auto max-w-3xl">
           <p className="mb-4 text-[10px] font-light uppercase tracking-widest text-[#DB5828]">
             Legal

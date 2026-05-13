@@ -22,7 +22,9 @@ const ScrollStackContext = createContext<ScrollStackContextValue | null>(null);
 function useScrollStackContext() {
   const context = useContext(ScrollStackContext);
   if (!context) {
-    throw new Error("ScrollStack components must be used inside <ScrollStack>.");
+    throw new Error(
+      "ScrollStack components must be used inside <ScrollStack>.",
+    );
   }
   return context;
 }
@@ -78,21 +80,23 @@ export function ScrollStackHeader({
   ...props
 }: ScrollStackHeaderProps) {
   return (
-    <div className={cn("ui-scroll-stack-header mb-14 max-w-4xl lg:mb-20", className)} {...props}>
+    <div
+      className={cn(
+        "ui-scroll-stack-header mb-14 max-w-4xl lg:mb-20",
+        className,
+      )}
+      {...props}
+    >
       {children ?? (
         <>
-          {eyebrow && (
-            <p className="mb-5 text-xs font-light uppercase tracking-widest text-[#E15F31]">
-              {eyebrow}
-            </p>
-          )}
+          {eyebrow && <p className="sh-eyebrow mb-5">{eyebrow}</p>}
           {title && (
-            <h2 className="max-w-3xl text-4xl font-light leading-tight tracking-normal text-white sm:text-5xl lg:text-6xl">
+            <h2 className="ui-Section-Heading text-4xl leading-tight sm:text-5xl lg:text-6xl">
               {title}
             </h2>
           )}
           {description && (
-            <p className="mt-6 max-w-2xl text-sm font-light leading-8 text-white/45">
+            <p className="section-header-description ml-0 mt-6 max-w-2xl text-left text-white/45 lg:ml-0 lg:pt-0 lg:text-left">
               {description}
             </p>
           )}
@@ -195,7 +199,11 @@ export type ScrollStackSectionProps = Omit<ScrollStackProps, "itemCount"> & {
   description?: ReactNode;
   items: ScrollStackDataItem[];
   bottomSpace?: string;
-  renderItem?: (item: ScrollStackDataItem, index: number, items: ScrollStackDataItem[]) => ReactNode;
+  renderItem?: (
+    item: ScrollStackDataItem,
+    index: number,
+    items: ScrollStackDataItem[],
+  ) => ReactNode;
 };
 
 export function ScrollStackSection({
@@ -220,7 +228,11 @@ export function ScrollStackSection({
       className={className}
       {...props}
     >
-      <ScrollStackHeader eyebrow={eyebrow} title={title} description={description} />
+      <ScrollStackHeader
+        eyebrow={eyebrow}
+        title={title}
+        description={description}
+      />
       <ScrollStackContent bottomSpace={bottomSpace}>
         {items.map((item, index) => (
           <ScrollStackItem key={item.id} index={index}>
@@ -236,7 +248,13 @@ export function ScrollStackSection({
   );
 }
 
-function DefaultStackCard({ item, total }: { item: ScrollStackDataItem; total: number }) {
+function DefaultStackCard({
+  item,
+  total,
+}: {
+  item: ScrollStackDataItem;
+  total: number;
+}) {
   return (
     <>
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_70%_at_18%_0%,rgba(255,138,0,0.16),transparent_58%)]" />
@@ -248,7 +266,9 @@ function DefaultStackCard({ item, total }: { item: ScrollStackDataItem; total: n
                 {item.number} / {String(total).padStart(2, "0")}
               </p>
             )}
-            {item.icon && <div className="mt-8 text-[#E15F31]">{item.icon}</div>}
+            {item.icon && (
+              <div className="mt-8 text-[#E15F31]">{item.icon}</div>
+            )}
           </div>
           {item.number && (
             <p className="mt-10 text-7xl font-light leading-none text-white/[0.04] sm:text-8xl">
@@ -261,16 +281,24 @@ function DefaultStackCard({ item, total }: { item: ScrollStackDataItem; total: n
             {item.title}
           </h3>
           {item.subtitle && (
-            <p className="mt-6 max-w-4xl text-lg font-light leading-8 text-white/70">{item.subtitle}</p>
+            <p className="mt-6 max-w-4xl text-lg font-light leading-8 text-white/70">
+              {item.subtitle}
+            </p>
           )}
           {item.description && (
-            <p className="mt-4 max-w-4xl text-sm font-light leading-8 text-white/48">{item.description}</p>
+            <p className="mt-4 max-w-4xl text-sm font-light leading-8 text-white/48">
+              {item.description}
+            </p>
           )}
           {item.secondarySubtitle && (
-            <p className="mt-7 max-w-4xl text-sm font-light leading-7 text-white/40">{item.secondarySubtitle}</p>
+            <p className="mt-7 max-w-4xl text-sm font-light leading-7 text-white/40">
+              {item.secondarySubtitle}
+            </p>
           )}
           {item.secondaryDescription && (
-            <p className="mt-2 max-w-4xl text-xs font-light leading-7 text-white/30">{item.secondaryDescription}</p>
+            <p className="mt-2 max-w-4xl text-xs font-light leading-7 text-white/30">
+              {item.secondaryDescription}
+            </p>
           )}
         </div>
       </div>
