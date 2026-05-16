@@ -242,7 +242,8 @@ export function ScanLine({
   opacity = 0.35,
 }: ScanLineProps) {
   const top = useTransform(
-    scrollProgress as Parameters<typeof useTransform>[0],
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    scrollProgress as any,
     [0, 1],
     ["0%", "100%"],
   );
