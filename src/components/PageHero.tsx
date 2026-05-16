@@ -3,6 +3,8 @@ import { Animate } from './ui/animate';
 import { Spacer } from './ui/Spacer';
 import Image from 'next/image';
 
+export type VideoSource = { src: string; type: string };
+
 export type PageHeroProps = {
   eyebrow?: string;
   title: React.ReactNode;
@@ -11,6 +13,8 @@ export type PageHeroProps = {
   children?: React.ReactNode;
   bottomSlot?: React.ReactNode;
   backgroundSlot?: React.ReactNode;
+  /** Video background — renders with SVG top/bottom gradient mask */
+  videoSources?: VideoSource[];
   align?: 'center' | 'left';
   minHeight?: string;
   variant?: 'shadow' | 'no-shadow';
@@ -22,6 +26,8 @@ export type PageHeroProps = {
   subtitleClassName?: string;
 };
 
+const BG_COLOR = 'var(--background-100)';
+
 const isCenter = (align: 'center' | 'left') => align === 'center';
 
 export default function PageHero({
@@ -32,6 +38,7 @@ export default function PageHero({
   children,
   bottomSlot,
   backgroundSlot,
+  videoSources,
   align = 'center',
   minHeight = '100vh',
   variant = 'shadow',
@@ -47,14 +54,50 @@ export default function PageHero({
     <div className="Bleed_root">
       <section
         className={cn(
-          'relative isolate flex flex-col justify-center py-(--header-height)',
+          'PillarHero_root relative isolate flex flex-col',
           center ? 'items-center text-center' : 'items-start text-left',
-          variant === 'shadow' && 'hero-shadow',
+          !videoSources && variant === 'shadow' && 'hero-shadow',
           className
         )}
         style={{ minHeight }}
       >
-        {backgroundSlot && (
+        {/* ── Video background with SVG gradient mask ── */}
+        {videoSources && videoSources.length > 0 && (
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 overflow-hidden"
+            style={{ zIndex: -1 }}
+          >
+            <video
+              autoPlay
+              playsInline
+              loop
+              muted
+              className="absolute inset-0 h-full w-full object-cover opacity-60"
+            >
+              {videoSources.map((s) => (
+                <source key={s.src} src={s.src} type={s.type} />
+              ))}
+            </video>
+            {/* Top fade */}
+            <div
+              className="absolute inset-x-0 top-0 h-[35%]"
+              style={{
+                background: `linear-gradient(to bottom, ${BG_COLOR} 0%, transparent 100%)`,
+              }}
+            />
+            {/* Bottom fade */}
+            <div
+              className="absolute inset-x-0 bottom-0 h-[55%]"
+              style={{
+                background: `linear-gradient(to top, ${BG_COLOR} 0%, color-mix(in srgb, ${BG_COLOR} 60%, transparent) 40%, transparent 100%)`,
+              }}
+            />
+          </div>
+        )}
+
+        {/* ── Static image background ── */}
+        {backgroundSlot && !videoSources && (
           <div className="absolute inset-0 overflow-hidden">
             {backgroundSlot}
           </div>
@@ -77,18 +120,20 @@ export default function PageHero({
             className="hero-grid-glow pointer-events-none absolute inset-0"
           />
         )}
-        <div className="z-10 mx-auto w-full max-w-[var(--homepage-max-width)] px-[var(--homepage-outer-padding)]">
+
+        <div className="utils_outer z-10 mx-auto w-full max-w-(--homepage-max-width)">
+          <Spacer h={200} />
           <Animate
             animation="line-reveal"
             delay={0.15}
             stagger={0.13}
             duration={0.85}
             margin="-10px"
-            className="px-(--homepage-padding-inset)"
+            className="utils_inset"
           >
             {eyebrow && (
               <Animate.Item>
-                <p className="text-foreground/90 text-xs font-light whitespace-pre-line uppercase">
+                <p className="text-xs font-light whitespace-pre-line text-foreground-200 uppercase">
                   {eyebrow}
                 </p>
               </Animate.Item>
@@ -97,7 +142,7 @@ export default function PageHero({
             <Animate.Item>
               <h1
                 className={cn(
-                  'text-4xl sm:text-6xl xl:text-7xl',
+                  'text-4xl font-medium sm:text-6xl xl:text-7xl',
                   titleClassName
                 )}
               >
@@ -110,7 +155,7 @@ export default function PageHero({
                 )}
               </h1>
             </Animate.Item>
-            <Spacer h={8} />
+            <Spacer h={20} />
             {subtitle && (
               <Animate.Item>
                 <div
@@ -119,7 +164,7 @@ export default function PageHero({
                     center ? 'mx-auto md:max-w-[50vw]' : 'w-full'
                   )}
                 >
-                  <p className="text-xs leading-5 font-light whitespace-pre-line">
+                  <p className="leading-5 font-light whitespace-pre-line text-foreground-200">
                     {subtitle}
                   </p>
                 </div>
