@@ -304,7 +304,7 @@ LineReveal.Line = function LineRevealLine({
         transition={{
           duration: manualDuration ?? duration,
           delay: computedDelay,
-          ease: manualEase ?? ease,
+          ease: (manualEase ?? ease) as never,
         }}
       >
         {children}
