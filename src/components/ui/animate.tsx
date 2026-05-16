@@ -142,7 +142,7 @@ export function Reveal({
   const visible: Variant = { opacity: 1, y: 0 };
   return (
     <motion.div ref={ref} initial="hidden" animate={inView ? "visible" : "hidden"}
-      variants={{ hidden, visible }} transition={{ duration, delay, ease }} className={className}>
+      variants={{ hidden, visible }} transition={{ duration, delay, ease: ease as never }} className={className}>
       {children}
     </motion.div>
   );
@@ -183,7 +183,7 @@ export function RevealItem({ children, distance = 28, duration = 0.65, ease = de
   return (
     <motion.div variants={{
       hidden: { opacity: 0, y: distance },
-      visible: { opacity: 1, y: 0, transition: { duration, ease } },
+      visible: { opacity: 1, y: 0, transition: { duration, ease: ease as never } },
     }} className={className}>
       {children}
     </motion.div>
