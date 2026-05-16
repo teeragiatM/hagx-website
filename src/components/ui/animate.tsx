@@ -163,7 +163,8 @@ export function RevealGroup({
   ease = defaultEase, once = true, margin = "-60px", className,
 }: RevealGroupProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once, margin: margin as Parameters<typeof useInView>[1]["margin"] });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const inView = useInView(ref, { once, margin } as any);
   return (
     <motion.div ref={ref} initial="hidden" animate={inView ? "visible" : "hidden"}
       variants={{ hidden: {}, visible: { transition: { staggerChildren: stagger, delayChildren: delay } } }}
