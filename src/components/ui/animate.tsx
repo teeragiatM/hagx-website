@@ -155,7 +155,7 @@ type RevealGroupProps = {
   stagger?: number; delay?: number; distance?: number;
   duration?: number; ease?: number[];
   once?: boolean; margin?: string; className?: string;
-  as?: keyof JSX.IntrinsicElements;
+  as?: keyof React.JSX.IntrinsicElements;
 };
 
 export function RevealGroup({
