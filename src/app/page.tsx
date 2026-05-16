@@ -1,5 +1,6 @@
 import HomePageClient from "@/components/HomePageClient";
 import { getPortfolioItems } from "@/lib/getPortfolioItems";
+import { getCustomerReviews, toTestimonialItem } from "@/lib/supabase";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -11,15 +12,18 @@ export const metadata: Metadata = {
 export const revalidate = 60;
 
 export default async function HomePage() {
-  const [latestItemsTh, latestItemsEn] = await Promise.all([
+  const [latestItemsTh, latestItemsEn, reviews] = await Promise.all([
     getPortfolioItems("th"),
     getPortfolioItems("en"),
+    getCustomerReviews(true),
   ]);
 
   return (
     <HomePageClient
-      latestItemsTh={latestItemsTh.slice(0, 3)}
-      latestItemsEn={latestItemsEn.slice(0, 3)}
+      latestItemsTh={latestItemsTh.slice(0, 29)}
+      latestItemsEn={latestItemsEn.slice(0, 29)}
+      reviewsTh={reviews.map((r) => toTestimonialItem(r, "th"))}
+      reviewsEn={reviews.map((r) => toTestimonialItem(r, "en"))}
     />
   );
 }

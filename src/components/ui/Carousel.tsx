@@ -24,8 +24,15 @@ import Image from "next/image";
 import Link from "next/link";
 import SectionHeader from "@/components/SectionHeader";
 import { Button } from "@/components/ui/Button";
-import { CarouselControls } from "@/components/ui/CarouselControls";
-import { Container, Section } from "@/components/ui/section";
+import { CarouselControls } from '@/components/ui/CarouselControls';
+import {
+  MediaCard,
+  MediaCardImage,
+  MediaCardBody,
+  MediaCardNumber,
+  MediaCardTitle,
+  MediaCardExcerpt,
+} from '@/components/ui/MediaCard';
 import { useSwipe } from "@/hooks/useSwipe";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -128,7 +135,6 @@ export function CarouselHeader({
 }: CarouselHeaderProps) {
   return (
     <SectionHeader
-      eyebrow={eyebrow}
       heading={title}
       description={description}
       className={className}
@@ -146,31 +152,22 @@ export type CarouselCardProps = {
 
 export function CarouselCard({ item, className }: CarouselCardProps) {
   return (
-    <motion.article
-      initial={{ opacity: 0, y: 18 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-      className={`ui-carousel-card group relative min-h-[500px] overflow-hidden bg-[#111] ${className ?? ""}`}
-    >
-      <Image
+    <MediaCard animate className={cn('min-h-[500px]', className)}>
+      <MediaCardImage
         src={item.image}
         alt={item.title}
         fill
-        sizes="(min-width: 1280px) 25vw, (min-width: 640px) 50vw, 100vw"
-        className="object-cover opacity-75 transition-transform duration-700 group-hover:scale-105"
+        sizes="(min-width:1280px) 25vw, (min-width:640px) 50vw, 100vw"
+        gradientFrom="#000"
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/35 to-transparent" />
-      <div className="absolute inset-x-0 bottom-0 p-6 sm:p-7">
-        <p className="mb-4 text-xs font-light text-muted">{item.n}</p>
-        <h3 className="max-w-[15rem] text-2xl font-light leading-tight text-white">
+      <MediaCardBody className="absolute inset-x-0 bottom-0 bg-transparent">
+        <MediaCardNumber>{item.n}</MediaCardNumber>
+        <MediaCardTitle className="max-w-[15rem] text-2xl font-light group-hover:text-foreground-100">
           {item.title}
-        </h3>
-        <p className="mt-4 text-xs font-light leading-6 text-white/55">
-          {item.desc}
-        </p>
-      </div>
-    </motion.article>
+        </MediaCardTitle>
+        <MediaCardExcerpt className="mb-0">{item.desc}</MediaCardExcerpt>
+      </MediaCardBody>
+    </MediaCard>
   );
 }
 
@@ -269,7 +266,7 @@ export function CarouselNav({
       canNext={startIndex < maxStart}
       actionSlot={actions}
       dotStyle="dot"
-      className={`mt-12 ${className ?? ""}`}
+      className={`mt-10 ${className ?? ''}`}
     />
   );
 }
@@ -300,11 +297,8 @@ export function Carousel({
 }: CarouselProps) {
   return (
     <CarouselRoot items={items} visibleCount={visibleCount}>
-      <Section
-        size={{ initial: "3", lg: "4" }}
-        className={cn("border-b border-white/[0.06]", className)}
-      >
-        <Container size="4">
+      <section className={cn('PageSection_root', className)}>
+        <div className="px-(--homepage-padding-inset)">
           <CarouselHeader
             eyebrow={eyebrow}
             title={title}
@@ -312,8 +306,8 @@ export function Carousel({
           />
           <CarouselGrid />
           <CarouselNav ctaPrimary={ctaPrimary} ctaSecondary={ctaSecondary} />
-        </Container>
-      </Section>
+        </div>
+      </section>
     </CarouselRoot>
   );
 }

@@ -141,6 +141,23 @@
       }
     ]
   },
+  "people": {
+    "eyebrow": "Our People",
+    "founders": {
+      "eyebrow": "Our Founders",
+      "heading": "Built from real experience in materials, sites, and architecture.",
+      "description": "HAGX was founded by two specialists who combined deep technical knowledge and architectural understanding to create a new standard for glass and aluminium work in Thailand.",
+      "panya_name": "Panya Sukyoo",
+      "panya_role": "Technical Direction & Project Management",
+      "chanyanat_name": "Chanyanat Moopayak",
+      "chanyanat_role": "Architectural Coordination & Design"
+    },
+    "team": {
+      "eyebrow": "Our Team",
+      "heading": "One team. Every step.",
+      "description": "Our survey team, factory team, and installation crew work as one system to reduce deviation and maintain quality from start to finish."
+    }
+  },
   "cta": {
     "eyebrow": "Start a Project",
     "title": "Ready to start your project?",

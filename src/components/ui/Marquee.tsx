@@ -46,7 +46,7 @@ export type MarqueeItem = {
 
 function DefaultCard({ item }: { item: MarqueeItem }) {
   return item.logo ? (
-    <div className="flex h-20 shrink-0 items-center justify-center border border-[#DB5828]/20 bg-[#0c0c0c] px-6 transition-colors hover:border-[#DB5828]/50">
+    <div className="flex h-20 shrink-0 items-center justify-center border border-accent-500/20 bg-[#0c0c0c] px-6 transition-colors hover:border-accent-500/50">
       <img
         src={item.logo}
         alt={item.label}
@@ -54,13 +54,13 @@ function DefaultCard({ item }: { item: MarqueeItem }) {
       />
     </div>
   ) : (
-    <div className="flex h-20 shrink-0 items-center justify-center border border-[#DB5828]/20 bg-[#0c0c0c] px-5 transition-colors hover:border-[#DB5828]/50 hover:bg-[#0f0f0f]">
+    <div className="flex h-20 shrink-0 items-center justify-center border border-accent-500/20 bg-background-100 px-5 transition-colors hover:border-accent-500/50 hover:bg-background-200">
       <div className="text-center">
-        <p className="text-sm font-semibold tracking-wide text-white/65">
+        <p className="text-sm font-semibold tracking-wide text-foreground-300">
           {item.label}
         </p>
         {item.sub && (
-          <p className="mt-0.5 text-[9px] font-light uppercase tracking-widest text-white/25">
+          <p className="mt-0.5 text-xs font-light tracking-widest text-foreground-400 uppercase">
             {item.sub}
           </p>
         )}
@@ -172,12 +172,12 @@ export function TextMarquee({
   const segmentItems = Array.from({ length: segmentCopies }, () => items).flat();
 
   return (
-    <div className={cn("ui-marquee-text relative overflow-hidden", className)}>
+    <div className={cn('ui-marquee-text relative overflow-hidden', className)}>
       <div
         className="flex w-max items-center"
         style={{
           animation: `${animName} ${speed * segmentCopies}s linear infinite`,
-          willChange: "transform",
+          willChange: 'transform',
         }}
       >
         {[0, 1].map((segment) => (
@@ -191,8 +191,8 @@ export function TextMarquee({
               <span
                 key={`${segment}-${i}`}
                 className={cn(
-                  "whitespace-nowrap text-xs font-light uppercase tracking-widest text-white/20",
-                  itemClassName,
+                  'text-xs font-light tracking-widest whitespace-nowrap text-foreground-100 uppercase',
+                  itemClassName
                 )}
               >
                 {item}

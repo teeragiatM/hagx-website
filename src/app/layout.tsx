@@ -1,67 +1,78 @@
 import SmoothScroll from "@/components/effects/SmoothScroll";
-import type { Metadata } from "next";
-import { Anuphan } from "next/font/google";
-import "./globals.css";
+import SiteShell from '@/components/SiteShell';
+import { AuthProvider } from '@/context/AuthContext';
+import type { Metadata } from 'next';
+import { Anuphan, Inter } from 'next/font/google';
+import './globals.css';
 
 const anuphan = Anuphan({
-  subsets: ["thai", "latin"],
-  variable: "--font-anuphan",
-  display: "swap",
-  weight: ["300", "400", "500", "600", "700"],
+  subsets: ['thai', 'latin'],
+  variable: '--font-anuphan',
+  display: 'swap',
+  weight: ['300', '400', '500', '600', '700'],
+  preload: true,
+  adjustFontFallback: false,
+});
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap',
+  weight: ['300', '400', '500', '600', '700'],
+  preload: false,
 });
 
 export const metadata: Metadata = {
   title: {
-    default: "HAGX | Premium Aluminium & Glass",
-    template: "%s | HAGX",
+    default: 'HAGX | Premium Aluminium & Glass',
+    template: '%s | HAGX',
   },
   description:
-    "HAGX ผู้เชี่ยวชาญด้านงานอลูมิเนียมและกระจกสถาปัตยกรรม ออกแบบ ผลิต และติดตั้งด้วยความแม่นยำระดับอุตสาหกรรม",
-  authors: [{ name: "HAGX" }],
-  creator: "HAGX",
-  metadataBase: new URL("https://hagx.co"),
+    'HAGX ผู้เชี่ยวชาญด้านงานอลูมิเนียมและกระจกสถาปัตยกรรม ออกแบบ ผลิต และติดตั้งด้วยความแม่นยำระดับอุตสาหกรรม',
+  authors: [{ name: 'HAGX' }],
+  creator: 'HAGX',
+  metadataBase: new URL('https://hagx.co'),
   robots: { index: true, follow: true },
   keywords: [
-    "อลูมิเนียม",
-    "กระจก",
-    "สถาปัตยกรรม",
-    "aluminium",
-    "glass",
-    "architecture",
-    "HAGX",
+    'อลูมิเนียม',
+    'กระจก',
+    'สถาปัตยกรรม',
+    'aluminium',
+    'glass',
+    'architecture',
+    'HAGX',
   ],
   openGraph: {
-    type: "website",
-    locale: "th_TH",
-    url: "https://hagx.co",
-    siteName: "HAGX",
-    title: "HAGX | Premium Aluminium & Glass",
+    type: 'website',
+    locale: 'th_TH',
+    url: 'https://hagx.co',
+    siteName: 'HAGX',
+    title: 'HAGX | Premium Aluminium & Glass',
     description:
-      "HAGX ผู้เชี่ยวชาญด้านงานอลูมิเนียมและกระจกสถาปัตยกรรม ออกแบบ ผลิต และติดตั้งด้วยความแม่นยำระดับอุตสาหกรรม",
+      'HAGX ผู้เชี่ยวชาญด้านงานอลูมิเนียมและกระจกสถาปัตยกรรม ออกแบบ ผลิต และติดตั้งด้วยความแม่นยำระดับอุตสาหกรรม',
     images: [
-      { url: "/images/hagx-logo.svg", width: 1200, height: 630, alt: "HAGX" },
+      { url: '/images/hagx-logo.svg', width: 1200, height: 630, alt: 'HAGX' },
     ],
   },
   twitter: {
-    card: "summary_large_image",
-    title: "HAGX | Premium Aluminium & Glass",
+    card: 'summary_large_image',
+    title: 'HAGX | Premium Aluminium & Glass',
     description:
-      "HAGX ผู้เชี่ยวชาญด้านงานอลูมิเนียมและกระจกสถาปัตยกรรม ออกแบบ ผลิต และติดตั้งด้วยความแม่นยำระดับอุตสาหกรรม",
-    images: ["/images/hagx-logo.svg"],
+      'HAGX ผู้เชี่ยวชาญด้านงานอลูมิเนียมและกระจกสถาปัตยกรรม ออกแบบ ผลิต และติดตั้งด้วยความแม่นยำระดับอุตสาหกรรม',
+    images: ['/images/hagx-logo.svg'],
   },
 };
 
 export default function RootLayout({
   children,
-  modal,
 }: Readonly<{
   children: React.ReactNode;
-  modal: React.ReactNode;
 }>) {
   return (
     <html
       lang="th"
-      className={`${anuphan.variable} scroll-smooth`}
+      data-theme="dark"
+      className={`${anuphan.variable} ${inter.variable} scroll-smooth`}
       data-scroll-behavior="smooth"
       suppressHydrationWarning
     >
@@ -82,9 +93,12 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-title" content="HAGX" />
         <link rel="manifest" href="/site.webmanifest" />
       </head>
-      <body data-accent-color="brand" data-radius="small">
-        <SmoothScroll>{children}</SmoothScroll>
-        {modal}
+      <body>
+        <AuthProvider>
+          <SmoothScroll>
+            <SiteShell>{children}</SiteShell>
+          </SmoothScroll>
+        </AuthProvider>
       </body>
     </html>
   );

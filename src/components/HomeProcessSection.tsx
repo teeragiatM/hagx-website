@@ -1,248 +1,179 @@
 "use client";
 
-import { useI18n } from "@/i18n/useI18n";
-import { Container, Section } from "@/components/ui/section";
-import SectionHeader from "@/components/SectionHeader";
-import {
-  motion,
-  useScroll,
-  useSpring,
-  useTransform,
-  type Variants,
-} from "framer-motion";
+import { useI18n } from '@/i18n/useI18n';
+import { StickyHorizontalScrollSection } from '@/components/ui/sticky-horizontal-scroll';
+import { cn } from '@/lib/utils';
 import Image from "next/image";
-import { useRef } from "react";
-import { Text, Heading } from "./ui";
-// ── Data ─────────────────────────────────────────────────────────────────────
+import { useRef, useState } from 'react';
+import type { ProcessStep } from '@/content/hagx';
 
-const processSteps = [
-  {
-    n: "01",
-    title: "Consultation & Site Survey",
-    titleTh: "การปรึกษาและสำรวจหน้างาน",
-    image:
-      "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=1400&q=90",
-    itemsTh: [
-      "วิเคราะห์ความต้องการ: ให้คำปรึกษาเชิงลึกเพื่อเป็นคู่คิดในการวางแผนโครงการร่วมกับคุณ",
-      "สำรวจพื้นที่จริง: เข้าตรวจสอบหน้างานเพื่อเก็บข้อมูลทางเทคนิคและขนาดที่แม่นยำ",
-      "วางรากฐานโครงการ: ตรวจสอบความพร้อมเพื่อให้การวางแผนมีความถูกต้องสูงสุด",
-    ],
-    itemsEn: [
-      "Requirement Analysis: Providing in-depth consultation to act as your strategic project partner.",
-      "Technical Survey: Conducting on-site inspections to gather precise measurements and technical data.",
-      "Project Foundation: Ensuring total accuracy in project planning from the very first step.",
-    ],
-  },
-  {
-    n: "02",
-    title: "Design & Engineering Development",
-    titleTh: "การพัฒนาแบบและวิศวกรรม",
-    image:
-      "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1400&q=90",
-    itemsTh: [
-      "จัดทำแบบขยาย: เปลี่ยนไอเดียให้เป็นรูปธรรมด้วย Shop Drawing ที่ละเอียดถี่ถ้วน",
-      "วางแผนงบประมาณ: จัดทำรายการวัสดุ (BOQ) ที่ชัดเจนและตรวจสอบได้",
-      "มาตรฐานสากล: ออกแบบให้ความสวยงามมาพร้อมกับโครงสร้างที่แข็งแรงและใช้งานได้จริง",
-    ],
-    itemsEn: [
-      "Shop Drawings: Transforming concepts into reality with detailed architectural shop drawings.",
-      "Budget Planning: Preparing transparent and verifiable Bills of Quantities (BOQ).",
-      "International Standards: Designing for aesthetic excellence combined with structural integrity.",
-    ],
-  },
-  {
-    n: "03",
-    title: "Manufacturing & Quality Control",
-    titleTh: "การผลิตและควบคุมคุณภาพ",
-    image:
-      "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=1400&q=90",
-    itemsTh: [
-      "การผลิตเฉพาะทาง: ดำเนินการผลิตชิ้นงานภายใต้ระบบควบคุมที่เข้มงวดในโรงงานของเราเอง",
-      "การทดสอบระบบ: ตรวจสอบความสมบูรณ์ของชิ้นงาน (Pre-test) ก่อนนำเข้าติดตั้ง",
-      "วัสดุเกรดพรีเมียม: คัดสรรวัสดุคุณภาพสูงเพื่อความทนทานและประสิทธิภาพการใช้งานสูงสุด",
-    ],
-    itemsEn: [
-      "Specialized Production: Manufacturing components under strict quality control within our own facilities.",
-      "System Testing: Conducting rigorous pre-installation tests to ensure component integrity.",
-      "Premium Materials: Selecting high-grade materials for maximum durability and performance.",
-    ],
-  },
-  {
-    n: "04",
-    title: "Professional Installation",
-    titleTh: "การติดตั้งโดยทีมช่างผู้เชี่ยวชาญ",
-    image: "/images/step_4.png",
-    itemsTh: [
-      "ทีมงานเทคนิค: ดำเนินการติดตั้งโดยทีมช่างเฉพาะทางที่มีประสบการณ์สูง",
-      "ความแม่นยำระดับมิลลิเมตร: ยึดถือความละเอียดแม่นยำเป็นมาตรฐานสูงสุดในการปฏิบัติงาน",
-      "มาตรฐานความปลอดภัย: เน้นความสะอาดเรียบร้อยและความปลอดภัยในพื้นที่หน้างาน",
-    ],
-    itemsEn: [
-      "Technical Teams: Execution by highly skilled and specialized technical installation teams.",
-      "Millimeter Precision: Adhering to the highest standards of precision in every aspect of installation.",
-      "Worksite Excellence: Prioritizing safety, cleanliness, and strict adherence to technical specifications.",
-    ],
-  },
-  {
-    n: "05",
-    title: "Inspection & Handover",
-    titleTh: "การตรวจสอบและส่งมอบงาน",
-    image: "/images/step_5.png",
-    itemsTh: [
-      "การตรวจรับงาน: ตรวจสอบคุณภาพ (QC) อย่างละเอียดในทุกมิติก่อนการส่งมอบ",
-      "โซลูชันอุปกรณ์ฮาร์ดแวร์: จัดหาและติดตั้งอุปกรณ์คุณภาพสูงเพื่อความสมบูรณ์แบบของงาน",
-      "การรับประกัน: มอบความมั่นใจในระยะยาวด้วยบริการหลังการขายและการรับประกันที่เชื่อถือได้",
-    ],
-    itemsEn: [
-      "Final Quality Control: Performing detailed QC inspections across all dimensions before handover.",
-      "Hardware Solutions: Providing and integrating high-quality hardware for a flawless finish.",
-      "Warranty & Support: Ensuring long-term peace of mind with reliable after-sales service and warranties.",
-    ],
-  },
-];
+// ── Shared card content ───────────────────────────────────────────────────────
 
-// ── Animation variants ────────────────────────────────────────────────────────
-
-const premiumEase = [0.22, 1, 0.36, 1] as const;
-
-const premiumTextGroup: Variants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.11, delayChildren: 0.05 } },
-};
-
-const premiumTextItem: Variants = {
-  hidden: { opacity: 0, y: 34, filter: "blur(10px)" },
-  visible: {
-    opacity: 1,
-    y: 0,
-    filter: "blur(0px)",
-    transition: { duration: 0.85, ease: premiumEase },
-  },
-};
-
-// ── ProcessStepCard ───────────────────────────────────────────────────────────
-
-type ProcessStep = {
-  n: string;
-  title: string;
-  titleTh: string;
-  image: string;
-  itemsTh: string[];
-  itemsEn: string[];
-};
-
-function ProcessStepCard({
+function ProcessCardInner({
   step,
-  index,
   lang,
 }: {
   step: ProcessStep;
-  index: number;
-  lang: "th" | "en";
+  lang: 'th' | 'en';
 }) {
-  const ref = useRef<HTMLElement | null>(null);
-  const isReverse = index % 2 === 1;
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  });
-  const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 90,
-    damping: 28,
-    mass: 0.35,
-  });
-  const imageY = useTransform(smoothProgress, [0, 1], [-72, 72]);
-  const imageInnerY = useTransform(smoothProgress, [0, 1], [46, -46]);
-  const imageScale = useTransform(
-    smoothProgress,
-    [0, 0.5, 1],
-    [1.18, 1.08, 1.18],
-  );
+  const title = lang === 'th' ? step.titleTh : step.title;
+  const items = lang === 'th' ? step.itemsTh : step.itemsEn;
 
   return (
-    <motion.article
-      ref={ref}
-      initial={{ opacity: 0, y: 36 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.18 }}
-      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-      className={`grid min-h-[700px] items-center gap-10 px-6 py-20 sm:px-10 lg:grid-cols-[0.95fr_1.05fr] lg:px-12 lg:py-24 xl:px-16 ${
-        isReverse ? "lg:grid-flow-dense" : ""
-      }`}
-    >
-      <div className={isReverse ? "lg:col-start-2 lg:text-right" : ""}>
-        <Text
-          as="p"
-          className="mb-8 text-3xl font-light leading-none text-[#DB5828] sm:text-4xl"
-        >
-          {step.n}
-        </Text>
-        <Heading size={{ initial: "9" }} as="h3" className="font-light">
-          {lang === "th" ? step.titleTh : step.title}
-        </Heading>
-        <ul className={`mt-10 space-y-5 ${isReverse ? "lg:ml-auto" : ""}`}>
-          {(lang === "th" ? step.itemsTh : step.itemsEn).map((item) => (
-            <li
-              key={item}
-              className={`flex max-w-xl items-center gap-5 text-sm font-light leading-7 text-white/65 sm:text-base ${
-                isReverse ? "lg:ml-auto lg:flex-row-reverse" : ""
-              }`}
-            >
-              <span className="h-3 w-3 shrink-0 rounded-full bg-[#DB5828]" />
-              <span>{item}</span>
+    <div className="flex min-h-full w-full flex-col">
+      <div className="relative h-[200px] shrink-0 overflow-hidden sm:h-[240px]">
+        <Image
+          src={step.image}
+          alt={title}
+          fill
+          sizes="min(82vw, 520px)"
+          className="object-cover opacity-75"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0c0a08] via-[#0c0a08]/20 to-transparent" />
+        <div className="absolute top-4 left-4 flex h-8 w-8 items-center justify-center bg-background-100/70 backdrop-blur-sm">
+          <span className="text-[10px] font-medium text-accent-500">
+            {step.n}
+          </span>
+        </div>
+      </div>
+      <div className="flex flex-1 flex-col gap-5 p-7 sm:p-9">
+        <h3 className="text-2xl font-medium text-foreground-100 sm:text-3xl">
+          {title}
+        </h3>
+        <ul className="mt-auto space-y-3">
+          {items.map((text) => (
+            <li key={text} className="flex gap-3">
+              <span className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-accent-500" />
+              <span className="text-xs leading-relaxed font-light text-foreground-400 sm:text-sm">
+                {text}
+              </span>
             </li>
           ))}
         </ul>
       </div>
+    </div>
+  );
+}
 
-      <motion.div
-        style={{ y: imageY }}
-        className={`relative mx-auto aspect-[1.02/1] w-full max-w-[560px] overflow-hidden ${
-          isReverse ? "lg:col-start-1 lg:row-start-1" : ""
-        }`}
+// ── Mobile touch carousel ─────────────────────────────────────────────────────
+
+function MobileCarousel({
+  steps,
+  lang,
+}: {
+  steps: ProcessStep[];
+  lang: 'th' | 'en';
+}) {
+  const [active, setActive] = useState(0);
+  const trackRef = useRef<HTMLDivElement>(null);
+
+  const handleScroll = () => {
+    const el = trackRef.current;
+    if (!el) return;
+    const cardWidth = el.scrollWidth / steps.length;
+    setActive(
+      Math.max(
+        0,
+        Math.min(Math.round(el.scrollLeft / cardWidth), steps.length - 1)
+      )
+    );
+  };
+
+  const scrollTo = (idx: number) => {
+    const el = trackRef.current;
+    if (!el) return;
+    el.scrollTo({
+      left: (el.scrollWidth / steps.length) * idx,
+      behavior: 'smooth',
+    });
+  };
+
+  return (
+    <div className="flex flex-col gap-5">
+      {/* snap track */}
+      <div
+        ref={trackRef}
+        onScroll={handleScroll}
+        className="scrollbar-none flex snap-x snap-mandatory gap-3 overflow-x-auto"
+        style={{
+          scrollPaddingLeft: 'var(--homepage-padding-inset)',
+          paddingLeft: 'var(--homepage-padding-inset)',
+        }}
       >
-        <motion.div
-          className="absolute inset-[-14%]"
-          style={{ y: imageInnerY, scale: imageScale }}
-        >
-          <Image
-            src={step.image}
-            alt={`HAGX ${step.title}`}
-            fill
-            sizes="(min-width: 1280px) 560px, (min-width: 1024px) 45vw, 100vw"
-            className="object-cover"
+        {steps.map((step) => (
+          <div
+            key={step.n}
+            className="xs:w-[74vw] w-[82vw] shrink-0 snap-start overflow-hidden border border-white/[0.08] bg-[#0c0a08]"
+          >
+            <ProcessCardInner step={step} lang={lang} />
+          </div>
+        ))}
+        {/* trailing spacer so last card snaps fully into view */}
+        <div
+          className="w-[calc(var(--homepage-padding-inset)-12px)] shrink-0"
+          aria-hidden
+        />
+      </div>
+
+      {/* dots */}
+      <div className="flex items-center justify-center gap-2">
+        {steps.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => scrollTo(i)}
+            aria-label={`ขั้นตอนที่ ${i + 1}`}
+            className={cn(
+              'h-1 rounded-full transition-all duration-300',
+              i === active
+                ? 'w-6 bg-accent-500'
+                : 'w-2 bg-foreground-200/25 hover:bg-foreground-200/50'
+            )}
           />
-        </motion.div>
-      </motion.div>
-    </motion.article>
+        ))}
+      </div>
+    </div>
   );
 }
 
 // ── Section ───────────────────────────────────────────────────────────────────
 
-export default function HomeProcessSection() {
-  const { t, lang } = useI18n();
+export default function HomeProcessSection({
+  items,
+  header,
+}: {
+  items: ProcessStep[];
+  header: React.ReactNode;
+}) {
+  const { lang } = useI18n();
+
+  const stickyItems = items.map((step) => ({
+    id: step.n,
+    number: step.n,
+    title: lang === 'th' ? step.titleTh : step.title,
+    _step: step,
+  }));
 
   return (
-    <section className="ui-padding">
-      <div className="ui-margin">
-        <div className="overflow-hidden border-[var(--accent-a6)] border">
-          <SectionHeader
-            eyebrow={t("whatwedo.eyebrow")}
-            heading={t("whatwedo.title")}
-            description={t("whatwedo.desc")}
-            layout="stack"
-          />
-          {processSteps.map((step, index) => (
-            <ProcessStepCard
-              key={step.n}
-              step={step}
-              index={index}
-              lang={lang}
-            />
-          ))}
+    <>
+      {/* ── Mobile: touch snap carousel ── */}
+      <div className="lg:hidden">
+        {header}
+        <div className="mt-10">
+          <MobileCarousel steps={items} lang={lang} />
         </div>
       </div>
-    </section>
+
+      {/* ── Desktop: sticky horizontal scroll ── */}
+      <div className="hidden lg:block">
+        <StickyHorizontalScrollSection
+          header={header}
+          items={stickyItems}
+          renderItem={(item) => {
+            const data = item as (typeof stickyItems)[number];
+            return <ProcessCardInner step={data._step} lang={lang} />;
+          }}
+        />
+      </div>
+    </>
   );
 }

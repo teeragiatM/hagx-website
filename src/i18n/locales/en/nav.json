@@ -23,5 +23,13 @@
   "menu_toggle": "Toggle menu",
   "contact_heading": "Contact",
   "social_heading": "Social",
-  "business_hours": "Mon-Sat · 09:00-18:00"
+  "business_hours": "Mon-Sat · 09:00-18:00",
+  "login_cta": "Login",
+  "login_heading": "Sign In",
+  "login_email": "Email",
+  "login_password": "Password",
+  "login_submit": "Sign In",
+  "login_loading": "Signing in…",
+  "logout": "Sign Out",
+  "admin": "Admin"
 }

@@ -23,5 +23,13 @@
   "menu_toggle": "เปิดเมนู",
   "contact_heading": "ติดต่อ",
   "social_heading": "โซเชียล",
-  "business_hours": "จันทร์-เสาร์ · 09:00-18:00"
+  "business_hours": "จันทร์-เสาร์ · 09:00-18:00",
+  "login_cta": "เข้าสู่ระบบ",
+  "login_heading": "เข้าสู่ระบบ",
+  "login_email": "อีเมล",
+  "login_password": "รหัสผ่าน",
+  "login_submit": "เข้าสู่ระบบ",
+  "login_loading": "กำลังเข้าสู่ระบบ…",
+  "logout": "ออกจากระบบ",
+  "admin": "จัดการ"
 }

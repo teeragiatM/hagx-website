@@ -38,6 +38,217 @@ export const hagxStats = [
   },
 ];
 
+export const hagxBrands: string[] = [
+  'YKK AP',
+  'Dow Corning',
+  'Guardian Glass',
+  'AGC Glass',
+  'Schuco',
+  'Reynaers',
+  'Pilkington',
+  'Technal',
+];
+
+export type ProcessStep = {
+  n: string;
+  title: string;
+  titleTh: string;
+  image: string;
+  itemsTh: string[];
+  itemsEn: string[];
+};
+
+export const hagxProcessSteps: ProcessStep[] = [
+  {
+    n: '01',
+    title: 'Consultation & Site Survey',
+    titleTh: 'การปรึกษาและสำรวจหน้างาน',
+    image: '/images/working-process-1.png',
+    itemsTh: [
+      'วิเคราะห์ความต้องการ: ให้คำปรึกษาเชิงลึกเพื่อเป็นคู่คิดในการวางแผนโครงการ',
+      'สำรวจพื้นที่จริง: เก็บข้อมูลทางเทคนิคและขนาดที่แม่นยำ',
+      'วางรากฐานโครงการ: ตรวจสอบความพร้อมก่อนเริ่มงาน',
+    ],
+    itemsEn: [
+      'Requirement Analysis: In-depth consultation to act as your strategic project partner.',
+      'Technical Survey: On-site inspections for precise measurements and technical data.',
+      'Project Foundation: Ensuring total accuracy in project planning from step one.',
+    ],
+  },
+  {
+    n: '02',
+    title: 'Design & Engineering',
+    titleTh: 'การพัฒนาแบบและวิศวกรรม',
+    image: '/images/working-process-2.png',
+    itemsTh: [
+      'จัดทำแบบขยาย: Shop Drawing ที่ละเอียดถี่ถ้วน',
+      'วางแผนงบประมาณ: รายการวัสดุ (BOQ) ที่ชัดเจนตรวจสอบได้',
+      'มาตรฐานสากล: ความสวยงามและโครงสร้างที่แข็งแกร่ง',
+    ],
+    itemsEn: [
+      'Shop Drawings: Transforming concepts into detailed architectural drawings.',
+      'Budget Planning: Transparent and verifiable Bills of Quantities (BOQ).',
+      'International Standards: Aesthetic excellence with structural integrity.',
+    ],
+  },
+  {
+    n: '03',
+    title: 'Manufacturing & QC',
+    titleTh: 'การผลิตและควบคุมคุณภาพ',
+    image: '/images/working-process-3.png',
+    itemsTh: [
+      'การผลิตเฉพาะทาง: ควบคุมคุณภาพในโรงงานของเราเอง',
+      'การทดสอบระบบ: ตรวจสอบชิ้นงาน Pre-test ก่อนติดตั้ง',
+      'วัสดุเกรดพรีเมียม: คัดสรรคุณภาพสูงเพื่อความทนทานสูงสุด',
+    ],
+    itemsEn: [
+      'Specialized Production: Manufacturing under strict quality control in-house.',
+      'System Testing: Rigorous pre-installation tests for component integrity.',
+      'Premium Materials: High-grade materials for maximum durability and performance.',
+    ],
+  },
+  {
+    n: '04',
+    title: 'Professional Installation',
+    titleTh: 'การติดตั้งโดยทีมช่างผู้เชี่ยวชาญ',
+    image: '/images/step_4.png',
+    itemsTh: [
+      'ทีมงานเทคนิค: ทีมช่างเฉพาะทางที่มีประสบการณ์สูง',
+      'ความแม่นยำระดับมิลลิเมตร: มาตรฐานสูงสุดในการปฏิบัติงาน',
+      'มาตรฐานความปลอดภัย: ความสะอาดและความปลอดภัยในพื้นที่',
+    ],
+    itemsEn: [
+      'Technical Teams: Highly skilled specialized installation teams.',
+      'Millimeter Precision: Highest standards of precision in every aspect.',
+      'Worksite Excellence: Safety, cleanliness, and strict technical adherence.',
+    ],
+  },
+  {
+    n: '05',
+    title: 'Inspection & Handover',
+    titleTh: 'การตรวจสอบและส่งมอบงาน',
+    image: '/images/working-process-3.png',
+    itemsTh: [
+      'การตรวจรับงาน: QC อย่างละเอียดก่อนส่งมอบ',
+      'โซลูชันอุปกรณ์: ติดตั้งอุปกรณ์คุณภาพสูงให้สมบูรณ์แบบ',
+      'การรับประกัน: บริการหลังการขายและการรับประกันที่เชื่อถือได้',
+    ],
+    itemsEn: [
+      'Final QC: Detailed inspections across all dimensions before handover.',
+      'Hardware Solutions: High-quality hardware integration for a flawless finish.',
+      'Warranty & Support: Reliable after-sales service and long-term warranties.',
+    ],
+  },
+];
+
+export type ScopeItem = {
+  n: string;
+  en: string;
+  th: string;
+  image: string;
+};
+
+export const hagxScopeItems: ScopeItem[] = [
+  {
+    n: '01',
+    en: 'Curtain Wall Systems',
+    th: 'ระบบ Curtain Wall',
+    image: 'https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1400&q=85',
+  },
+  {
+    n: '02',
+    en: 'Glass Facades',
+    th: 'ผนังกระจก Facade',
+    image: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=1400&q=85',
+  },
+  {
+    n: '03',
+    en: 'Aluminium Windows & Doors',
+    th: 'หน้าต่างและประตูอลูมิเนียม',
+    image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1400&q=85',
+  },
+  {
+    n: '04',
+    en: 'Glass Partitions',
+    th: 'ผนังกระจกภายใน',
+    image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1400&q=85',
+  },
+  {
+    n: '05',
+    en: 'Sliding & Folding Systems',
+    th: 'ระบบบานเลื่อนและบานพับ',
+    image: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1400&q=85',
+  },
+  {
+    n: '06',
+    en: 'Railings & Balusters',
+    th: 'ราวบันไดและราวกันตก',
+    image: 'https://images.unsplash.com/photo-1560185007-cde436f6a4d0?w=1400&q=85',
+  },
+  {
+    n: '07',
+    en: 'Material Supply',
+    th: 'จำหน่ายวัสดุและฮาร์ดแวร์',
+    image: 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=1400&q=85',
+  },
+  {
+    n: '08',
+    en: 'Project Management',
+    th: 'บริหารโครงการครบวงจร',
+    image: 'https://images.unsplash.com/photo-1531973576160-7125cd663d86?w=1400&q=85',
+  },
+];
+
+export type StrategyPillar = {
+  num: string;
+  tag: string;
+  titleTh: string;
+  titleEn: string;
+  descTh: string;
+  descEn: string;
+  fill: number;
+  iconName: 'ScanSearch' | 'Factory' | 'Hammer';
+};
+
+export const hagxStrategyPillars: StrategyPillar[] = [
+  {
+    num: '01',
+    tag: 'ANALYZE',
+    titleTh: 'วิเคราะห์',
+    titleEn: 'Analyze',
+    descTh:
+      'วิเคราะห์โจทย์สถาปนิกและข้อจำกัดหน้างานอย่างละเอียด ก่อนกำหนดระบบที่เหมาะสมที่สุดสำหรับแต่ละโครงการ',
+    descEn:
+      'We analyze architectural briefs and site constraints in detail before defining the most suitable system for each project.',
+    fill: 0.35,
+    iconName: 'ScanSearch',
+  },
+  {
+    num: '02',
+    tag: 'FABRICATE',
+    titleTh: 'ผลิต',
+    titleEn: 'Fabricate',
+    descTh:
+      'ประกอบบานด้วยเครื่องจักรและทดสอบระบบ Pre-engineering ก่อนส่งถึงหน้างาน เพื่อความแม่นยำและคุณภาพสูงสุด',
+    descEn:
+      'Panels are machine-fabricated and pre-engineering tested before delivery to ensure precision and quality.',
+    fill: 0.45,
+    iconName: 'Factory',
+  },
+  {
+    num: '03',
+    tag: 'INSTALL',
+    titleTh: 'ติดตั้ง',
+    titleEn: 'Install',
+    descTh:
+      'ติดตั้งด้วยมาตรฐานความปลอดภัยและทีมช่างฝีมือประณีต ตรวจสอบทุกจุดก่อนส่งมอบงาน',
+    descEn:
+      'Installed with safety discipline and refined workmanship, with every point checked before handover.',
+    fill: 0.55,
+    iconName: 'Hammer',
+  },
+];
+
 /** legacy: keep `label` pointing to EN for backward compat */
 export const hagxValues = [
   {

@@ -38,7 +38,7 @@ export type ScrollStackProps = Omit<HTMLAttributes<HTMLElement>, "title"> & {
 
 export function ScrollStack({
   itemCount,
-  stackDirection = "vertical",
+  stackDirection = 'vertical',
   stackOffset = 18,
   stickyOffset = 104,
   className,
@@ -50,58 +50,29 @@ export function ScrollStack({
       value={{ itemCount, stackDirection, stackOffset, stickyOffset }}
     >
       <section
-        className={cn(
-          "ui-scroll-stack relative border-b border-white/[0.06] px-4 py-20 sm:px-8 lg:px-10 lg:py-28",
-          className,
-        )}
+        data-slot="value-stack"
+        className={cn('ui-scroll-stack relative', className)}
         {...props}
       >
-        <div className="mx-auto max-w-[1500px]">{children}</div>
+        <div className="mx-auto">{children}</div>
       </section>
     </ScrollStackContext.Provider>
   );
 }
 
-export type ScrollStackHeaderProps = Omit<
-  HTMLAttributes<HTMLDivElement>,
-  "title"
-> & {
-  eyebrow?: ReactNode;
-  title?: ReactNode;
-  description?: ReactNode;
-};
+export type ScrollStackHeaderProps = HTMLAttributes<HTMLDivElement>;
 
 export function ScrollStackHeader({
-  eyebrow,
-  title,
-  description,
   className,
   children,
   ...props
 }: ScrollStackHeaderProps) {
   return (
     <div
-      className={cn(
-        "ui-scroll-stack-header mb-14 max-w-4xl lg:mb-20",
-        className,
-      )}
+      className={cn('ui-scroll-stack-header mb-14 lg:mb-20', className)}
       {...props}
     >
-      {children ?? (
-        <>
-          {eyebrow && <p className="sh-eyebrow mb-5">{eyebrow}</p>}
-          {title && (
-            <h2 className="ui-Section-Heading text-4xl leading-tight sm:text-5xl lg:text-6xl">
-              {title}
-            </h2>
-          )}
-          {description && (
-            <p className="section-header-description ml-0 mt-6 max-w-2xl text-left text-white/45 lg:ml-0 lg:pt-0 lg:text-left">
-              {description}
-            </p>
-          )}
-        </>
-      )}
+      {children}
     </div>
   );
 }
@@ -111,14 +82,14 @@ export type ScrollStackContentProps = HTMLAttributes<HTMLDivElement> & {
 };
 
 export function ScrollStackContent({
-  bottomSpace = "28vh",
+  bottomSpace = '28vh',
   className,
   style,
   ...props
 }: ScrollStackContentProps) {
   return (
     <div
-      className={cn("ui-scroll-stack-content w-full space-y-8", className)}
+      className={cn('ui-scroll-stack-content w-full space-y-8', className)}
       style={{ paddingBottom: bottomSpace, ...style }}
       {...props}
     />
@@ -127,7 +98,7 @@ export function ScrollStackContent({
 
 export type ScrollStackItemProps = Omit<
   HTMLAttributes<HTMLElement>,
-  "children"
+  'children'
 > & {
   index: number;
   children: ReactNode;
@@ -141,7 +112,7 @@ export function ScrollStackItem({
 }: ScrollStackItemProps) {
   const { itemCount, stackDirection, stackOffset, stickyOffset } =
     useScrollStackContext();
-  const isHorizontal = stackDirection === "horizontal";
+  const isHorizontal = stackDirection === 'horizontal';
 
   const stackStyle: CSSProperties = isHorizontal
     ? {
@@ -166,8 +137,8 @@ export function ScrollStackItem({
       viewport={{ amount: 0.45 }}
       transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
       className={cn(
-        "ui-scroll-stack-item sticky overflow-hidden border border-white/[0.08] bg-[#0c0a08] shadow-[0_30px_90px_rgba(0,0,0,0.38)]",
-        className,
+        'ui-scroll-stack-item sticky overflow-hidden border border-white/[0.08] bg-[#0c0a08] shadow-[0_30px_90px_rgba(0,0,0,0.38)]',
+        className
       )}
       style={{ ...stackStyle, ...style }}
     >
@@ -193,28 +164,24 @@ export type ScrollStackDataItem = {
   icon?: ReactNode;
 };
 
-export type ScrollStackSectionProps = Omit<ScrollStackProps, "itemCount"> & {
-  eyebrow?: ReactNode;
-  title?: ReactNode;
-  description?: ReactNode;
+export type ScrollStackSectionProps = Omit<ScrollStackProps, 'itemCount'> & {
+  header?: ReactNode;
   items: ScrollStackDataItem[];
   bottomSpace?: string;
   renderItem?: (
     item: ScrollStackDataItem,
     index: number,
-    items: ScrollStackDataItem[],
+    items: ScrollStackDataItem[]
   ) => ReactNode;
 };
 
 export function ScrollStackSection({
-  eyebrow,
-  title,
-  description,
+  header,
   items,
-  bottomSpace = "28vh",
+  bottomSpace = '28vh',
   renderItem,
-  stackDirection = "vertical",
-  stackOffset = 18,
+  stackDirection = 'vertical',
+  stackOffset = 64,
   stickyOffset = 104,
   className,
   ...props
@@ -228,11 +195,7 @@ export function ScrollStackSection({
       className={className}
       {...props}
     >
-      <ScrollStackHeader
-        eyebrow={eyebrow}
-        title={title}
-        description={description}
-      />
+      {header && <ScrollStackHeader>{header}</ScrollStackHeader>}
       <ScrollStackContent bottomSpace={bottomSpace}>
         {items.map((item, index) => (
           <ScrollStackItem key={item.id} index={index}>
@@ -262,41 +225,41 @@ function DefaultStackCard({
         <div className="flex flex-col justify-between border-white/[0.08] lg:border-r lg:pr-8">
           <div>
             {item.number && (
-              <p className="text-[10px] font-light uppercase tracking-widest text-[#E15F31]">
-                {item.number} / {String(total).padStart(2, "0")}
+              <p className="text-[10px] font-light tracking-widest text-accent-500 uppercase">
+                {item.number} / {String(total).padStart(2, '0')}
               </p>
             )}
             {item.icon && (
-              <div className="mt-8 text-[#E15F31]">{item.icon}</div>
+              <div className="mt-8 text-accent-500">{item.icon}</div>
             )}
           </div>
           {item.number && (
-            <p className="mt-10 text-7xl font-light leading-none text-white/[0.04] sm:text-8xl">
+            <p className="mt-10 text-7xl leading-none font-light text-foreground-400 sm:text-8xl">
               {item.number}
             </p>
           )}
         </div>
         <div className="flex flex-col justify-center">
-          <h3 className="max-w-5xl text-3xl font-bold tracking-tight text-white sm:text-4xl lg:text-5xl">
+          <h3 className="max-w-5xl text-3xl font-bold tracking-tight text-foreground-100 sm:text-4xl lg:text-5xl">
             {item.title}
           </h3>
           {item.subtitle && (
-            <p className="mt-6 max-w-4xl text-lg font-light leading-8 text-white/70">
+            <p className="mt-6 max-w-4xl text-lg leading-8 font-light text-foreground-200">
               {item.subtitle}
             </p>
           )}
           {item.description && (
-            <p className="mt-4 max-w-4xl text-sm font-light leading-8 text-white/48">
+            <p className="mt-4 max-w-4xl text-sm leading-8 font-light text-foreground-300">
               {item.description}
             </p>
           )}
           {item.secondarySubtitle && (
-            <p className="mt-7 max-w-4xl text-sm font-light leading-7 text-white/40">
+            <p className="mt-7 max-w-4xl text-sm leading-7 font-light text-foreground-400">
               {item.secondarySubtitle}
             </p>
           )}
           {item.secondaryDescription && (
-            <p className="mt-2 max-w-4xl text-xs font-light leading-7 text-white/30">
+            <p className="mt-2 max-w-4xl text-xs leading-7 font-light text-foreground-400">
               {item.secondaryDescription}
             </p>
           )}

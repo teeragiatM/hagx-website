@@ -1,24 +1,21 @@
-import SiteFooter from "@/components/SiteFooter";
-import SiteNav from "@/components/SiteNav";
-import type { Metadata } from "next";
+import type { Metadata } from 'next';
 
-export const metadata: Metadata = { title: "Terms & Conditions" };
+export const metadata: Metadata = { title: 'Terms & Conditions' };
 
 export default function TermsPage() {
   return (
     <>
-      <SiteNav />
-      <main className="px-8 pb-24 pt-40 sm:px-12 lg:px-16">
-        <div className="mx-auto max-w-3xl">
-          <p className="mb-4 text-[10px] font-light uppercase tracking-widest text-[#DB5828]">
+      <div>
+        <div className="PageSection_root px-(--homepage-padding-inset)">
+          <p className="mb-4 text-xs font-light text-accent-500 uppercase">
             Legal
           </p>
-          <h1 className="mb-12 text-4xl font-light text-white sm:text-5xl">
+          <h1 className="mb-12 text-4xl font-light text-foreground-100 sm:text-5xl">
             Terms &amp; Conditions
           </h1>
-          <div className="space-y-8 text-sm font-light leading-8 text-white/50">
+          <div className="space-y-8 text-sm leading-8 font-light text-foreground-300">
             <section>
-              <h2 className="mb-3 text-base font-normal text-white/80">
+              <h2 className="mb-3 text-base font-normal text-foreground-200">
                 1. การยอมรับข้อกำหนด
               </h2>
               <p>
@@ -28,7 +25,7 @@ export default function TermsPage() {
               </p>
             </section>
             <section>
-              <h2 className="mb-3 text-base font-normal text-white/80">
+              <h2 className="mb-3 text-base font-normal text-foreground-200">
                 2. ทรัพย์สินทางปัญญา
               </h2>
               <p>
@@ -39,7 +36,7 @@ export default function TermsPage() {
               </p>
             </section>
             <section>
-              <h2 className="mb-3 text-base font-normal text-white/80">
+              <h2 className="mb-3 text-base font-normal text-foreground-200">
                 3. ข้อจำกัดความรับผิดชอบ
               </h2>
               <p>
@@ -49,7 +46,7 @@ export default function TermsPage() {
               </p>
             </section>
             <section>
-              <h2 className="mb-3 text-base font-normal text-white/80">
+              <h2 className="mb-3 text-base font-normal text-foreground-200">
                 4. การเปลี่ยนแปลงข้อกำหนด
               </h2>
               <p>
@@ -58,7 +55,7 @@ export default function TermsPage() {
               </p>
             </section>
             <section>
-              <h2 className="mb-3 text-base font-normal text-white/80">
+              <h2 className="mb-3 text-base font-normal text-foreground-200">
                 5. กฎหมายที่ใช้บังคับ
               </h2>
               <p>
@@ -66,13 +63,12 @@ export default function TermsPage() {
                 ให้อยู่ในเขตอำนาจศาลไทย
               </p>
             </section>
-            <p className="pt-4 text-xs text-white/25">
+            <p className="pt-4 text-xs text-foreground-400">
               อัปเดตล่าสุด: มกราคม 2026 · HAGX Co., Ltd.
             </p>
           </div>
         </div>
-      </main>
-      <SiteFooter />
+      </div>
     </>
   );
 }

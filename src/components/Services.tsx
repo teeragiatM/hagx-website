@@ -44,40 +44,53 @@ const services = [
 
 export default function Services() {
   return (
-    <section id="services" className="py-28 bg-white" aria-labelledby="services-heading">
-      <div className="max-w-7xl mx-auto px-8">
+    <section
+      id="services"
+      className="bg-white py-28"
+      aria-labelledby="services-heading"
+    >
+      <div className="mx-auto max-w-7xl px-8">
         <ScrollReveal className="mb-20">
-          <p className="text-[10px] tracking-[0.3em] uppercase text-slate-400 font-light mb-4">Our Services</p>
-          <h2 id="services-heading" className="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight max-w-lg leading-tight">
+          <p className="mb-4 text-[10px] font-light tracking-[0.3em] text-slate-400 uppercase">
+            Our Services
+          </p>
+          <h2
+            id="services-heading"
+            className="max-w-lg text-4xl leading-tight font-bold tracking-tight text-slate-900 md:text-5xl"
+          >
             à¸šà¸£à¸´à¸à¸²à¸£à¸‚à¸­à¸‡à¹€à¸£à¸²
           </h2>
         </ScrollReveal>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
           {services.map((s, i) => (
             <ScrollReveal
               key={s.title}
               delay={i * 0.07}
-              className={`group relative overflow-hidden cursor-pointer ${
-                s.size === "lg" ? "md:col-span-2 aspect-[16/9]" : "aspect-square"
+              className={`group relative cursor-pointer overflow-hidden ${
+                s.size === 'lg'
+                  ? 'aspect-[16/9] md:col-span-2'
+                  : 'aspect-square'
               }`}
             >
               <Image
                 src={s.img}
                 alt={s.subtitle}
                 fill
-                className="object-cover transition-transform duration-700 group-hover:scale-105"
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
                 sizes="(max-width: 768px) 50vw, (max-width: 1280px) 33vw, 400px"
               />
-              <div className="absolute inset-0 bg-slate-900/0 group-hover:bg-slate-900/50 transition-all duration-500" />
-              <div className="absolute bottom-0 left-0 right-0 p-5 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-400">
-                <p className="text-[9px] tracking-[0.25em] uppercase text-white/60 font-light mb-1">
+              <div className="absolute inset-0 bg-background-100/0 transition-all duration-500 group-hover:bg-background-100/50" />
+              <div className="absolute right-0 bottom-0 left-0 translate-y-2 p-5 opacity-0 transition-all duration-400 group-hover:translate-y-0 group-hover:opacity-100">
+                <p className="mb-1 text-xs font-light tracking-[0.25em] text-foreground-200 uppercase">
                   {s.title}
                 </p>
-                <h3 className="text-base font-semibold text-white">{s.subtitle}</h3>
+                <h3 className="text-base font-semibold text-foreground-100">
+                  {s.subtitle}
+                </h3>
               </div>
               <div className="absolute top-4 left-4">
-                <p className="text-[9px] tracking-[0.25em] uppercase text-white/40 font-light group-hover:opacity-0 transition-opacity duration-300">
+                <p className="text-xs font-light tracking-[0.25em] text-foreground-400 uppercase transition-opacity duration-300 group-hover:opacity-0">
                   {s.title}
                 </p>
               </div>

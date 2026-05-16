@@ -39,12 +39,7 @@ export default function TestimonialCarousel({
       autoPlayDirection={autoPlayDirection}
       className={className}
     >
-      <SectionHeader
-        eyebrow={eyebrow}
-        heading={title}
-        description={description}
-        layout="row"
-      />
+      <SectionHeader heading={title} description={description} />
       <div className="relative">
         <TestimonialContent />
         <TestimonialControls />

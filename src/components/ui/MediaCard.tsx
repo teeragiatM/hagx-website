@@ -26,8 +26,8 @@ export function MediaCard({
   const inner = (
     <div
       className={cn(
-        "ui-media-card group relative flex h-full flex-col overflow-hidden border border-white/[0.07] bg-[#0c0c0c] transition-all duration-300 hover:border-[#DB5828]/30 hover:shadow-[0_0_40px_rgba(255,138,0,0.08)]",
-        className,
+        'ui-media-card group relative flex h-full flex-col overflow-hidden border border-white/[0.07] bg-[#0c0c0c] transition-all duration-300 hover:border-accent-500/30 hover:shadow-[0_0_40px_rgba(255,138,0,0.08)]',
+        className
       )}
     >
       {children}
@@ -69,6 +69,8 @@ export type MediaCardImageProps = {
   src: string;
   alt: string;
   aspect?: keyof typeof aspectClasses;
+  /** fill=true: image is absolute inset-0, parent must have explicit height */
+  fill?: boolean;
   sizes?: string;
   /** Gradient overlay colour stop. Default #0c0c0c */
   gradientFrom?: string;
@@ -79,18 +81,19 @@ export type MediaCardImageProps = {
 export function MediaCardImage({
   src,
   alt,
-  aspect = "wide",
-  sizes = "(min-width:1280px) 25vw, (min-width:640px) 40vw, 90vw",
-  gradientFrom = "#0c0c0c",
+  aspect = 'wide',
+  fill = false,
+  sizes = '(min-width:1280px) 25vw, (min-width:640px) 40vw, 90vw',
+  gradientFrom = '#0c0c0c',
   children,
   className,
 }: MediaCardImageProps) {
   return (
     <div
       className={cn(
-        "ui-media-card-image relative overflow-hidden",
-        aspectClasses[aspect],
-        className,
+        'ui-media-card-image relative overflow-hidden',
+        fill ? 'absolute inset-0' : aspectClasses[aspect],
+        className
       )}
     >
       <Image
@@ -98,11 +101,13 @@ export function MediaCardImage({
         alt={alt}
         fill
         sizes={sizes}
-        className="object-cover opacity-65 transition-all duration-700 group-hover:scale-105 group-hover:opacity-85"
+        className="object-cover opacity-65 transition-all duration-500 group-hover:scale-105 group-hover:opacity-85"
       />
       <div
-        className="pointer-events-none absolute inset-0 bg-gradient-to-t to-transparent"
-        style={{ backgroundImage: `linear-gradient(to top, ${gradientFrom}/90%, transparent)` }}
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background: `linear-gradient(to top, color-mix(in srgb, ${gradientFrom} 90%, transparent), transparent)`,
+        }}
       />
       {children}
     </div>
@@ -112,8 +117,8 @@ export function MediaCardImage({
 // ─── Badge ────────────────────────────────────────────────────────────────────
 
 export type MediaCardBadgeProps = HTMLAttributes<HTMLSpanElement> & {
-  position?: "top-left" | "top-right" | "bottom-left" | "bottom-right";
-  variant?: "default" | "accent" | "custom";
+  position?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
+  variant?: 'default' | 'accent' | 'outlined';
   children: ReactNode;
 };
 
@@ -134,11 +139,14 @@ export function MediaCardBadge({
   return (
     <span
       className={cn(
-        "ui-media-card-badge px-2.5 py-1 text-[9px] font-light uppercase tracking-widest backdrop-blur-sm",
+        'ui-media-card-badge px-2.5 py-1 text-xs font-light tracking-widest uppercase backdrop-blur-sm',
         positionClasses[position],
-        variant === "default" && "border border-white/15 bg-black/50 text-white/60",
-        variant === "accent" && "border border-[#DB5828]/50 bg-[#DB5828]/15 text-[#DB5828]",
-        className,
+        variant === 'default' && 'bg-black/50 text-foreground-200',
+        variant === 'accent' &&
+          'border border-accent-500/50 bg-accent-500/15 text-accent-500',
+        variant === 'outlined' &&
+          'border border-white/25 bg-transparent text-foreground-200',
+        className
       )}
       {...props}
     >
@@ -164,6 +172,27 @@ export function MediaCardBody({
   );
 }
 
+// ─── Number ───────────────────────────────────────────────────────────────────
+// Used for carousel/stack items to show "01", "02" etc.
+
+export function MediaCardNumber({
+  className,
+  children,
+  ...props
+}: HTMLAttributes<HTMLParagraphElement>) {
+  return (
+    <p
+      className={cn(
+        "ui-media-card-number mb-3 text-xs font-light tracking-widest text-foreground-400",
+        className,
+      )}
+      {...props}
+    >
+      {children}
+    </p>
+  );
+}
+
 // ─── Eyebrow ──────────────────────────────────────────────────────────────────
 
 export function MediaCardEyebrow({
@@ -174,8 +203,8 @@ export function MediaCardEyebrow({
   return (
     <p
       className={cn(
-        "ui-media-card-eyebrow mb-1 text-[10px] font-light uppercase tracking-widest text-[#DB5828]",
-        className,
+        'ui-media-card-eyebrow mb-1 text-[10px] font-light tracking-widest text-accent-500 uppercase',
+        className
       )}
       {...props}
     >
@@ -194,13 +223,34 @@ export function MediaCardTitle({
   return (
     <h3
       className={cn(
-        "ui-media-card-title mb-2 text-base font-semibold leading-snug text-white transition-colors group-hover:text-[#DB5828]",
-        className,
+        'ui-media-card-title mb-2 text-base leading-snug font-semibold text-foreground-100 transition-colors group-hover:text-accent-500',
+        className
       )}
       {...props}
     >
       {children}
     </h3>
+  );
+}
+
+// ─── Subtitle ─────────────────────────────────────────────────────────────────
+// Secondary label under title (e.g. English product name, client name)
+
+export function MediaCardSubtitle({
+  className,
+  children,
+  ...props
+}: HTMLAttributes<HTMLParagraphElement>) {
+  return (
+    <p
+      className={cn(
+        'ui-media-card-subtitle mb-2 text-[11px] font-light text-foreground-400',
+        className
+      )}
+      {...props}
+    >
+      {children}
+    </p>
   );
 }
 
@@ -214,8 +264,8 @@ export function MediaCardExcerpt({
   return (
     <p
       className={cn(
-        "ui-media-card-excerpt mb-4 flex-1 text-xs font-light leading-[1.8] text-white/45 line-clamp-3",
-        className,
+        'ui-media-card-excerpt mb-4 line-clamp-3 flex-1 text-xs leading-[1.8] font-light text-foreground-400',
+        className
       )}
       {...props}
     >
@@ -224,7 +274,7 @@ export function MediaCardExcerpt({
   );
 }
 
-// ─── Meta (top row: left + right slots) ──────────────────────────────────────
+// ─── Meta (top row: left + right slots) ───────────────────────────────────────
 
 export function MediaCardMeta({
   left,
@@ -276,7 +326,7 @@ export function MediaCardFooter({
 
 export function MediaCardArrow({ label }: { label: ReactNode }) {
   return (
-    <span className="flex items-center gap-1.5 text-[10px] font-light uppercase tracking-widest text-[#DB5828] opacity-0 transition-opacity group-hover:opacity-100">
+    <span className="flex items-center gap-1.5 text-[10px] font-light tracking-widest text-accent-500 uppercase opacity-0 transition-opacity group-hover:opacity-100">
       {label}
       <svg width="10" height="10" viewBox="0 0 12 12" fill="none">
         <path

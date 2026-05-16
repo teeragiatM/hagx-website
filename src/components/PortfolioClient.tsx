@@ -2,6 +2,8 @@
 
 import PageHero from "@/components/PageHero";
 import CtaSection from "@/components/CtaSection";
+import { FilterToolbar } from '@/components/ui/FilterToolbar';
+import type { FilterValues } from '@/components/ui/FilterToolbar';
 import {
   MediaCard,
   MediaCardArrow,
@@ -272,7 +274,7 @@ function ThailandMap({
           }
           filterZoomEvent={(evt: any) => {
             // block scroll-wheel zoom; allow drag pan only
-            if (evt.type === "wheel") return false;
+            if (evt.type === 'wheel') return false;
             return true;
           }}
           minZoom={MIN_ZOOM}
@@ -282,7 +284,7 @@ function ThailandMap({
           <Geographies geography={WORLD_GEO_URL}>
             {({ geographies }) =>
               geographies.map((geo) => {
-                const isThai = geo.properties.name === "Thailand";
+                const isThai = geo.properties.name === 'Thailand';
                 if (isThai) return null;
                 return (
                   <Geography
@@ -292,12 +294,12 @@ function ThailandMap({
                     stroke="rgba(255,255,255,0.14)"
                     strokeWidth={0.4}
                     style={{
-                      default: { outline: "none" },
+                      default: { outline: 'none' },
                       hover: {
-                        outline: "none",
-                        fill: "rgba(255,255,255,0.05)",
+                        outline: 'none',
+                        fill: 'rgba(255,255,255,0.05)',
                       },
-                      pressed: { outline: "none" },
+                      pressed: { outline: 'none' },
                     }}
                   />
                 );
@@ -321,19 +323,19 @@ function ThailandMap({
                     onMouseLeave={() => setHoveredProvince(null)}
                     fill={
                       isActive
-                        ? "rgba(255,138,0,0.40)"
+                        ? 'rgba(255,138,0,0.40)'
                         : isHovered
-                          ? "rgba(255,138,0,0.22)"
-                          : "rgba(255,138,0,0.10)"
+                          ? 'rgba(255,138,0,0.22)'
+                          : 'rgba(255,138,0,0.10)'
                     }
                     stroke={
-                      isActive ? "rgba(255,138,0,0.85)" : "rgba(255,138,0,0.40)"
+                      isActive ? 'rgba(255,138,0,0.85)' : 'rgba(255,138,0,0.40)'
                     }
                     strokeWidth={isActive ? 0.8 : 0.3}
                     style={{
-                      default: { outline: "none", cursor: "pointer" },
-                      hover: { outline: "none", cursor: "pointer" },
-                      pressed: { outline: "none" },
+                      default: { outline: 'none', cursor: 'pointer' },
+                      hover: { outline: 'none', cursor: 'pointer' },
+                      pressed: { outline: 'none' },
                     }}
                   />
                 );
@@ -346,26 +348,26 @@ function ThailandMap({
             const pinKey = PIN_KEYS[index];
             const label = t(`map.pins.${pinKey}`);
             return (
-            <Marker key={pinKey} coordinates={loc.coords}>
-              <PulseMarker
-                active={activePin === pinKey}
-                zoom={position.zoom}
-                onClick={() =>
-                  setActivePin(activePin === pinKey ? null : pinKey)
-                }
-              />
-              <text
-                textAnchor="middle"
-                y={-14 / position.zoom}
-                fill="rgba(255,255,255,0.7)"
-                fontSize={7.5 / position.zoom}
-                fontWeight={300}
-                fontFamily="var(--font-anuphan), sans-serif"
-                style={{ pointerEvents: "none", userSelect: "none" }}
-              >
-                {label}
-              </text>
-            </Marker>
+              <Marker key={pinKey} coordinates={loc.coords}>
+                <PulseMarker
+                  active={activePin === pinKey}
+                  zoom={position.zoom}
+                  onClick={() =>
+                    setActivePin(activePin === pinKey ? null : pinKey)
+                  }
+                />
+                <text
+                  textAnchor="middle"
+                  y={-14 / position.zoom}
+                  fill="rgba(255,255,255,0.7)"
+                  fontSize={7.5 / position.zoom}
+                  fontWeight={300}
+                  fontFamily="var(--font-anuphan), sans-serif"
+                  style={{ pointerEvents: 'none', userSelect: 'none' }}
+                >
+                  {label}
+                </text>
+              </Marker>
             );
           })}
         </ZoomableGroup>
@@ -380,7 +382,7 @@ function ThailandMap({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
-            className="pointer-events-none absolute bottom-6 left-1/2 -translate-x-1/2 border border-[#DB5828]/25 bg-[#120800]/90 px-4 py-2 text-xs font-light text-white/65 backdrop-blur-sm"
+            className="pointer-events-none absolute bottom-6 left-1/2 -translate-x-1/2 border border-accent-500/25 bg-[#120800]/90 px-4 py-2 text-xs font-light text-foreground-300 backdrop-blur-sm"
           >
             {provinceName(hoveredProvince, lang)}
           </motion.div>
@@ -388,13 +390,13 @@ function ThailandMap({
       </AnimatePresence>
 
       {/* ── Zoom controls — right side ── */}
-      <div className="absolute right-5 top-1/2 flex -translate-y-1/2 flex-col gap-1.5">
+      <div className="absolute top-1/2 right-5 flex -translate-y-1/2 flex-col gap-1.5">
         {/* Zoom in */}
         <button
           onClick={zoomIn}
           disabled={position.zoom >= MAX_ZOOM}
-          className="flex h-9 w-9 items-center justify-center border border-white/15 bg-black/60 text-white/50 backdrop-blur-sm transition-colors hover:border-white/35 hover:text-white disabled:opacity-20"
-          aria-label={t("map.zoom_in")}
+          className="flex h-9 w-9 items-center justify-center bg-background-100/60 text-foreground-300 backdrop-blur-sm transition-colors hover:border-foreground-100/35 hover:text-foreground-100 disabled:opacity-20"
+          aria-label={t('map.zoom_in')}
         >
           <svg
             width="14"
@@ -411,7 +413,7 @@ function ThailandMap({
         </button>
 
         {/* Zoom level indicator */}
-        <div className="flex h-6 items-center justify-center text-[9px] font-light tracking-widest text-white/20">
+        <div className="flex h-6 items-center justify-center text-xs font-light tracking-widest text-foreground-400">
           {Math.round(position.zoom * 10) / 10}x
         </div>
 
@@ -419,8 +421,8 @@ function ThailandMap({
         <button
           onClick={zoomOut}
           disabled={position.zoom <= MIN_ZOOM}
-          className="flex h-9 w-9 items-center justify-center border border-white/15 bg-black/60 text-white/50 backdrop-blur-sm transition-colors hover:border-white/35 hover:text-white disabled:opacity-20"
-          aria-label={t("map.zoom_out")}
+          className="flex h-9 w-9 items-center justify-center bg-background-100/60 text-foreground-300 backdrop-blur-sm transition-colors hover:border-foreground-100/35 hover:text-foreground-100 disabled:opacity-20"
+          aria-label={t('map.zoom_out')}
         >
           <svg
             width="14"
@@ -443,9 +445,9 @@ function ThailandMap({
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.85 }}
               onClick={handleReset}
-              className="mt-1 flex h-9 w-9 items-center justify-center border border-[#DB5828]/30 bg-black/60 text-[#DB5828]/60 backdrop-blur-sm transition-colors hover:border-[#DB5828]/70 hover:text-[#DB5828]"
-              aria-label={t("map.reset")}
-              title={t("map.reset")}
+              className="mt-1 flex h-9 w-9 items-center justify-center border border-accent-500/30 bg-black/60 text-accent-600 backdrop-blur-sm transition-colors hover:border-accent-500/70 hover:text-accent-500"
+              aria-label={t('map.reset')}
+              title={t('map.reset')}
             >
               <svg
                 width="13"
@@ -480,25 +482,25 @@ function ThailandMap({
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 16 }}
                 transition={{ duration: 0.25 }}
-                className="absolute right-16 top-6 w-48 border border-[#DB5828]/30 bg-gradient-to-br from-[#7a3500] to-[#2a1000] p-5 shadow-2xl"
+                className="absolute top-6 right-16 w-48 border border-accent-500/30 bg-gradient-to-br from-[#7a3500] to-[#2a1000] p-5 shadow-2xl"
               >
-                <p className="mb-1 text-[10px] font-light uppercase tracking-widest text-[#DB5828]">
-                  {t("map.location")}
+                <p className="mb-1 text-[10px] font-light tracking-widest text-accent-500 uppercase">
+                  {t('map.location')}
                 </p>
-                <h3 className="text-lg font-bold text-white leading-tight">
+                <h3 className="text-lg leading-tight font-bold text-foreground-100">
                   {label}
                 </h3>
-                <p className="mt-3 text-3xl font-bold text-[#DB5828]">
+                <p className="mt-3 text-3xl font-bold text-accent-500">
                   {loc.count}+
                 </p>
-                <p className="text-xs font-light text-white/50">
-                  {t("map.projects_completed")}
+                <p className="text-xs font-light text-foreground-300">
+                  {t('map.projects_completed')}
                 </p>
                 <button
                   onClick={() => setActivePin(null)}
-                  className="mt-4 text-[10px] font-light uppercase tracking-widest text-white/30 hover:text-white"
+                  className="mt-4 text-[10px] font-light tracking-widest text-foreground-400 uppercase hover:text-foreground-100"
                 >
-                  {t("map.close")} x
+                  {t('map.close')} x
                 </button>
               </motion.div>
             );
@@ -507,47 +509,11 @@ function ThailandMap({
 
       {/* ── Hint ── */}
       {!isZoomed && (
-        <p className="pointer-events-none absolute bottom-6 right-14 text-[9px] font-light uppercase tracking-widest text-white/18">
-          {t("map.hint")}
+        <p className="pointer-events-none absolute right-14 bottom-6 text-xs font-light tracking-widest text-foreground-400 uppercase">
+          {t('map.hint')}
         </p>
       )}
     </div>
-  );
-}
-
-// ── Filter checkbox ───────────────────────────────────────────────────────────
-
-function FilterCheck({
-  label,
-  checked,
-  onChange,
-}: {
-  label: string;
-  checked: boolean;
-  onChange: () => void;
-}) {
-  return (
-    <label className="flex cursor-pointer items-center gap-3 text-sm font-light text-white/50 hover:text-white">
-      <span
-        onClick={onChange}
-        className={`flex h-4 w-4 shrink-0 items-center justify-center border transition-colors ${
-          checked ? "border-[#DB5828] bg-[#DB5828]" : "border-white/20"
-        }`}
-      >
-        {checked && (
-          <svg width="9" height="9" viewBox="0 0 10 10">
-            <path
-              d="M1.5 5l2.5 2.5 5-5"
-              stroke="#fff"
-              strokeWidth="1.5"
-              fill="none"
-              strokeLinecap="round"
-            />
-          </svg>
-        )}
-      </span>
-      {label}
-    </label>
   );
 }
 
@@ -562,20 +528,53 @@ export default function PortfolioClient({
 }) {
   const { t, lang } = useI18n("portfolio");
   const [activePin, setActivePin] = useState<string | null>(null);
-  const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
-  const [selectedCategories, setSelectedCats] = useState<string[]>([]);
-  const [selectedLocations, setSelectedLocs] = useState<string[]>([]);
+  const [filterValues, setFilterValues] = useState<FilterValues>({
+    types: [],
+    categories: [],
+    locations: [],
+  });
   const currentItems = lang === "en" ? itemsEn ?? items : items;
 
-  const toggle = (arr: string[], setArr: (a: string[]) => void, val: string) =>
-    setArr(arr.includes(val) ? arr.filter((v) => v !== val) : [...arr, val]);
+  const selectedTypes = (filterValues.types as string[]) ?? [];
+  const selectedCategories = (filterValues.categories as string[]) ?? [];
+  const selectedLocations = (filterValues.locations as string[]) ?? [];
 
   const locationOptions = useMemo(
     () =>
       currentItems
         .map((p) => p.location)
         .filter((v, i, a) => a.indexOf(v) === i),
-    [currentItems],
+    [currentItems]
+  );
+
+  const filterGroups = useMemo(
+    () => [
+      {
+        key: 'types',
+        label: t('filters.project_type'),
+        type: 'multi' as const,
+        options: typeOptions.map((o) => ({
+          value: o.value,
+          label: t(`filters.type_options.${o.value}`),
+        })),
+      },
+      {
+        key: 'categories',
+        label: t('filters.scope'),
+        type: 'multi' as const,
+        options: categoryOptions.map((o) => ({
+          value: o.value,
+          label: t(`filters.category_options.${o.value}`),
+        })),
+      },
+      {
+        key: 'locations',
+        label: t('filters.location'),
+        type: 'multi' as const,
+        options: locationOptions.map((loc) => ({ value: loc, label: loc })),
+      },
+    ],
+    [t, locationOptions]
   );
 
   const filtered = useMemo(
@@ -592,47 +591,33 @@ export default function PortfolioClient({
           return false;
         return true;
       }),
-    [currentItems, selectedTypes, selectedCategories, selectedLocations],
+    [currentItems, selectedTypes, selectedCategories, selectedLocations]
   );
 
-  const clearAll = () => {
-    setSelectedTypes([]);
-    setSelectedCats([]);
-    setSelectedLocs([]);
-  };
-  const hasFilter =
-    selectedTypes.length ||
-    selectedCategories.length ||
-    selectedLocations.length;
+  const handleFilterChange = (key: string, value: string[] | boolean) =>
+    setFilterValues((prev) => ({ ...prev, [key]: value }));
+
+  const clearAll = () =>
+    setFilterValues({ types: [], categories: [], locations: [] });
 
   useEffect(() => {
     clearAll();
     setActivePin(null);
   }, [lang]);
 
-  const typeLabel = (value: string) => t(`filters.type_options.${value}`);
-  const categoryLabel = (value: string) =>
-    t(`filters.category_options.${value}`);
-  const filterChipLabel = (value: string) => {
-    if (typeOptions.some((opt) => opt.value === value)) return typeLabel(value);
-    if (categoryOptions.some((opt) => opt.value === value))
-      return categoryLabel(value);
-    return value;
-  };
-
   return (
     <>
       {/* ── HERO MAP ── */}
       <PageHero
-        eyebrow={t("hero.eyebrow")}
+        eyebrow={t('hero.eyebrow')}
         title={
           <>
-            {t("hero.title_line1")}
+            {t('hero.title_line1')}
             <br />
-            {t("hero.title_line2")}
+            {t('hero.title_line2')}
           </>
         }
-        subtitle={t("hero.subtitle")}
+        subtitle={t('hero.subtitle')}
         align="left"
         minHeight="85vh"
         glow={false}
@@ -643,15 +628,15 @@ export default function PortfolioClient({
               className="pointer-events-none absolute inset-0 opacity-[0.04]"
               style={{
                 backgroundImage:
-                  "linear-gradient(rgba(255,255,255,.4) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.4) 1px, transparent 1px)",
-                backgroundSize: "60px 60px",
+                  'linear-gradient(rgba(255,255,255,.4) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.4) 1px, transparent 1px)',
+                backgroundSize: '60px 60px',
               }}
             />
             <div
               className="pointer-events-none absolute inset-0"
               style={{
                 background:
-                  "radial-gradient(ellipse 50% 70% at 65% 55%, rgba(80,30,0,0.5) 0%, transparent 65%)",
+                  'radial-gradient(ellipse 50% 70% at 65% 55%, rgba(80,30,0,0.5) 0%, transparent 65%)',
               }}
             />
 
@@ -667,26 +652,26 @@ export default function PortfolioClient({
         }
       >
         <div className="[&>div]:mt-0 [&>h1]:hidden [&>p]:hidden">
-          <p className="eyebrow mb-4">{t("hero.eyebrow")}</p>
-          <h1 className="max-w-xs text-5xl font-bold leading-tight tracking-tight sm:text-6xl">
-            {t("hero.title_line1")}
+          <p className="eyebrow mb-4">{t('hero.eyebrow')}</p>
+          <h1 className="max-w-xs text-5xl leading-tight font-bold tracking-tight sm:text-6xl">
+            {t('hero.title_line1')}
             <br />
-            {t("hero.title_line2")}
+            {t('hero.title_line2')}
           </h1>
-          <p className="mt-5 max-w-[220px] text-sm font-light leading-7 text-white/40">
-            {t("hero.subtitle")}
+          <p className="mt-5 max-w-[220px] text-sm leading-7 font-light text-foreground-400">
+            {t('hero.subtitle')}
           </p>
           <div className="mt-8 grid grid-cols-2 gap-x-8 gap-y-2">
             {(
               [
-                ["120+", t("hero.stats_projects")],
-                ["7", t("hero.stats_provinces")],
-                ["10+", t("hero.stats_years")],
+                ['120+', t('hero.stats_projects')],
+                ['7', t('hero.stats_provinces')],
+                ['10+', t('hero.stats_years')],
               ] as const
             ).map(([n, l]) => (
               <div key={l}>
-                <p className="text-2xl font-bold text-[#DB5828]">{n}</p>
-                <p className="text-[10px] font-light uppercase tracking-widest text-white/30">
+                <p className="text-2xl font-bold text-accent-500">{n}</p>
+                <p className="text-[10px] font-light tracking-widest text-foreground-400 uppercase">
                   {l}
                 </p>
               </div>
@@ -696,162 +681,79 @@ export default function PortfolioClient({
       </PageHero>
 
       {/* ── FILTER + GRID ── */}
-      <section className="container-site section-py">
-        <div className="flex flex-col gap-10 lg:flex-row lg:gap-16">
-          {/* Sidebar */}
-          <aside className="shrink-0 lg:w-56">
-            <div className="mb-6 flex items-center justify-between">
-              <h2 className="text-sm font-semibold uppercase tracking-widest text-white">
-                {t("filters.title")}
-              </h2>
-              {hasFilter ? (
-                <button
-                  onClick={clearAll}
-                  className="text-[10px] font-light uppercase tracking-widest text-[#DB5828] hover:text-white"
+      <div className="section-py">
+        <FilterToolbar
+          groups={filterGroups}
+          values={filterValues}
+          onChange={handleFilterChange}
+          onClear={clearAll}
+          resultCount={filtered.length}
+          totalCount={currentItems.length}
+          className="mb-8"
+        />
+        <div className="flex-1">
+          <AnimatePresence mode="popLayout">
+            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+              {filtered.map((p) => (
+                <motion.div
+                  key={p.id}
+                  layout
+                  initial={{ opacity: 0, scale: 0.96 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.96 }}
+                  transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
                 >
-                  {t("filters.clear_all")}
-                </button>
-              ) : null}
-            </div>
-
-            <div className="space-y-8">
-              <div>
-                <p className="mb-4 border-b border-white/[0.06] pb-2 text-[10px] font-light uppercase tracking-widest text-white/30">
-                  {t("filters.project_type")}
-                </p>
-                <div className="space-y-3">
-                  {typeOptions.map((opt) => (
-                    <FilterCheck
-                      key={opt.value}
-                      label={typeLabel(opt.value)}
-                      checked={selectedTypes.includes(opt.value)}
-                      onChange={() =>
-                        toggle(selectedTypes, setSelectedTypes, opt.value)
-                      }
-                    />
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <p className="mb-4 border-b border-white/[0.06] pb-2 text-[10px] font-light uppercase tracking-widest text-white/30">
-                  {t("filters.scope")}
-                </p>
-                <div className="space-y-3">
-                  {categoryOptions.map((opt) => (
-                    <FilterCheck
-                      key={opt.value}
-                      label={categoryLabel(opt.value)}
-                      checked={selectedCategories.includes(opt.value)}
-                      onChange={() =>
-                        toggle(selectedCategories, setSelectedCats, opt.value)
-                      }
-                    />
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <p className="mb-4 border-b border-white/[0.06] pb-2 text-[10px] font-light uppercase tracking-widest text-white/30">
-                  {t("filters.location")}
-                </p>
-                <div className="space-y-3">
-                  {locationOptions.map((loc) => (
-                    <FilterCheck
-                      key={loc}
-                      label={loc}
-                      checked={selectedLocations.includes(loc)}
-                      onChange={() =>
-                        toggle(selectedLocations, setSelectedLocs, loc)
-                      }
-                    />
-                  ))}
-                </div>
-              </div>
-            </div>
-          </aside>
-
-          {/* Grid */}
-          <div className="flex-1">
-            <div className="mb-6 flex items-center justify-between">
-              <p className="text-sm font-light text-white/40">
-                {t("filters.showing")}{" "}
-                <span className="text-white">{filtered.length}</span>{" "}
-                {t("filters.projects")}
-              </p>
-              {hasFilter && (
-                <div className="flex flex-wrap gap-2">
-                  {[
-                    ...selectedTypes,
-                    ...selectedCategories,
-                    ...selectedLocations,
-                  ].map((v) => (
-                    <span
-                      key={v}
-                      className="flex items-center gap-1 border border-[#DB5828]/30 bg-[#DB5828]/10 px-3 py-1 text-[10px] font-light text-[#DB5828]"
+                  <MediaCard href={`/portfolio/${p.slug}`} animate={false}>
+                    <MediaCardImage
+                      src={p.cover_image}
+                      alt={p.title}
+                      aspect="wide"
                     >
-                      {filterChipLabel(v)}
-                    </span>
-                  ))}
-                </div>
-              )}
+                      <MediaCardBadge position="top-right">
+                        {p.year}
+                      </MediaCardBadge>
+                    </MediaCardImage>
+                    <MediaCardBody>
+                      <MediaCardEyebrow>{p.location}</MediaCardEyebrow>
+                      <MediaCardTitle>{p.title}</MediaCardTitle>
+                      <p className="text-[10px] font-light tracking-widest text-foreground-400 uppercase">
+                        {p.scope}
+                      </p>
+                      <MediaCardFooter
+                        className="mt-3 border-0 pt-0"
+                        right={
+                          <MediaCardArrow label={t('card.view_details')} />
+                        }
+                      />
+                    </MediaCardBody>
+                  </MediaCard>
+                </motion.div>
+              ))}
             </div>
+          </AnimatePresence>
 
-            <AnimatePresence mode="popLayout">
-              <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-                {filtered.map((p) => (
-                  <motion.div
-                    key={p.id}
-                    layout
-                    initial={{ opacity: 0, scale: 0.96 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.96 }}
-                    transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                  >
-                    <MediaCard href={`/portfolio/${p.slug}`} animate={false}>
-                      <MediaCardImage src={p.cover_image} alt={p.title} aspect="wide">
-                        <MediaCardBadge position="top-right">{p.year}</MediaCardBadge>
-                      </MediaCardImage>
-                      <MediaCardBody>
-                        <MediaCardEyebrow>{p.location}</MediaCardEyebrow>
-                        <MediaCardTitle>{p.title}</MediaCardTitle>
-                        <p className="text-[10px] font-light uppercase tracking-widest text-white/25">
-                          {p.scope}
-                        </p>
-                        <MediaCardFooter
-                          className="mt-3 border-0 pt-0"
-                          right={<MediaCardArrow label={t("card.view_details")} />}
-                        />
-                      </MediaCardBody>
-                    </MediaCard>
-                  </motion.div>
-                ))}
-              </div>
-            </AnimatePresence>
-
-            {filtered.length === 0 && (
-              <div className="flex h-60 flex-col items-center justify-center text-center">
-                <p className="text-sm font-light text-white/25">
-                  {t("filters.no_results")}
-                </p>
-                <button
-                  onClick={clearAll}
-                  className="mt-4 text-xs font-light text-[#DB5828] underline underline-offset-4"
-                >
-                  {t("filters.clear_filters")}
-                </button>
-              </div>
-            )}
-          </div>
+          {filtered.length === 0 && (
+            <div className="flex h-60 flex-col items-center justify-center text-center">
+              <p className="text-sm font-light text-foreground-400">
+                {t('filters.no_results')}
+              </p>
+              <button
+                onClick={clearAll}
+                className="mt-4 text-xs font-light text-accent-500 underline underline-offset-4"
+              >
+                {t('filters.clear_filters')}
+              </button>
+            </div>
+          )}
         </div>
-      </section>
+      </div>
 
       <CtaSection
-        eyebrow={t("cta.eyebrow")}
-        title={t("cta.title")}
-        description={t("cta.description")}
-        primaryAction={{ href: "/contact", label: t("cta.primary") }}
-        secondaryAction={{ href: "/shop", label: t("cta.secondary") }}
+        eyebrow={t('cta.eyebrow')}
+        title={t('cta.title')}
+        description={t('cta.description')}
+        primaryAction={{ href: '/contact', label: t('cta.primary') }}
+        secondaryAction={{ href: '/shop', label: t('cta.secondary') }}
       />
     </>
   );

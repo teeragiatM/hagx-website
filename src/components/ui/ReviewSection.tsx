@@ -5,16 +5,11 @@ import {
   TestimonialContent,
   TestimonialControls,
   type TestimonialCarouselItem,
-} from "@/components/ui/testimonial-carousel";
-import { cn } from "@/lib/utils";
-import SectionHeader from "@/components/SectionHeader";
+} from '@/components/ui/testimonial-carousel';
 
 export type TestimonialItem = TestimonialCarouselItem;
 
 export type ReviewSectionProps = {
-  eyebrow?:     string;
-  title?:       string;
-  description?: string;
   items:        TestimonialItem[];
   autoPlay?:    boolean;
   intervalMs?:  number;
@@ -23,9 +18,6 @@ export type ReviewSectionProps = {
 };
 
 export function ReviewSection({
-  eyebrow     = "Client Stories",
-  title       = "สิ่งที่ลูกค้าพูดถึงเรา",
-  description,
   items,
   autoPlay,
   intervalMs,
@@ -40,16 +32,8 @@ export function ReviewSection({
       autoPlayDirection={autoPlayDirection}
       className={className}
     >
-      <SectionHeader
-        eyebrow={eyebrow}
-        heading={title}
-        description={description}
-        layout="row"
-      />
-      <div className="relative">
-        <TestimonialContent />
-        <TestimonialControls />
-      </div>
+      <TestimonialContent />
+      <TestimonialControls />
     </TestimonialCarousel>
   );
 }

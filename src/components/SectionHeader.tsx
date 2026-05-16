@@ -1,33 +1,19 @@
-import type { HTMLAttributes, ReactNode } from "react";
-import { Text, Heading, type TextProps } from "./ui";
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils';
+import type { HTMLAttributes, ReactNode } from 'react';
 
-type HeadingTag = "h1" | "h2" | "h3";
-type SectionHeaderLayout = "split" | "stack" | "row";
+// ── Compound parts ────────────────────────────────────────────────────────────
 
-interface SectionHeaderProps {
-  eyebrow?: string;
-  heading: string;
-  description?: string;
-  as?: HeadingTag;
-  layout?: SectionHeaderLayout;
-  className?: string;
-  /** Slot for the right-side content in split/row layouts — accepts any ReactNode */
-  action?: ReactNode;
-}
-
-// ============ Compound Components ============
-
-function SectionHeaderRoot({
-  layout = "split",
+function Left({
   className,
   children,
   ...props
-}: HTMLAttributes<HTMLDivElement> & { layout?: SectionHeaderLayout }) {
+}: HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      data-layout={layout}
-      className={cn("section-header-root", className)}
+      className={cn(
+        'utils_inset utils_insetLarge PageSection_titleContainer',
+        className
+      )}
       {...props}
     >
       {children}
@@ -35,164 +21,84 @@ function SectionHeaderRoot({
   );
 }
 
-function SectionHeaderEyebrow({
-  className,
-  children,
-  ...props
-}: TextProps & { children: ReactNode }) {
-  return (
-    <Text
-      as="p"
-      size="1"
-      weight="light"
-      uppercase
-      color="brand"
-      className={cn("section-header-eyebrow", className)}
-      {...props}
-    >
-      {children}
-    </Text>
-  );
-}
-
-function SectionHeaderHeading({
-  as = "h2",
-  className,
-  children,
-  ...props
-}: { as?: HeadingTag; children: ReactNode } & Omit<TextProps, "as">) {
-  const headingLines =
-    typeof children === "string"
-      ? children.split("\n").map((line, i) => (
-          <span key={i}>
-            {i > 0 && <br />}
-            {line}
-          </span>
-        ))
-      : children;
-
-  return (
-    <Heading
-      as={as}
-      size="8"
-      weight="light"
-      className={cn("section-header-heading", className)}
-      {...props}
-    >
-      {headingLines}
-    </Heading>
-  );
-}
-
-function SectionHeaderDescription({
-  className,
-  children,
-  ...props
-}: TextProps & { children: ReactNode }) {
-  return (
-    <Text
-      as="p"
-      size="2"
-      weight="light"
-      color="gray"
-      className={cn("section-header-description", className)}
-      {...props}
-    >
-      {children}
-    </Text>
-  );
-}
-
-/**
- * Left slot — wraps eyebrow + heading (and description for split layout).
- * Useful when composing via compound API.
- */
-function SectionHeaderLeft({
+function Right({
   className,
   children,
   ...props
 }: HTMLAttributes<HTMLDivElement>) {
   return (
-    <div className={cn("section-header-left", className)} {...props}>
+    <div
+      className={cn('PageSection_descriptionContainer', className)}
+      {...props}
+    >
       {children}
     </div>
   );
 }
 
-/**
- * Right slot — accepts any ReactNode: button, component, text, etc.
- * Renders in the right column for split/row layouts.
- */
-function SectionHeaderRight({
-  className,
-  children,
-  ...props
-}: HTMLAttributes<HTMLDivElement>) {
-  return (
-    <div className={cn("section-header-right", className)} {...props}>
-      {children}
-    </div>
-  );
-}
+// ── Root ──────────────────────────────────────────────────────────────────────
 
-/**
- * Action slot — shorthand alias for SectionHeaderRight when used inside
- * the opinionated <SectionHeader> convenience wrapper via the `action` prop.
- */
-function SectionHeaderAction({
-  className,
-  children,
-  ...props
-}: HTMLAttributes<HTMLDivElement>) {
-  return (
-    <div className={cn("section-header-action", className)} {...props}>
-      {children}
-    </div>
-  );
-}
-
-// ============ Main Component ============
+type SectionHeaderProps = HTMLAttributes<HTMLDivElement> & {
+  /** Shorthand: heading text rendered as <h2> on the left */
+  heading?: ReactNode;
+  /** Shorthand: description text rendered on the right */
+  description?: ReactNode;
+  /** Shorthand: replaces description slot with a custom node (e.g. a Button) */
+  action?: ReactNode;
+};
 
 function SectionHeader({
-  eyebrow,
   heading,
   description,
-  as = "h2",
-  layout = "split",
-  className,
   action,
+  className,
+  children,
+  ...props
 }: SectionHeaderProps) {
+  // If using shorthand props, build Left + Right automatically
+  if (heading !== undefined && !children) {
+    const right = action ?? description;
+    return (
+      <div className={cn('PageSection_header', className)} {...props}>
+        <Left>
+          <h2 className="text-2xl font-medium md:text-4xl lg:text-5xl">
+            {heading}
+          </h2>
+        </Left>
+        {right && (
+          <Right>
+            {action ? (
+              action
+            ) : (
+              <p className="text-base text-foreground-300 sm:text-lg sm:text-foreground-200 lg:text-xl 2xl:text-2xl">
+                {description}
+              </p>
+            )}
+          </Right>
+        )}
+      </div>
+    );
+  }
+
+  // Compound usage: children are Left / Right slots
   return (
-    <SectionHeaderRoot layout={layout} className={className}>
-      {eyebrow && <SectionHeaderEyebrow>{eyebrow}</SectionHeaderEyebrow>}
-      <SectionHeaderHeading as={as}>{heading}</SectionHeaderHeading>
-      {description && (
-        <SectionHeaderDescription>{description}</SectionHeaderDescription>
+    <div
+      className={cn(
+        'flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between',
+        className
       )}
-      {action && <SectionHeaderAction>{action}</SectionHeaderAction>}
-    </SectionHeaderRoot>
+      {...props}
+    >
+      {children}
+    </div>
   );
 }
 
-// ============ Export ============
+// ── Export ────────────────────────────────────────────────────────────────────
 
 const SectionHeaderCompound = Object.assign(SectionHeader, {
-  Root: SectionHeaderRoot,
-  Eyebrow: SectionHeaderEyebrow,
-  Heading: SectionHeaderHeading,
-  Description: SectionHeaderDescription,
-  Left: SectionHeaderLeft,
-  Right: SectionHeaderRight,
-  Action: SectionHeaderAction,
+  Left,
+  Right,
 });
 
 export default SectionHeaderCompound;
-export {
-  SectionHeaderRoot,
-  SectionHeaderEyebrow,
-  SectionHeaderHeading,
-  SectionHeaderDescription,
-  SectionHeaderLeft,
-  SectionHeaderRight,
-  SectionHeaderAction,
-};

@@ -57,7 +57,12 @@ export function CarouselControls({
   const nextDisabled = canNext !== undefined ? !canNext : index >= total - 1;
 
   return (
-    <div className={cn("ui-carousel-controls flex items-center justify-between gap-6", className)}>
+    <div
+      className={cn(
+        'ui-carousel-controls flex items-center justify-between gap-6',
+        className
+      )}
+    >
       {/* ── Left: action slot ── */}
       <div className="flex flex-wrap items-center gap-4">{actionSlot}</div>
 
@@ -73,20 +78,20 @@ export function CarouselControls({
                 aria-label={`Go to item ${i + 1}`}
                 onClick={() => onDotClick(i)}
                 className={cn(
-                  "transition-all duration-300",
-                  dotStyle === "line"
+                  'transition-all duration-300',
+                  dotStyle === 'line'
                     ? cn(
-                        "h-[2px]",
+                        'h-[2px]',
                         i === index
-                          ? "w-8 bg-[#DB5828]"
-                          : "w-5 bg-white/30 hover:bg-white/55",
+                          ? 'w-8 bg-accent-500'
+                          : 'w-5 bg-foreground-100/30 hover:bg-foreground-100/55'
                       )
                     : cn(
-                        "rounded-full",
+                        'rounded-full',
                         i === index
-                          ? "h-2 w-2 bg-[#DB5828]"
-                          : "h-1.5 w-1.5 bg-white/25 hover:bg-white/50",
-                      ),
+                          ? 'h-2 w-2 bg-accent-500'
+                          : 'h-1.5 w-1.5 bg-foreground-100/25 hover:bg-foreground-100/50'
+                      )
                 )}
               />
             ))}
@@ -96,7 +101,7 @@ export function CarouselControls({
         {/* Arrows */}
         <div className="flex gap-2">
           <Button
-            variant="outline"
+            variant="secondary"
             size="2"
             iconOnly
             rounded
@@ -107,7 +112,7 @@ export function CarouselControls({
             <ArrowLeft className="h-4 w-4" strokeWidth={1.5} />
           </Button>
           <Button
-            variant="outline"
+            variant="secondary"
             size="2"
             iconOnly
             rounded

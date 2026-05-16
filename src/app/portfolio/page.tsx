@@ -1,6 +1,4 @@
 import type { Metadata } from "next";
-import SiteNav from "@/components/SiteNav";
-import SiteFooter from "@/components/SiteFooter";
 import PortfolioClient from "@/components/PortfolioClient";
 import { getPortfolioItems } from "@/lib/getPortfolioItems";
 
@@ -26,9 +24,7 @@ export default async function PortfolioPage() {
   ]);
 
   return (
-    <main>
-      <SiteNav />
-
+    <div>
       {/*
         PortfolioClient owns all interactive UI:
         - Thailand map with animated pins
@@ -38,7 +34,6 @@ export default async function PortfolioPage() {
       */}
       <PortfolioClient items={items} itemsEn={itemsEn} />
 
-      <SiteFooter />
-    </main>
+    </div>
   );
 }

@@ -4,6 +4,7 @@ import { PortableText } from "next-sanity";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import PageHero from "@/components/PageHero";
 
 type Post = {
   _id: string;
@@ -28,23 +29,31 @@ export async function generateStaticParams() {
 const components = {
   block: {
     h2: ({ children }: { children?: React.ReactNode }) => (
-      <h2 className="text-2xl font-bold text-slate-900 mt-10 mb-4 tracking-tight">{children}</h2>
+      <h2 className="mt-10 mb-4 text-2xl font-bold tracking-tight">
+        {children}
+      </h2>
     ),
     h3: ({ children }: { children?: React.ReactNode }) => (
-      <h3 className="text-lg font-semibold text-slate-900 mt-8 mb-3">{children}</h3>
+      <h3 className="mt-8 mb-3 text-lg font-semibold">{children}</h3>
     ),
     normal: ({ children }: { children?: React.ReactNode }) => (
-      <p className="text-slate-600 leading-relaxed font-light mb-5">{children}</p>
+      <p className="mb-5 leading-relaxed font-light text-foreground-200">
+        {children}
+      </p>
     ),
     blockquote: ({ children }: { children?: React.ReactNode }) => (
-      <blockquote className="border-l-2 border-slate-200 pl-6 my-6 text-slate-500 italic font-light">
+      <blockquote className="my-6 border-l-2 border-border-100 pl-6 font-light text-foreground-300 italic">
         {children}
       </blockquote>
     ),
   },
 };
 
-export default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function PostPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
   const { slug } = await params;
   const post: Post | null = await client
     .fetch(postBySlugQuery, { slug })
@@ -52,55 +61,61 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
 
   if (!post) notFound();
 
+  const eyebrow = post.categories?.length > 0
+    ? post.categories.join(" · ")
+    : undefined;
+
+  const subtitle = [
+    post.author,
+    post.publishedAt &&
+      new Date(post.publishedAt).toLocaleDateString("th-TH", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      }),
+  ]
+    .filter(Boolean)
+    .join("  ·  ");
+
   return (
-    <main className="min-h-screen bg-white pt-28 pb-24">
-      <div className="max-w-3xl mx-auto px-8">
+    <>
+      <PageHero
+        eyebrow={eyebrow}
+        title={post.title}
+        subtitle={subtitle}
+        align="left"
+        variant="shadow"
+        glow={false}
+        minHeight="60vh"
+        backgroundSlot={
+          post.mainImage ? (
+            <Image
+              src={urlFor(post.mainImage).width(1600).url()}
+              alt={post.title}
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover opacity-30"
+            />
+          ) : undefined
+        }
+      />
+
+      <div className="mx-auto max-w-3xl px-6 py-16 sm:px-8">
         <Link
           href="/blog"
-          className="inline-flex items-center gap-2 text-[10px] tracking-[0.2em] uppercase text-slate-400 font-light hover:text-slate-900 transition-colors mb-12"
+          className="mb-12 inline-flex items-center gap-2 text-[10px] font-light uppercase tracking-[0.2em] text-foreground-400 transition-colors hover:text-foreground-200"
         >
           ← กลับ
         </Link>
 
-        <div className="mb-8">
-          {post.categories?.length > 0 && (
-            <p className="text-[10px] tracking-[0.25em] uppercase text-slate-400 font-light mb-4">
-              {post.categories.join(" · ")}
-            </p>
+        <div className="prose-custom mt-8">
+          {post.body && (
+            <PortableText value={post.body} components={components} />
           )}
-          <h1 className="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight leading-tight mb-6">
-            {post.title}
-          </h1>
-          <div className="flex items-center gap-4 text-xs text-slate-400 font-light">
-            {post.author && <span>{post.author}</span>}
-            <span>·</span>
-            <span>
-              {new Date(post.publishedAt).toLocaleDateString("th-TH", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
-            </span>
-          </div>
-        </div>
-
-        {post.mainImage && (
-          <div className="relative aspect-[16/9] overflow-hidden mb-12">
-            <Image
-              src={urlFor(post.mainImage).width(1200).url()}
-              alt={post.title}
-              fill
-              className="object-cover"
-              priority
-              sizes="(max-width: 768px) 100vw, 768px"
-            />
-          </div>
-        )}
-
-        <div className="prose-custom">
-          {post.body && <PortableText value={post.body} components={components} />}
         </div>
       </div>
-    </main>
+
+    </>
   );
 }

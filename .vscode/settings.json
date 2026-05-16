@@ -1,4 +1,66 @@
 {
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": false,
+  "editor.codeActionsOnSave": {
+    "source.addMissingImports": "never",
+    "source.fixAll": "never",
+    "source.organizeImports": "never"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.codeActionsOnSave": {
+      "source.addMissingImports": "never",
+      "source.fixAll": "never",
+      "source.organizeImports": "never"
+    }
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.codeActionsOnSave": {
+      "source.addMissingImports": "never",
+      "source.fixAll": "never",
+      "source.organizeImports": "never"
+    }
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.codeActionsOnSave": {
+      "source.addMissingImports": "never",
+      "source.fixAll": "never",
+      "source.organizeImports": "never"
+    }
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.codeActionsOnSave": {
+      "source.addMissingImports": "never",
+      "source.fixAll": "never",
+      "source.organizeImports": "never"
+    }
+  },
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "never",
+      "source.fixAll.stylelint": "never"
+    }
+  },
+  "[scss]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "never",
+      "source.fixAll.stylelint": "never"
+    }
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "eslint.workingDirectories": [{ "mode": "auto" }],
+  "eslint.nodePath": "c:\\Users\\R9-5900H\\Documents\\GitHub\\hagx-website\\node_modules",
   "tailwindCSS.codeActions": false,
   "tailwindCSS.codeLens": false,
   "tailwindCSS.validate": false,
@@ -18,55 +80,5 @@
     "**/out/**": true,
     "**/dist/**": true,
     "**/.turbo/**": true
-  },
-  "editor.codeActionsOnSave": {
-    "source.addMissingImports": "never",
-    "source.fixAll": "never",
-    "source.organizeImports": "never",
-    "source.organizeImports.ts": "never"
-  },
-  "[typescript]": {
-    "editor.codeActionsOnSave": {
-      "source.addMissingImports": "never",
-      "source.fixAll": "never",
-      "source.organizeImports": "never",
-      "source.organizeImports.ts": "never"
-    }
-  },
-  "[typescriptreact]": {
-    "editor.codeActionsOnSave": {
-      "source.addMissingImports": "never",
-      "source.fixAll": "never",
-      "source.organizeImports": "never",
-      "source.organizeImports.ts": "never"
-    }
-  },
-  "[javascript]": {
-    "editor.codeActionsOnSave": {
-      "source.addMissingImports": "never",
-      "source.fixAll": "never",
-      "source.organizeImports": "never",
-      "source.organizeImports.ts": "never"
-    }
-  },
-  "[javascriptreact]": {
-    "editor.codeActionsOnSave": {
-      "source.addMissingImports": "never",
-      "source.fixAll": "never",
-      "source.organizeImports": "never",
-      "source.organizeImports.ts": "never"
-    }
-  },
-  "[css]": {
-    "editor.codeActionsOnSave": {
-      "source.fixAll": "never",
-      "source.fixAll.stylelint": "never"
-    }
-  },
-  "[scss]": {
-    "editor.codeActionsOnSave": {
-      "source.fixAll": "never",
-      "source.fixAll.stylelint": "never"
-    }
   }
 }

@@ -18,14 +18,13 @@ interface ScopeOfWorksProps {
 export default function ScopeOfWorks({ eyebrow, subtitle, footer, categories }: ScopeOfWorksProps) {
   return (
     <section className="border-b border-white/[0.06] px-4 py-16 sm:px-8 lg:px-10 lg:py-20">
-      <div className="mx-auto max-w-[1500px]">
-
+      <div className="mx-auto">
         <div className="mb-10 flex flex-wrap items-baseline gap-3">
-          <p className="text-[10px] font-light uppercase tracking-widest text-[#E15F31]">
+          <p className="text-[10px] font-light tracking-widest text-accent-500 uppercase">
             {eyebrow}
           </p>
           <span className="hidden h-px flex-1 bg-white/[0.06] sm:block" />
-          <p className="text-[10px] font-light uppercase tracking-widest text-white/25">
+          <p className="text-[10px] font-light tracking-widest text-foreground-400 uppercase">
             {subtitle}
           </p>
         </div>
@@ -35,10 +34,10 @@ export default function ScopeOfWorks({ eyebrow, subtitle, footer, categories }: 
             <BorderGridCell key={cat.id} index={i} bg="#0a0a0a">
               <div className="mb-6 flex items-start justify-between gap-4">
                 <div>
-                  <p className="mb-1 text-[9px] font-light uppercase tracking-[0.2em] text-[#E15F31]/70">
+                  <p className="mb-1 text-xs font-light tracking-[0.2em] text-accent-500/70 uppercase">
                     {cat.id}
                   </p>
-                  <h3 className="text-sm font-light leading-snug text-white/90 sm:text-base">
+                  <h3 className="text-foreground text-sm leading-snug font-light sm:text-base">
                     {cat.title}
                   </h3>
                 </div>
@@ -48,7 +47,7 @@ export default function ScopeOfWorks({ eyebrow, subtitle, footer, categories }: 
                 {cat.items.map((item, j) => (
                   <li key={j} className="flex gap-3">
                     <span className="mt-[5px] h-1 w-1 shrink-0 rounded-full bg-[#E15F31]/60" />
-                    <p className="text-[11px] font-light leading-[1.75] text-white/50 whitespace-pre-line">
+                    <p className="text-[11px] leading-[1.75] font-light whitespace-pre-line text-foreground-300">
                       {item}
                     </p>
                   </li>
@@ -58,9 +57,9 @@ export default function ScopeOfWorks({ eyebrow, subtitle, footer, categories }: 
           ))}
         </BorderGrid>
 
-        <p className="mt-5 text-center text-[10px] font-light leading-relaxed text-white/25">
-          {footer.split(" — ")[0]} —{" "}
-          <span className="text-white/40">{footer.split(" — ")[1]}</span>
+        <p className="mt-5 text-center text-[10px] leading-relaxed font-light text-foreground-400">
+          {footer.split(' — ')[0]} —{' '}
+          <span className="text-foreground-400">{footer.split(' — ')[1]}</span>
         </p>
       </div>
     </section>

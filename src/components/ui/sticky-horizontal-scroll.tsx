@@ -24,9 +24,7 @@ export type StickyHorizontalScrollSectionProps = Omit<
   HTMLAttributes<HTMLElement>,
   "title"
 > & {
-  eyebrow?: ReactNode;
-  title?: ReactNode;
-  description?: ReactNode;
+  header?: ReactNode;
   items: StickyHorizontalScrollItem[];
   direction?: StickyHorizontalScrollDirection;
   stickyOffset?: number;
@@ -38,9 +36,7 @@ export type StickyHorizontalScrollSectionProps = Omit<
 };
 
 export function StickyHorizontalScrollSection({
-  eyebrow,
-  title,
-  description,
+  header,
   items,
   direction = "right-to-left",
   stickyOffset = 0,
@@ -89,38 +85,21 @@ export function StickyHorizontalScrollSection({
     <section
       ref={sectionRef}
       data-direction={direction}
-      className={cn("ui-Sticky", className)}
+      className={cn('ui-Sticky', className)}
       style={{ minHeight: `calc(100vh + ${scrollDistance}px)` }}
       {...props}
     >
       <div
-        className="sticky flex min-h-screen flex-col overflow-hidden py-20 lg:py-24"
+        className="sticky flex h-screen flex-col overflow-hidden py-20 lg:py-24"
         style={{ top: stickyOffset }}
       >
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.035)_1px,transparent_1px),linear-gradient(180deg,rgba(255,255,255,0.025)_1px,transparent_1px)] bg-[size:120px_120px] opacity-45" />
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_72%_56%_at_18%_24%,rgba(219,88,40,0.16),transparent_66%)]" />
 
-        <div className="relative z-10 mx-auto flex w-full max-w-[1500px] flex-1 flex-col">
-          <div className="grid gap-6 lg:grid-cols-[0.75fr_1fr] lg:items-end">
-            <div>
-              {eyebrow && <p className="sh-eyebrow mb-5">{eyebrow}</p>}
-              {title && (
-                <h2 className="ui-Section-Heading max-w-3xl text-4xl leading-tight sm:text-5xl lg:text-6xl">
-                  {title}
-                </h2>
-              )}
-            </div>
-            {description && (
-              <p className="max-w-2xl text-sm font-light leading-8 text-white/45 lg:ml-auto lg:text-right">
-                {description}
-              </p>
-            )}
-          </div>
+        <div className="relative z-10 mx-auto flex w-full flex-1 flex-col">
+          {header}
 
-          <div
-            ref={viewportRef}
-            className="mt-14 flex-1 overflow-hidden lg:mt-20"
-          >
+          <div ref={viewportRef} className="flex-1 overflow-hidden">
             <motion.div
               ref={trackRef}
               style={{ x }}
@@ -157,20 +136,20 @@ function DefaultStickyHorizontalCard({
     <div className="relative flex min-h-full w-full flex-col justify-between p-8 sm:p-10 lg:p-12">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_84%_72%_at_18%_0%,rgba(219,88,40,0.14),transparent_60%)]" />
       <div className="relative">
-        <p className="text-sm font-light uppercase tracking-widest text-[#E15F31]">
-          {item.number ?? String(index + 1).padStart(2, "0")}
+        <p className="text-sm font-light tracking-widest text-accent-500 uppercase">
+          {item.number ?? String(index + 1).padStart(2, '0')}
         </p>
-        <h3 className="mt-8 text-4xl font-bold tracking-tight text-white sm:text-5xl">
+        <h3 className="mt-8 text-4xl font-bold tracking-tight text-foreground-100 sm:text-5xl">
           {item.title}
         </h3>
         {item.description && (
-          <p className="mt-5 text-sm font-light leading-8 text-white/60">
+          <p className="mt-5 text-sm leading-8 font-light text-foreground-200">
             {item.description}
           </p>
         )}
       </div>
       {item.subtitle && (
-        <p className="relative mt-10 text-sm font-medium uppercase tracking-widest text-white/35">
+        <p className="relative mt-10 text-sm font-medium tracking-widest text-foreground-400 uppercase">
           {item.subtitle}
         </p>
       )}

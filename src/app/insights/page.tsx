@@ -1,7 +1,5 @@
 "use client";
 
-import SiteFooter from "@/components/SiteFooter";
-import SiteNav from "@/components/SiteNav";
 import {
   MediaCard,
   MediaCardArrow,
@@ -21,10 +19,10 @@ import Link from "next/link";
 import { useRef } from "react";
 
 const categoryColors: Record<string, string> = {
-  TECHNICAL: "text-[#DB5828] border-[#DB5828]/40",
-  "CASE STUDY": "text-sky-400 border-sky-400/40",
-  DESIGN: "text-violet-400 border-violet-400/40",
-  MAINTENANCE: "text-emerald-400 border-emerald-400/40",
+  TECHNICAL: 'text-accent-500 border-accent-500/40',
+  'CASE STUDY': 'text-sky-400 border-sky-400/40',
+  DESIGN: 'text-violet-400 border-violet-400/40',
+  MAINTENANCE: 'text-emerald-400 border-emerald-400/40',
 };
 
 function formatDate(iso: string, lang: string) {
@@ -56,9 +54,7 @@ export default function InsightsPage() {
     lang === "th" ? p.categoryTh : p.category;
 
   return (
-    <main className="min-h-screen bg-[#0a0a0a] text-white">
-      <SiteNav />
-
+    <div className="min-h-screen bg-[#0a0a0a] text-foreground-100">
       {/* ── HERO ── */}
       <section
         ref={heroRef}
@@ -84,7 +80,7 @@ export default function InsightsPage() {
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(ellipse 80% 60% at 50% 110%, rgba(255,138,0,0.12) 0%, transparent 65%)",
+              'radial-gradient(ellipse 80% 60% at 50% 110%, rgba(255,138,0,0.12) 0%, transparent 65%)',
           }}
         />
 
@@ -96,33 +92,33 @@ export default function InsightsPage() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.1 }}
-            className="mb-5 text-[10px] font-light uppercase tracking-[0.22em] text-[#DB5828]"
+            className="mb-5 text-[10px] font-light tracking-[0.22em] text-accent-500 uppercase"
           >
-            {lang === "th"
-              ? "บทความ · ข้อมูลเชิงลึก"
-              : "Insights · Technical Knowledge"}
+            {lang === 'th'
+              ? 'บทความ · ข้อมูลเชิงลึก'
+              : 'Insights · Technical Knowledge'}
           </motion.p>
 
           <motion.h1
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="mx-auto max-w-4xl text-4xl font-bold leading-tight tracking-tight sm:text-5xl lg:text-6xl"
+            className="mx-auto max-w-4xl text-4xl leading-tight font-bold tracking-tight sm:text-5xl lg:text-6xl"
           >
-            {lang === "th"
-              ? "ความรู้เชิงเทคนิค\nจากทีม HAGX"
-              : "Technical Knowledge\nfrom the HAGX Team"}
+            {lang === 'th'
+              ? 'ความรู้เชิงเทคนิค\nจากทีม HAGX'
+              : 'Technical Knowledge\nfrom the HAGX Team'}
           </motion.h1>
 
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.75, delay: 0.35 }}
-            className="mx-auto mt-6 max-w-xl text-sm font-light leading-7 text-white/50"
+            className="mx-auto mt-6 max-w-xl text-sm leading-7 font-light text-foreground-300"
           >
-            {lang === "th"
-              ? "บทความเชิงลึกเกี่ยวกับระบบกระจก อลูมิเนียม และสถาปัตยกรรม จากประสบการณ์ 20+ ปีของเรา"
-              : "In-depth articles on glass systems, aluminium, and architecture — from our 20+ years of field experience."}
+            {lang === 'th'
+              ? 'บทความเชิงลึกเกี่ยวกับระบบกระจก อลูมิเนียม และสถาปัตยกรรม จากประสบการณ์ 20+ ปีของเรา'
+              : 'In-depth articles on glass systems, aluminium, and architecture — from our 20+ years of field experience.'}
           </motion.p>
 
           {/* featured CTA */}
@@ -134,9 +130,9 @@ export default function InsightsPage() {
           >
             <Link
               href={`/insights/${featured.slug}`}
-              className="group inline-flex items-center gap-3 border border-[#DB5828]/60 bg-[#DB5828]/10 px-7 py-3.5 text-[11px] font-light uppercase tracking-widest text-[#DB5828] transition-all duration-300 hover:bg-[#DB5828] hover:text-[#0a0a0a]"
+              className="group inline-flex items-center gap-3 border border-accent-500/60 bg-accent-500/10 px-7 py-3.5 text-[11px] font-light tracking-widest text-accent-500 uppercase transition-all duration-300 hover:bg-accent-500 hover:text-background-100"
             >
-              {lang === "th" ? "อ่านบทความแนะนำ" : "Read Featured Article"}
+              {lang === 'th' ? 'อ่านบทความแนะนำ' : 'Read Featured Article'}
               <svg
                 width="12"
                 height="12"
@@ -161,33 +157,33 @@ export default function InsightsPage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.2 }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+          className="absolute bottom-10 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2"
         >
-          <span className="text-[9px] font-light uppercase tracking-[0.2em] text-white/25">
+          <span className="text-xs font-light tracking-[0.2em] text-foreground-400 uppercase">
             Scroll
           </span>
           <motion.span
             animate={{ y: [0, 6, 0] }}
-            transition={{ repeat: Infinity, duration: 1.6, ease: "easeInOut" }}
+            transition={{ repeat: Infinity, duration: 1.6, ease: 'easeInOut' }}
             className="block h-4 w-px bg-white/20"
           />
         </motion.div>
       </section>
 
       {/* ── GRID ── */}
-      <section className="mx-auto max-w-[1500px] px-6 pb-32 pt-20 sm:px-10 lg:px-14">
+      <section className="mx-auto px-6 pt-20 pb-32 sm:px-10 lg:px-14">
         {/* section label */}
         <div className="mb-12 flex items-end justify-between">
           <div>
-            <p className="mb-2 text-[10px] font-light uppercase tracking-[0.2em] text-[#DB5828]">
-              {lang === "th" ? "บทความทั้งหมด" : "All Articles"}
+            <p className="mb-2 text-[10px] font-light tracking-[0.2em] text-accent-500 uppercase">
+              {lang === 'th' ? 'บทความทั้งหมด' : 'All Articles'}
             </p>
             <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-              {lang === "th" ? "ทุกบทความ" : "Knowledge Base"}
+              {lang === 'th' ? 'ทุกบทความ' : 'Knowledge Base'}
             </h2>
           </div>
-          <p className="hidden text-xs font-light text-white/25 sm:block">
-            {insightPosts.length} {lang === "th" ? "บทความ" : "articles"}
+          <p className="hidden text-xs font-light text-foreground-400 sm:block">
+            {insightPosts.length} {lang === 'th' ? 'บทความ' : 'articles'}
           </p>
         </div>
 
@@ -207,8 +203,11 @@ export default function InsightsPage() {
                 gradientFrom="#121212"
               >
                 {post.featured && (
-                  <MediaCardBadge position="top-left" className="bg-[#DB5828] font-semibold text-black border-transparent">
-                    {lang === "th" ? "แนะนำ" : "Featured"}
+                  <MediaCardBadge
+                    position="top-left"
+                    className="border-transparent bg-accent-500 font-semibold text-black"
+                  >
+                    {lang === 'th' ? 'แนะนำ' : 'Featured'}
                   </MediaCardBadge>
                 )}
               </MediaCardImage>
@@ -217,21 +216,31 @@ export default function InsightsPage() {
                 <MediaCardMeta
                   className="mb-4"
                   left={
-                    <span className={`border px-2.5 py-1 text-[9px] font-light uppercase tracking-[0.15em] ${categoryColors[post.category] ?? "border-white/15 text-white/40"}`}>
+                    <span
+                      className={`border px-2.5 py-1 text-xs font-light tracking-[0.15em] uppercase ${categoryColors[post.category] ?? 'border-white/15 text-foreground-400'}`}
+                    >
                       {category(post)}
                     </span>
                   }
                   right={
-                    <span className="text-[10px] font-light text-white/25">
-                      {post.readMin} {lang === "th" ? "นาที" : "min read"}
+                    <span className="text-[10px] font-light text-foreground-400">
+                      {post.readMin} {lang === 'th' ? 'นาที' : 'min read'}
                     </span>
                   }
                 />
-                <MediaCardTitle className="mb-3 line-clamp-2 sm:text-lg">{title(post)}</MediaCardTitle>
+                <MediaCardTitle className="mb-3 line-clamp-2 sm:text-lg">
+                  {title(post)}
+                </MediaCardTitle>
                 <MediaCardExcerpt>{excerpt(post)}</MediaCardExcerpt>
                 <MediaCardFooter
-                  left={<span className="text-[10px] font-light text-white/30">{formatDate(post.date, lang)}</span>}
-                  right={<MediaCardArrow label={lang === "th" ? "อ่าน" : "Read"} />}
+                  left={
+                    <span className="text-[10px] font-light text-foreground-400">
+                      {formatDate(post.date, lang)}
+                    </span>
+                  }
+                  right={
+                    <MediaCardArrow label={lang === 'th' ? 'อ่าน' : 'Read'} />
+                  }
                 />
               </MediaCardBody>
             </MediaCard>
@@ -239,7 +248,6 @@ export default function InsightsPage() {
         </div>
       </section>
 
-      <SiteFooter />
-    </main>
+    </div>
   );
 }

@@ -10,13 +10,13 @@ export default function PreviewPage() {
   return (
     <>
       <Navbar />
-      <main>
+      <div>
         <Hero />
         <Services />
         <Portfolio />
         <Process />
         <Contact />
-      </main>
+      </div>
       <Footer />
     </>
   );

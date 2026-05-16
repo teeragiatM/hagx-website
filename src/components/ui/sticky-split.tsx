@@ -11,6 +11,7 @@ import {
   type HTMLAttributes,
   type ReactNode,
 } from "react";
+import { Button } from './Button';
 
 type StickySplitItemBase = {
   id: string;
@@ -22,7 +23,7 @@ type StickySplitContextValue<
   items: TItem[];
   activeIndex: number;
   activeItem: TItem;
-  pinnedSide: "left" | "right";
+  pinnedSide: 'left' | 'right';
   setActiveIndex: (index: number) => void;
   innerClassName?: string;
 };
@@ -34,7 +35,7 @@ function useStickySplitContext() {
   const context = useContext(StickySplitContext);
   if (!context) {
     throw new Error(
-      "StickySplit components must be used inside <StickySplit>.",
+      'StickySplit components must be used inside <StickySplit>.'
     );
   }
   return context;
@@ -42,10 +43,10 @@ function useStickySplitContext() {
 
 export type StickySplitProps<TItem extends StickySplitItemBase> = Omit<
   HTMLAttributes<HTMLElement>,
-  "children"
+  'children'
 > & {
   items: TItem[];
-  pinnedSide?: "left" | "right";
+  pinnedSide?: 'left' | 'right';
   as?: React.ElementType;
   /** Class applied to the inner content wrapper inside each column (pinned + items) */
   innerClassName?: string;
@@ -55,8 +56,8 @@ export type StickySplitProps<TItem extends StickySplitItemBase> = Omit<
 export function StickySplit<TItem extends StickySplitItemBase>({
   id,
   items,
-  pinnedSide = "left",
-  as: Component = "div",
+  pinnedSide = 'left',
+  as: Component = 'div',
   className,
   innerClassName,
   children,
@@ -74,7 +75,7 @@ export function StickySplit<TItem extends StickySplitItemBase>({
       setActiveIndex,
       innerClassName,
     }),
-    [activeIndex, activeItem, innerClassName, items, pinnedSide],
+    [activeIndex, activeItem, innerClassName, items, pinnedSide]
   );
 
   return (
@@ -83,7 +84,7 @@ export function StickySplit<TItem extends StickySplitItemBase>({
     >
       <Component
         id={id}
-        className={cn("ui-sticky-split relative", className)}
+        className={cn('ui-sticky-split relative', className)}
         {...props}
       >
         <div className="mx-auto grid lg:grid-cols-2">{children}</div>
@@ -102,16 +103,16 @@ type RenderableChildren<
 
 function renderChildren<TItem extends StickySplitItemBase>(
   children: RenderableChildren<TItem>,
-  context: StickySplitContextValue<StickySplitItemBase>,
+  context: StickySplitContextValue<StickySplitItemBase>
 ) {
-  return typeof children === "function"
+  return typeof children === 'function'
     ? children(context as StickySplitRenderContext<TItem>)
     : children;
 }
 
 export type StickySplitPinnedProps<TItem extends StickySplitItemBase> = Omit<
   HTMLAttributes<HTMLDivElement>,
-  "children"
+  'children'
 > & {
   children: RenderableChildren<TItem>;
 };
@@ -122,18 +123,18 @@ export function StickySplitPinned<TItem extends StickySplitItemBase>({
   ...props
 }: StickySplitPinnedProps<TItem>) {
   const context = useStickySplitContext();
-  const pinnedFirst = context.pinnedSide === "left";
+  const pinnedFirst = context.pinnedSide === 'left';
 
   return (
     <div
       className={cn(
-        "ui-sticky-split-pinned ui-padding ui-margin lg:sticky lg:top-0 lg:flex lg:h-screen lg:flex-col",
-        pinnedFirst ? "lg:order-1" : "lg:order-2",
-        className,
+        'ui-sticky-split-pinned PageSection_root flex px-(--homepage-padding-inset) lg:sticky lg:top-0 lg:flex lg:h-screen lg:flex-col',
+        pinnedFirst ? 'lg:order-1' : 'lg:order-2',
+        className
       )}
       {...props}
     >
-      <div className={cn("flex flex-col gap-5", context.innerClassName)}>
+      <div className={cn('flex flex-col gap-5', context.innerClassName)}>
         {renderChildren(children, context)}
       </div>
     </div>
@@ -142,7 +143,7 @@ export function StickySplitPinned<TItem extends StickySplitItemBase>({
 
 export type StickySplitNavProps<TItem extends StickySplitItemBase> = Omit<
   HTMLAttributes<HTMLElement>,
-  "children"
+  'children'
 > & {
   children: RenderableChildren<TItem>;
 };
@@ -157,8 +158,8 @@ export function StickySplitNav<TItem extends StickySplitItemBase>({
   return (
     <nav
       className={cn(
-        "ui-sticky-split-nav flex flex-wrap gap-x-2 gap-y-1",
-        className,
+        'ui-sticky-split-nav flex flex-wrap gap-x-2 gap-y-1',
+        className
       )}
       {...props}
     >
@@ -169,7 +170,7 @@ export function StickySplitNav<TItem extends StickySplitItemBase>({
 
 export type StickySplitNavItemProps = Omit<
   ButtonHTMLAttributes<HTMLButtonElement>,
-  "children" | "type"
+  'children' | 'type'
 > & {
   index: number;
   targetId?: string;
@@ -190,29 +191,22 @@ export function StickySplitNavItem({
   return (
     <button
       type="button"
+      data-state={isActive ? 'active' : 'inactive'}
       onClick={() => {
         context.setActiveIndex(index);
         if (id) {
           document.getElementById(id)?.scrollIntoView({
-            behavior: "smooth",
-            block: "center",
+            behavior: 'smooth',
+            block: 'center',
           });
         }
       }}
       className={cn(
-        "ui-sticky-split-nav-item group inline-flex items-center gap-4 text-base font-light transition-colors sm:text-lg",
-        isActive ? "text-[#DB5828]" : "text-white/38 hover:text-white/70",
-        className,
+        'ui-sticky-split-nav-item group ui-reset inline-flex items-center gap-2 text-xs text-foreground-300 hover:text-foreground-100 data-[state="active"]:text-foreground-100',
+        className
       )}
       {...props}
     >
-      <span
-        className={cn(
-          "h-0 w-0 border-y-[7px] border-l-[9px] border-y-transparent drop-shadow-[0_0_10px_rgba(255,138,0,0.8)] transition-colors",
-          isActive ? "border-l-[#DB5828]" : "border-l-[#DB5828]/70",
-        )}
-        aria-hidden="true"
-      />
       {children}
     </button>
   );
@@ -226,21 +220,21 @@ export function StickySplitContent({
   ...props
 }: StickySplitContentProps) {
   const context = useStickySplitContext();
-  const pinnedFirst = context.pinnedSide === "left";
+  const pinnedFirst = context.pinnedSide === 'left';
 
   return (
     <div
       className={cn(
-        "ui-sticky-split-content relative",
-        pinnedFirst ? "lg:order-2" : "lg:order-1",
-        className,
+        'ui-sticky-split-content relative',
+        pinnedFirst ? 'lg:order-2' : 'lg:order-1',
+        className
       )}
       {...props}
     >
       <div
         className={cn(
-          "pointer-events-none absolute top-0 z-20 hidden h-full w-px lg:block",
-          pinnedFirst ? "left-0" : "right-0",
+          'pointer-events-none absolute top-0 z-20 hidden h-full w-px lg:block',
+          pinnedFirst ? 'left-0' : 'right-0'
         )}
       />
       {children}
@@ -271,11 +265,11 @@ export function StickySplitItem<TItem extends StickySplitItemBase>({
       onViewportEnter={() => context.setActiveIndex(index)}
       viewport={{ amount: 0.55 }}
       className={cn(
-        "flex min-h-screen items-center ui-padding ui-margin",
-        className,
+        'PageSection_root flex items-center px-(--homepage-padding-inset) md:min-h-screen',
+        className
       )}
     >
-      <div className={cn("w-full", context.innerClassName)}>
+      <div className={cn('h-full w-full flex-1', context.innerClassName)}>
         {renderChildren(children, context)}
       </div>
     </motion.article>

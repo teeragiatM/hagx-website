@@ -1,9 +1,11 @@
-import { SpinnerOverlay } from "@/components/ui/Spinner";
+"use client";
+
+import { Preloader } from "@/components/ui/Preloader";
 
 export default function PortfolioLoading() {
   return (
-    <main className="flex min-h-screen flex-col">
-      <SpinnerOverlay className="flex-1" />
-    </main>
+    <div className="flex min-h-screen flex-col items-center justify-center">
+      <Preloader.Logo />
+    </div>
   );
 }

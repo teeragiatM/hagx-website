@@ -60,6 +60,9 @@ export type SelectContentVariant = "solid" | "soft";
 /** @deprecated use SelectTriggerVariant or SelectContentVariant */
 export type SelectVariant = SelectTriggerVariant | SelectContentVariant;
 
+export type HighContrastValue = boolean | 'true' | 'false' | string;
+
+
 export type Responsive<T> =
   | T
   | { initial?: T; xs?: T; sm?: T; md?: T; lg?: T; xl?: T };

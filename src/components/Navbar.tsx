@@ -23,22 +23,29 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ${
-        scrolled ? "bg-white/95 backdrop-blur-md border-b border-slate-100 py-4" : "bg-transparent py-6"
+      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
+        scrolled
+          ? 'border-b border-slate-100 bg-white/95 py-4 backdrop-blur-md'
+          : 'bg-transparent py-6'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-8 flex items-center justify-between">
-        <a href="#" className="text-xl font-light tracking-[0.3em] text-slate-900 uppercase">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-8">
+        <a
+          href="#"
+          className="text-xl font-light tracking-[0.3em] text-slate-900 uppercase"
+        >
           HAGX
         </a>
 
-        <nav className="hidden md:flex items-center gap-10">
+        <nav className="hidden items-center gap-10">
           {links.map((l) => (
             <a
               key={l.href}
               href={l.href}
-              className={`text-xs tracking-[0.15em] uppercase font-light transition-colors duration-200 ${
-                scrolled ? "text-slate-500 hover:text-slate-900" : "text-white/70 hover:text-white"
+              className={`text-xs font-light tracking-[0.15em] uppercase transition-colors duration-200 ${
+                scrolled
+                  ? 'text-slate-500 hover:text-slate-900'
+                  : 'text-foreground-200 hover:text-foreground-100'
               }`}
             >
               {l.label}
@@ -46,10 +53,10 @@ export default function Navbar() {
           ))}
           <a
             href="#contact"
-            className={`text-xs tracking-[0.15em] uppercase font-light px-5 py-2.5 border transition-all duration-200 ${
+            className={`border px-5 py-2.5 text-xs font-light tracking-[0.15em] uppercase transition-all duration-200 ${
               scrolled
-                ? "border-slate-900 text-slate-900 hover:bg-slate-900 hover:text-white"
-                : "border-white/60 text-white hover:bg-white hover:text-slate-900"
+                ? 'border-background-100 text-background-100 hover:bg-background-100 hover:text-foreground-100'
+                : 'border-foreground-100/60 text-foreground-100 hover:bg-foreground-100 hover:text-background-100'
             }`}
           >
             สอบถามราคา
@@ -58,10 +65,14 @@ export default function Navbar() {
 
         <button
           onClick={() => setOpen(!open)}
-          className={`md:hidden transition-colors ${scrolled ? "text-slate-900" : "text-white"}`}
+          className={`transition-colors md:hidden ${scrolled ? 'text-slate-900' : 'text-foreground-100'}`}
           aria-label="Toggle menu"
         >
-          {open ? <X size={20} strokeWidth={1.5} /> : <Menu size={20} strokeWidth={1.5} />}
+          {open ? (
+            <X size={20} strokeWidth={1.5} />
+          ) : (
+            <Menu size={20} strokeWidth={1.5} />
+          )}
         </button>
       </div>
 
@@ -69,18 +80,18 @@ export default function Navbar() {
         {open && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
+            animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.25 }}
-            className="md:hidden bg-white border-t border-slate-100 overflow-hidden"
+            className="overflow-hidden border-t border-slate-100 bg-white md:hidden"
           >
-            <div className="flex flex-col px-8 py-6 gap-5">
+            <div className="flex flex-col gap-5 px-8 py-6">
               {links.map((l) => (
                 <a
                   key={l.href}
                   href={l.href}
                   onClick={() => setOpen(false)}
-                  className="text-xs tracking-[0.15em] uppercase font-light text-slate-500 hover:text-slate-900 transition-colors"
+                  className="text-xs font-light tracking-[0.15em] text-slate-500 uppercase transition-colors hover:text-slate-900"
                 >
                   {l.label}
                 </a>
@@ -88,7 +99,7 @@ export default function Navbar() {
               <a
                 href="#contact"
                 onClick={() => setOpen(false)}
-                className="text-xs tracking-[0.15em] uppercase font-light px-5 py-2.5 border border-slate-900 text-slate-900 text-center"
+                className="border border-slate-900 px-5 py-2.5 text-center text-xs font-light tracking-[0.15em] text-slate-900 uppercase"
               >
                 สอบถามราคา
               </a>

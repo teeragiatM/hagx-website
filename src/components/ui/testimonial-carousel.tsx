@@ -1,8 +1,14 @@
 "use client";
 
 import { CarouselControls } from "@/components/ui/CarouselControls";
-import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
+import {
+  MediaCardBody,
+  MediaCardEyebrow,
+  MediaCardTitle,
+  MediaCardExcerpt,
+} from '@/components/ui/MediaCard';
+import { cn } from '@/lib/utils';
+import { motion } from 'framer-motion';
 import {
   createContext,
   useCallback,
@@ -13,15 +19,13 @@ import {
   useState,
   type HTMLAttributes,
   type ReactNode,
-} from "react";
+} from 'react';
 
 export type TestimonialCarouselItem = {
   client: string;
   project: string;
   scope: string;
   quote: string;
-  bg?: string;
-  accent?: string;
 };
 
 const VISIBLE_COUNT = 3;
@@ -51,7 +55,7 @@ function useTestimonialContext() {
   const ctx = useContext(TestimonialContext);
   if (!ctx)
     throw new Error(
-      "TestimonialCarousel components must be used inside <TestimonialCarousel>.",
+      'TestimonialCarousel components must be used inside <TestimonialCarousel>.'
     );
   return ctx;
 }
@@ -60,14 +64,14 @@ export type TestimonialCarouselProps = HTMLAttributes<HTMLDivElement> & {
   items: TestimonialCarouselItem[];
   autoPlay?: boolean;
   intervalMs?: number;
-  autoPlayDirection?: "next" | "prev";
+  autoPlayDirection?: 'next' | 'prev';
 };
 
 export function TestimonialCarousel({
   items,
   autoPlay = true,
   intervalMs = 5200,
-  autoPlayDirection = "next",
+  autoPlayDirection = 'next',
   className,
   children,
   ...props
@@ -98,7 +102,7 @@ export function TestimonialCarousel({
 
   const wrapIndex = useCallback(
     (i: number) => ((i % items.length) + items.length) % items.length,
-    [items.length],
+    [items.length]
   );
 
   const prev = useCallback(() => {
@@ -159,7 +163,7 @@ export function TestimonialCarousel({
   useEffect(() => {
     if (!autoPlay || items.length <= 1) return;
     const id = window.setInterval(() => {
-      autoPlayDirection === "prev" ? prevRef.current() : nextRef.current();
+      autoPlayDirection === 'prev' ? prevRef.current() : nextRef.current();
     }, intervalMs);
     return () => window.clearInterval(id);
   }, [autoPlay, autoPlayDirection, intervalMs, items.length]);
@@ -171,14 +175,12 @@ export function TestimonialCarousel({
     const clonesBefore = Array.from(
       { length: cloneCount },
       (_, i) =>
-        items[
-          (((i - cloneCount) % items.length) + items.length) % items.length
-        ],
+        items[(((i - cloneCount) % items.length) + items.length) % items.length]
     );
     // clonesAfter: the SIDE_BUFFER items immediately *after* items[N-1] in the circle.
     const clonesAfter = Array.from(
       { length: cloneCount },
-      (_, i) => items[i % items.length],
+      (_, i) => items[i % items.length]
     );
     return [...clonesBefore, ...items, ...clonesAfter];
   }, [cloneCount, items, visibleCount]);
@@ -210,57 +212,17 @@ export function TestimonialCarousel({
       trackItems,
       transitionEnabled,
       visibleCount,
-    ],
+    ]
   );
 
   if (items.length === 0) return null;
 
   return (
     <TestimonialContext.Provider value={value}>
-      <section
-        className={cn(
-          "ui-testimonial border-b border-white/[0.06] px-8 py-24 sm:px-14",
-          className,
-        )}
-        {...props}
-      >
-        <div className="mx-auto max-w-[1500px]">{children}</div>
-      </section>
-    </TestimonialContext.Provider>
-  );
-}
-
-export type TestimonialHeaderProps = HTMLAttributes<HTMLDivElement> & {
-  eyebrow?: ReactNode;
-  title: ReactNode;
-  description?: ReactNode;
-};
-
-export function TestimonialHeader({
-  eyebrow,
-  title,
-  description,
-  className,
-  ...props
-}: TestimonialHeaderProps) {
-  return (
-    <div
-      className={cn(
-        "ui-testimonial-header mb-14 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between",
-        className,
-      )}
-      {...props}
-    >
-      <div>
-        {eyebrow && <p className="sh-eyebrow mb-3">{eyebrow}</p>}
-        <h2 className="ui-Section-Heading">{title}</h2>
+      <div className={cn('ui-testimonial', className)} {...props}>
+        {children}
       </div>
-      {description && (
-        <p className="section-header-description max-w-md leading-8 text-white/40 lg:text-right">
-          {description}
-        </p>
-      )}
-    </div>
+    </TestimonialContext.Provider>
   );
 }
 
@@ -269,7 +231,7 @@ export type TestimonialContentProps = HTMLAttributes<HTMLDivElement> & {
   renderItem?: (
     item: TestimonialCarouselItem,
     index: number,
-    isFocus: boolean,
+    isFocus: boolean
   ) => ReactNode;
 };
 
@@ -301,23 +263,23 @@ export function TestimonialContent({
   const trackStyle = useLoopTrack
     ? hasMeasured
       ? {
-          display: "flex" as const,
+          display: 'flex' as const,
           gap: GAP_PX,
           width: displayItems.length * slotWidth - GAP_PX,
           transform: `translate3d(${-position * slotWidth}px, 0, 0)`,
           transition: transitionEnabled
-            ? "transform 640ms cubic-bezier(0.22, 1, 0.36, 1)"
-            : "none",
-          willChange: "transform" as const,
+            ? 'transform 640ms cubic-bezier(0.22, 1, 0.36, 1)'
+            : 'none',
+          willChange: 'transform' as const,
         }
       : {
-          display: "flex" as const,
+          display: 'flex' as const,
           width: `${(displayItems.length / visibleCount) * 100}%`,
           transform: `translate3d(${-position * (100 / displayItems.length)}%, 0, 0)`,
           transition: transitionEnabled
-            ? "transform 640ms cubic-bezier(0.22, 1, 0.36, 1)"
-            : "none",
-          willChange: "transform" as const,
+            ? 'transform 640ms cubic-bezier(0.22, 1, 0.36, 1)'
+            : 'none',
+          willChange: 'transform' as const,
         }
     : undefined;
 
@@ -328,9 +290,9 @@ export function TestimonialContent({
         style={trackStyle}
         className={cn(
           useLoopTrack
-            ? "ui-testimonial-content items-stretch"
-            : "ui-testimonial-content grid w-full grid-cols-1 items-stretch gap-4 lg:grid-cols-3",
-          className,
+            ? 'ui-testimonial-content items-stretch'
+            : 'ui-testimonial-content grid w-full grid-cols-1 items-stretch gap-4 lg:grid-cols-3',
+          className
         )}
       >
         {displayItems.map((item, index) => {
@@ -340,12 +302,15 @@ export function TestimonialContent({
           const isFocus = useLoopTrack
             ? realIndex === active
             : index === active;
+          const itemKey = `${item.client}-${item.project}-${index}`;
 
-          return renderItem ? (
-            renderItem(item, index, isFocus)
-          ) : (
+          if (renderItem) {
+            return <div key={itemKey}>{renderItem(item, index, isFocus)}</div>;
+          }
+
+          return (
             <div
-              key={`${item.client}-${item.project}-${index}`}
+              key={itemKey}
               style={
                 useLoopTrack && hasMeasured
                   ? { width: slotWidth - GAP_PX, flexShrink: 0 }
@@ -369,65 +334,58 @@ export function TestimonialContent({
 
 export function TestimonialCard({
   item,
-  index,
   isFocus,
   className,
 }: {
   item: TestimonialCarouselItem;
-  index: number;
+  index?: number;
   isFocus: boolean;
   className?: string;
 }) {
-  const accent = item.accent ?? "#DB5828";
-
   return (
     <motion.article
       initial={{ opacity: 0.72 }}
       animate={{ opacity: isFocus ? 1 : 0.52 }}
-      transition={{
-        duration: 0.42,
-        ease: [0.22, 1, 0.36, 1],
-      }}
+      transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
       className={cn(
-        "ui-testimonial-card relative flex h-full min-h-[420px] flex-col justify-between overflow-hidden p-8",
-        className,
+        'ui-testimonial-card relative flex h-full min-h-[420px] flex-col overflow-hidden border border-white/[0.07] bg-background-200',
+        className
       )}
-      style={{ backgroundColor: item.bg ?? "#0c0c0c" }}
     >
+      {/* radial glow */}
       <div
-        className="pointer-events-none absolute inset-0 opacity-70"
+        className="pointer-events-none absolute inset-0 opacity-50"
         style={{
-          background: `radial-gradient(ellipse 70% 50% at 80% 0%, ${accent}24, transparent 62%)`,
+          background:
+            'radial-gradient(ellipse 70% 50% at 80% 0%, rgba(219,88,40,0.12), transparent 62%)',
         }}
       />
-      <div className="relative">
-        <div
-          className="mb-6 inline-flex items-center justify-center border px-4 py-2"
-          style={{ borderColor: `${accent}55` }}
-        >
-          <span className="text-lg font-bold" style={{ color: accent }}>
+
+      <MediaCardBody className="relative justify-between">
+        {/* client badge */}
+        <div>
+          <div className="mb-5 inline-flex items-center border border-accent-500/30 px-4 py-2">
+            <span className="text-base font-bold text-accent-500">
+              {item.client}
+            </span>
+          </div>
+          <MediaCardEyebrow>{item.scope}</MediaCardEyebrow>
+          <MediaCardTitle className="mb-4 text-xl font-semibold group-hover:text-foreground-100">
+            {item.project}
+          </MediaCardTitle>
+          <MediaCardExcerpt className="mb-0 line-clamp-none text-sm leading-7 text-foreground-300">
+            {item.quote}
+          </MediaCardExcerpt>
+        </div>
+
+        {/* footer line */}
+        <div className="mt-8 flex items-center gap-2">
+          <span className="h-0.5 w-6 bg-accent-500" />
+          <span className="text-[10px] font-light tracking-widest text-foreground-400 uppercase">
             {item.client}
           </span>
         </div>
-        <p
-          className="mb-3 text-[10px] font-light uppercase tracking-widest"
-          style={{ color: `${accent}aa` }}
-        >
-          {item.scope}
-        </p>
-        <h3 className="mb-6 text-xl font-semibold leading-tight text-white">
-          {item.project}
-        </h3>
-        <p className="text-sm font-light leading-7 text-white/62">
-          {item.quote}
-        </p>
-      </div>
-      <div className="relative mt-8 flex items-center gap-2">
-        <span className="h-0.5 w-6" style={{ backgroundColor: accent }} />
-        <span className="text-[10px] font-light uppercase tracking-widest text-white/32">
-          {item.client}
-        </span>
-      </div>
+      </MediaCardBody>
     </motion.article>
   );
 }

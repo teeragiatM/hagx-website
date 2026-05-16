@@ -50,38 +50,55 @@ const projects = [
 
 export default function Portfolio() {
   return (
-    <section id="portfolio" className="py-28 bg-[#F9F9F9]" aria-labelledby="portfolio-heading">
-      <div className="max-w-7xl mx-auto px-8">
+    <section
+      id="portfolio"
+      className="bg-[#F9F9F9] py-28"
+      aria-labelledby="portfolio-heading"
+    >
+      <div className="mx-auto max-w-7xl px-8">
         <ScrollReveal className="mb-20">
-          <p className="text-[10px] tracking-[0.3em] uppercase text-slate-400 font-light mb-4">Selected Works</p>
-          <h2 id="portfolio-heading" className="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight max-w-lg leading-tight">
+          <p className="mb-4 text-[10px] font-light tracking-[0.3em] text-slate-400 uppercase">
+            Selected Works
+          </p>
+          <h2
+            id="portfolio-heading"
+            className="max-w-lg text-4xl leading-tight font-bold tracking-tight text-slate-900 md:text-5xl"
+          >
             à¸œà¸¥à¸‡à¸²à¸™à¸—à¸µà¹ˆà¸œà¹ˆà¸²à¸™à¸¡à¸²
           </h2>
         </ScrollReveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-slate-200">
+        <div className="grid grid-cols-1 gap-px bg-slate-200 md:grid-cols-2">
           {projects.map((p, i) => (
             <ScrollReveal
               key={p.title}
               delay={i * 0.06}
-              className={`group bg-white ${p.wide ? "md:col-span-2" : ""}`}
+              className={`group bg-white ${p.wide ? 'md:col-span-2' : ''}`}
             >
-              <div className={`relative overflow-hidden ${p.wide ? "aspect-[21/9]" : "aspect-[4/3]"}`}>
+              <div
+                className={`relative overflow-hidden ${p.wide ? 'aspect-[21/9]' : 'aspect-[4/3]'}`}
+              >
                 <Image
                   src={p.img}
                   alt={p.title}
                   fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-103"
+                  className="object-cover transition-transform duration-500 group-hover:scale-103"
                   sizes="(max-width: 768px) 100vw, 50vw"
                 />
-                <div className="absolute inset-0 bg-white/0 group-hover:bg-white/10 transition-all duration-500" />
+                <div className="absolute inset-0 bg-foreground-100/0 transition-all duration-500 group-hover:bg-foreground-100/10" />
               </div>
-              <div className="p-6 flex items-start justify-between">
+              <div className="flex items-start justify-between p-6">
                 <div>
-                  <h3 className="text-sm font-medium text-slate-900">{p.title}</h3>
-                  <p className="text-xs text-slate-400 font-light mt-0.5">{p.location}</p>
+                  <h3 className="text-sm font-medium text-slate-900">
+                    {p.title}
+                  </h3>
+                  <p className="mt-0.5 text-xs font-light text-slate-400">
+                    {p.location}
+                  </p>
                 </div>
-                <span className="text-[10px] tracking-widest text-slate-300 font-light mt-0.5">{p.year}</span>
+                <span className="mt-0.5 text-[10px] font-light tracking-widest text-slate-300">
+                  {p.year}
+                </span>
               </div>
             </ScrollReveal>
           ))}

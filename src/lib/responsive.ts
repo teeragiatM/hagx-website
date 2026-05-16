@@ -53,12 +53,6 @@ const SPACE_PROPS = new Set([
   "py",
 ]);
 
-const FONT_WEIGHT_MAP: Record<string, string> = {
-  light: "font-light",
-  regular: "font-normal",
-  medium: "font-medium",
-  bold: "font-bold",
-};
 
 function isResponsiveObject<T>(
   value: Responsive<T> | undefined,
@@ -70,7 +64,7 @@ function isResponsiveObject<T>(
   );
 }
 
-function toEntries<T>(
+export function toEntries<T>(
   value: Responsive<T> | undefined,
 ): Array<[ResponsiveKey, T]> {
   if (value === undefined || value === null) return [];
@@ -118,7 +112,7 @@ export function responsiveClass<T extends string>(
 }
 
 export function resolveFontWeight(value: Responsive<string> | undefined) {
-  return responsiveClass("", value, FONT_WEIGHT_MAP);
+  return responsiveClass('ui-font', value);
 }
 
 export function resolveSpaceProp(
