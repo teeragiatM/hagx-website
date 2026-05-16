@@ -235,10 +235,8 @@ export function LineReveal({
   className,
 }: LineRevealProps) {
   const ref = useRef<HTMLElement>(null);
-  const inView = useInView(ref, {
-    once,
-    margin: margin as Parameters<typeof useInView>[1]["margin"],
-  });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const inView = useInView(ref, { once, margin } as any);
   const indexRef = useRef(0);
   indexRef.current = 0;
 
