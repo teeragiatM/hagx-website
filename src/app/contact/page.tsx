@@ -1,6 +1,6 @@
 "use client";
 
-import CtaSection from '@/components/CtaSection';
+import CTA from '@sections/CTA';
 import { useI18n } from "@/i18n/useI18n";
 import { motion } from "framer-motion";
 import Link from "next/link";
@@ -93,7 +93,7 @@ export default function ContactPage() {
                 </p>
                 <Link
                   href="/"
-                  className="mt-8 inline-flex h-12 items-center border border-border-300 px-6 text-xs font-light tracking-normal uppercase transition-colors hover:border-foreground-100 hover:bg-foreground-100 hover:text-background-100"
+                  className="mt-10 inline-flex h-12 items-center border border-border-300 px-6 text-xs font-light tracking-normal uppercase transition-colors hover:border-foreground-100 hover:bg-foreground-100 hover:text-background-100"
                 >
                   {t('success.back')}
                 </Link>
@@ -114,7 +114,7 @@ export default function ContactPage() {
                     </label>
                     <input
                       required
-                      className="contact-input"
+                      className="w-full border border-white/10 bg-transparent px-4 py-3.5 text-sm font-light text-foreground-100 outline-none transition-colors placeholder:text-foreground-400 focus:border-accent-500/55"
                       placeholder={t('form.first_name_placeholder')}
                       type="text"
                     />
@@ -125,7 +125,7 @@ export default function ContactPage() {
                     </label>
                     <input
                       required
-                      className="contact-input"
+                      className="w-full border border-white/10 bg-transparent px-4 py-3.5 text-sm font-light text-foreground-100 outline-none transition-colors placeholder:text-foreground-400 focus:border-accent-500/55"
                       placeholder={t('form.last_name_placeholder')}
                       type="text"
                     />
@@ -139,7 +139,7 @@ export default function ContactPage() {
                     </label>
                     <input
                       required
-                      className="contact-input"
+                      className="w-full border border-white/10 bg-transparent px-4 py-3.5 text-sm font-light text-foreground-100 outline-none transition-colors placeholder:text-foreground-400 focus:border-accent-500/55"
                       placeholder={t('form.email_placeholder')}
                       type="email"
                     />
@@ -148,7 +148,7 @@ export default function ContactPage() {
                     <label className="mb-2 block text-[10px] font-light tracking-widest text-foreground-200 uppercase">
                       {t('form.industry')}
                     </label>
-                    <select className="contact-input cursor-pointer appearance-none bg-[#111]">
+                    <select className="w-full cursor-pointer appearance-none border border-white/10 bg-[#111] px-4 py-3.5 text-sm font-light text-foreground-100 outline-none transition-colors placeholder:text-foreground-400 focus:border-accent-500/55">
                       <option value="">{t('form.industry_placeholder')}</option>
                       {industries.map((industry) => (
                         <option key={industry}>{industry}</option>
@@ -164,7 +164,7 @@ export default function ContactPage() {
                     </label>
                     <input
                       required
-                      className="contact-input"
+                      className="w-full border border-white/10 bg-transparent px-4 py-3.5 text-sm font-light text-foreground-100 outline-none transition-colors placeholder:text-foreground-400 focus:border-accent-500/55"
                       placeholder={t('form.company_placeholder')}
                       type="text"
                     />
@@ -175,7 +175,7 @@ export default function ContactPage() {
                     </label>
                     <input
                       required
-                      className="contact-input"
+                      className="w-full border border-white/10 bg-transparent px-4 py-3.5 text-sm font-light text-foreground-100 outline-none transition-colors placeholder:text-foreground-400 focus:border-accent-500/55"
                       placeholder={t('form.phone_placeholder')}
                       type="tel"
                     />
@@ -188,7 +188,7 @@ export default function ContactPage() {
                   </label>
                   <select
                     required
-                    className="contact-input cursor-pointer appearance-none bg-[#111]"
+                    className="w-full cursor-pointer appearance-none border border-white/10 bg-[#111] px-4 py-3.5 text-sm font-light text-foreground-100 outline-none transition-colors placeholder:text-foreground-400 focus:border-accent-500/55"
                   >
                     <option value="">{t('form.topic_placeholder')}</option>
                     {topics.map((topic) => (
@@ -202,7 +202,7 @@ export default function ContactPage() {
                     {t('form.details')}
                   </label>
                   <textarea
-                    className="contact-input min-h-36 resize-none"
+                    className="min-h-36 w-full resize-none border border-white/10 bg-transparent px-4 py-3.5 text-sm font-light text-foreground-100 outline-none transition-colors placeholder:text-foreground-400 focus:border-accent-500/55"
                     placeholder={t('form.details_placeholder')}
                   />
                 </div>
@@ -219,7 +219,7 @@ export default function ContactPage() {
         </div>
       </div>
 
-      <CtaSection
+      <CTA
         eyebrow={t('before_send.eyebrow')}
         title={t('before_send.title')}
         description={t('before_send.description')}

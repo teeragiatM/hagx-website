@@ -293,6 +293,18 @@ export async function getPortfolioItemBySlug(
   return localizePortfolioItem(data as PortfolioRow, locale);
 }
 
+export async function getPortfolioRawBySlug(slug: string): Promise<PortfolioRow | null> {
+  const supabase = getSupabaseClient();
+  if (!supabase) return null;
+  const { data, error } = await supabase
+    .from(TABLE)
+    .select("*")
+    .eq("slug", slug)
+    .single();
+  if (error || !data) return null;
+  return data as PortfolioRow;
+}
+
 // ── Generate static params for [slug] routes ─────────────────────────────────
 
 export async function getPortfolioSlugs(): Promise<{ slug: string }[]> {

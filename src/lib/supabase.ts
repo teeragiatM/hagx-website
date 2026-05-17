@@ -116,6 +116,99 @@ export async function getArticleBySlug(slug: string): Promise<ArticleRow | null>
   return data;
 }
 
+// ── Products ──────────────────────────────────────────────────────────────────
+
+export type ProductCategoryRow = {
+  id: string;
+  slug: string;
+  name_th: string;
+  name_en: string;
+  display_order: number;
+};
+
+export type ProductSubcategoryRow = {
+  id: string;
+  category_id: string;
+  slug: string;
+  name_th: string;
+  name_en: string;
+  display_order: number;
+};
+
+export type ProductRow = {
+  id: string;
+  slug: string;
+  category_id: string | null;
+  subcategory_id: string | null;
+  name_th: string;
+  name_en: string;
+  tagline_th: string | null;
+  tagline_en: string | null;
+  description_th: string | null;
+  description_en: string | null;
+  specs: { label: string; value: string }[] | null;
+  price_from: number | null;
+  price_unit_th: string | null;
+  price_unit_en: string | null;
+  price_note_th: string | null;
+  price_note_en: string | null;
+  cover_image: string | null;
+  gallery: string[] | null;
+  in_stock: boolean;
+  is_featured: boolean;
+  is_published: boolean;
+  display_order: number;
+  created_at: string;
+  updated_at: string;
+  category?: ProductCategoryRow | null;
+  subcategory?: ProductSubcategoryRow | null;
+};
+
+const PRODUCT_SELECT = '*, category:website_product_categories(*), subcategory:website_product_subcategories(*)';
+
+export async function getProducts(): Promise<ProductRow[]> {
+  const supabase = getSupabaseClient();
+  if (!supabase) return [];
+  const { data, error } = await supabase
+    .from('website_products')
+    .select(PRODUCT_SELECT)
+    .eq('is_published', true)
+    .order('display_order', { ascending: true });
+  if (error) { console.error('[getProducts]', error.message); return []; }
+  return data ?? [];
+}
+
+export async function getProductBySlug(slug: string): Promise<ProductRow | null> {
+  const supabase = getSupabaseClient();
+  if (!supabase) return null;
+  const { data, error } = await supabase
+    .from('website_products')
+    .select(PRODUCT_SELECT)
+    .eq('slug', slug)
+    .eq('is_published', true)
+    .single();
+  if (error) return null;
+  return data;
+}
+
+export async function getProductCategories(): Promise<ProductCategoryRow[]> {
+  const supabase = getSupabaseClient();
+  if (!supabase) return [];
+  const { data, error } = await supabase
+    .from('website_product_categories')
+    .select('*')
+    .order('display_order', { ascending: true });
+  if (error) return [];
+  return data ?? [];
+}
+
+export async function upsertProduct(row: Partial<Omit<ProductRow, 'category' | 'subcategory'>> & { id?: string }): Promise<{ error: string | null }> {
+  const supabase = getSupabaseClient();
+  if (!supabase) return { error: 'No Supabase client' };
+  const { error } = await supabase.from('website_products').upsert(row);
+  return { error: error?.message ?? null };
+}
+
 // ── Admin CRUD ────────────────────────────────────────────────────────────────
 
 export async function getArticlesAdmin(): Promise<{ data: ArticleRow[]; error: string | null }> {

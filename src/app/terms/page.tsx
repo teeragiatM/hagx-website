@@ -1,3 +1,4 @@
+import { PageSection } from '@layout';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = { title: 'Terms & Conditions' };
@@ -5,8 +6,8 @@ export const metadata: Metadata = { title: 'Terms & Conditions' };
 export default function TermsPage() {
   return (
     <>
-      <div>
-        <div className="PageSection_root px-(--homepage-padding-inset)">
+      <PageSection>
+        <div className="px-(--homepage-padding-inset)">
           <p className="mb-4 text-xs font-light text-accent-500 uppercase">
             Legal
           </p>
@@ -68,7 +69,7 @@ export default function TermsPage() {
             </p>
           </div>
         </div>
-      </div>
+      </PageSection>
     </>
   );
 }

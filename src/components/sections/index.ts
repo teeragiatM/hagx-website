@@ -1,0 +1,11 @@
+export { default as ScopeOfWorks } from './ScopeOfWorks';
+export { default as AboutStickySection } from './AboutStickySection';
+export { default as HomeAboutSection } from './HomeAboutSection';
+export { default as CTA } from './CTA';
+export { default as StrategySection } from './StrategySection';
+export { default as HomePageClient } from './HomePageClient';
+export { default as HomePortfolioSection } from './HomePortfolioSection';
+export { default as HomeScopeSection } from './HomeScopeSection';
+export { default as HomeProcessSection } from './HomeProcessSection';
+export { default as PortfolioClient } from './PortfolioClient';
+export { default as DetailPageTemplate } from './DetailPageTemplate';

@@ -1,6 +1,6 @@
 "use client";
 
-import { Preloader } from "@/components/ui/Preloader";
+import { Preloader } from "@ui/Preloader";
 
 export default function PortfolioLoading() {
   return (

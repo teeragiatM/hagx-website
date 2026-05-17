@@ -122,7 +122,7 @@ Responsive size: `size={{ initial: '1', md: '2' }}`
 
 ## Navigation
 
-`src/components/NavLink.tsx` — ใช้แทน `<a>` สำหรับ nav links:
+`src/components/shared/NavLink.tsx` — ใช้แทน `<a>` สำหรับ nav links:
 
 ```tsx
 <NavLink href="/about" className="text-sm font-light">
@@ -155,24 +155,56 @@ size={{ initial: '1', sm: '2', md: '3' }}
 ```
 src/
   app/
-    globals.css       ← @theme tokens, breakpoints, @utility
-    variant.css       ← ui-Section, ui-Container, ui-Text, ui-Heading
+    globals.css         ← @theme tokens, breakpoints, @utility
+    variant.css         ← ui-Section, ui-Container, ui-Text, ui-Heading
     layout.tsx
     page.tsx
   components/
-    ui/
-      Button.tsx      ← primary button component
-      Layout.tsx      ← Section, Container
-      ...
-    NavLink.tsx       ← nav-specific link
-    SiteNav.tsx       ← header + mobile menu
+    ui/                 ← General reusable primitives (Button, Marquee, Carousel, …)
+    layout/             ← Page shell & decoration (SiteShell, SiteNav, SiteFooter, PageHero, Bleed, …)
+    sections/           ← Page-specific content sections (HomePageClient, CTA, Hero, …)
+    shared/             ← Shared helpers (NavLink, ThemeToggle, LangSwitch, AuthButton, …)
+    effects/            ← Animation wrappers (SmoothScroll, FadeUp, ScrollReveal)
+    admin/              ← Admin-only components
+    types/              ← Shared TypeScript types
   lib/
-    responsive.ts     ← Responsive<T> type + helpers
-    utils.ts          ← cn()
+    responsive.ts       ← Responsive<T> type + helpers
+    utils.ts            ← cn()
   i18n/
     locales/en/
     locales/th/
 ```
+
+---
+
+## Import Aliases
+
+ใช้ alias แทน `@/components/...` เสมอ — ทุก folder มี barrel `index.ts` รวม export ไว้แล้ว:
+
+| Alias | Barrel | ตัวอย่าง |
+|-------|--------|---------|
+| `@ui` | `components/ui/index.ts` | Button, Marquee, Carousel, animate, … |
+| `@layout` | `components/layout/index.ts` | SiteShell, SiteNav, SiteFooter, PageHero, Bleed, … |
+| `@sections` | `components/sections/index.ts` | HomePageClient, CTA, Hero, DetailPageTemplate, … |
+| `@shared` | `components/shared/index.ts` | NavLink, ThemeToggle, LangSwitch, AuthButton, … |
+| `@effects` | `components/effects/index.ts` | SmoothScroll, FadeUp, ScrollReveal |
+
+```ts
+// ถูก — barrel import
+import { Button, Marquee } from '@ui'
+import { SiteNav, PageHero } from '@layout'
+import { HomePageClient, CTA } from '@sections'
+import { NavLink, ThemeToggle } from '@shared'
+import { ScrollReveal } from '@effects'
+
+// ผิด — อย่าใช้ path ยาว
+import { Button } from '@/components/ui/Button'
+import SiteNav from '@/components/layout/SiteNav'
+```
+
+Wildcard `@ui/*`, `@layout/*`, ฯลฯ ใช้ได้ถ้าต้องการ import file เดี่ยวโดยตรง (เช่น ใน barrel index.ts เอง)
+
+ไฟล์ที่อยู่ใน folder เดียวกัน ให้ใช้ relative import (`./Button`) แทน alias เพื่อป้องกัน circular import
 
 ---
 

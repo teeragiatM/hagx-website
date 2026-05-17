@@ -1,27 +1,73 @@
 @import "tailwindcss";
 
 /* ─────────────────────────────────────────────────────────────────────────────
+   HAGX SANS — Unified smart font family
+   browser เลือก glyph ต่อตัวอักษรอัตโนมัติผ่าน unicode-range:
+     Latin / ตัวเลข / สัญลักษณ์ → Geist
+     ภาษาไทย (U+0E00-U+0E7F)    → Anuphan
+   [lang] ใช้สำหรับ tuning metrics เท่านั้น ไม่ใช่เลือก font-family
+   ───────────────────────────────────────────────────────────────────────────── */
+
+/* Latin, numbers, common symbols, currency → Geist */
+@font-face {
+  font-family: "HAGX Sans";
+  src: local("Geist"), local("Geist Variable");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range:
+    U+0000-00FF,   /* Basic Latin + Latin-1 Supplement */
+    U+0100-024F,   /* Latin Extended A & B */
+    U+0250-02AF,   /* IPA Extensions */
+    U+1E00-1EFF,   /* Latin Extended Additional */
+    U+2000-206F,   /* General Punctuation */
+    U+20A0-20CF,   /* Currency Symbols */
+    U+2100-214F,   /* Letterlike Symbols */
+    U+2150-218F,   /* Number Forms */
+    U+2190-21FF,   /* Arrows */
+    U+2200-22FF;   /* Mathematical Operators */
+}
+
+/* Thai script → Anuphan */
+@font-face {
+  font-family: "HAGX Sans";
+  src: local("Anuphan");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range:
+    U+0E00-0E7F,   /* Thai */
+    U+200C,        /* Zero-Width Non-Joiner */
+    U+25CC;        /* Dotted Circle (placeholder สำหรับ combining marks) */
+}
+
+/* ── Scroll lock (set by Radix / modal libraries on body) ── */
+body[data-scroll-locked] {
+  overflow: hidden !important;
+  overscroll-behavior: contain;
+  position: relative !important;
+  padding-right: 6px !important;
+}
+/* ─────────────────────────────────────────────────────────────────────────────
    DESIGN TOKENS  —  เปลี่ยนที่นี่ที่เดียว ทั้งเว็บเปลี่ยนตาม
    ───────────────────────────────────────────────────────────────────────────── */
-[lang="th"] {
-  --font-weight-bold: 600;
-  --font-weight-medium: 500;
-}
-
-[lang="en"] {
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-    --font-weight-medium:   510;
-
-}
-/* [lang="en "] {
-
-} */
 /* #region Reset */
 :root {
-    --font-mono: "Berkeley Mono", ui-monospace, "SF Mono", Menlo, monospace;
-    --card-padding:24px;
-    
-  /* ── Z-index layers ── */
+  /* HAGX Sans — browser เลือก glyph ต่อตัวอักษรผ่าน unicode-range (@font-face บนสุด)
+     fallback stack รองรับกรณี local font ไม่ได้ติดตั้ง */
+  --font-en:    var(--font-geist), "Geist", ui-sans-serif, system-ui, sans-serif;
+  --font-th:    var(--font-anuphan), "Noto Sans Thai", "Tahoma", sans-serif;
+  --font-emoji: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-sans:
+    "HAGX Sans",
+    var(--font-geist),
+    var(--font-anuphan),
+    "Noto Sans Thai",
+    ui-sans-serif, system-ui, sans-serif,
+    var(--font-emoji);
+  --font-mono: "Berkeley Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --card-padding: 24px;
+
   /* ── Border radius ── */
   --radius-4:    4px;
   --radius-6:    6px;
@@ -34,30 +80,121 @@
 
   /* ── Borders ── */
   --border-hairline: 1px;
+  font-optical-sizing: auto;
 
-  /* ── Font stacks ── */
+  /* ── Font size scale (size เท่านั้น — line-height / weights อยู่ใน .latin / .thai) ── */
+  --text-xs:   0.75rem;
+  --text-sm:   0.875rem;
+  --text-base: 1rem;
+  --text-lg:   1.125rem;
+  --text-xl:   1.25rem;
+  --text-2xl:  1.5rem;
+  --text-3xl:  1.75rem;
+  --text-4xl:  2.1875rem;
+  --text-5xl:  3rem;
+  --text-6xl:  3.75rem;
+  --text-7xl:  4.5rem;
+  --text-8xl:  6rem;
+  --text-9xl:  8rem;
+    --header-height:72px;
+    --page-padding-inline: 24px;
+    --page-padding-block: 64px;
+    --page-padding-left: max(env(safe-area-inset-left),var(--page-padding-inline));
+    --page-padding-right: max(env(safe-area-inset-right),var(--page-padding-inline));
+    --page-padding-bottom:128px;
+    --page-padding-top:96px;
+    --page-max-width: 1024px;
+    --prose-max-width: 624px;
+    --homepage-outer-padding: 46px;
+    --homepage-max-width: calc(1344px + var(--homepage-outer-padding) * 2);
+    --homepage-padding-inset: 32px;
+    --page-inset: 32px;
+}
 
-  /* ── Font weights ── */
+/* ─────────────────────────────────────────────────────────────────────────────
+   TYPOGRAPHY METRIC UTILITIES
+   font = per glyph (handled by @font-face unicode-range)
+   metrics = per element (handled by .latin / .thai class)
+   [lang] = semantics/accessibility เท่านั้น — ไม่แก้ metrics
+   ───────────────────────────────────────────────────────────────────────────── */
+
+@utility latin {
+  --default-line-height:        1.5;
+  --default-leading-trim-start: 0.42em;
+  --default-leading-trim-end:   0.36em;
   --font-weight-light:    300;
   --font-weight-normal:   400;
+  --font-weight-medium:   510;
   --font-weight-semibold: 590;
   --font-weight-bold:     680;
+  /* Letter spacing — Geist tight tracking */
+  --letter-spacing-1:   0.003em;
+  --letter-spacing-2:   0.001em;
+  --letter-spacing-3:   0em;
+  --letter-spacing-4:  -0.003em;
+  --letter-spacing-5:  -0.006em;
+  --letter-spacing-6:  -0.009em;
+  --letter-spacing-7:  -0.012em;
+  --letter-spacing-8:  -0.018em;
+  --letter-spacing-9:  -0.026em;
+  --letter-spacing-10: -0.032em;
+  --letter-spacing-11: -0.038em;
+  --letter-spacing-12: -0.044em;
+  --letter-spacing-13: -0.052em;
+  /* Line heights — Geist/Latin กระชับ */
+  --text-xs--line-height:   calc(1rem / 0.75rem);
+  --text-sm--line-height:   calc(1.25rem / 0.875rem);
+  --text-base--line-height: calc(1.5rem / 1rem);
+  --text-lg--line-height:   calc(1.625rem / 1.125rem);
+  --text-xl--line-height:   calc(1.75rem / 1.25rem);
+  --text-2xl--line-height:  calc(1.875rem / 1.5rem);
+  --text-3xl--line-height:  calc(2.25rem / 1.75rem);
+  --text-4xl--line-height:  calc(2.5rem / 2.1875rem);
+  --text-5xl--line-height:  calc(3.25rem / 3rem);
+  --text-6xl--line-height:  1;
+  --text-7xl--line-height:  calc(4.75rem / 4.5rem);
+  --text-8xl--line-height:  calc(6.25rem / 6rem);
+  --text-9xl--line-height:  calc(8.25rem / 8rem);
+}
 
-  /* ── Letter spacing ── */
-  --letter-spacing-1:  0.0025em;
-  --letter-spacing-2:  0em;
-  --letter-spacing-3:  0em;
-  --letter-spacing-4: -0.0025em;
-  --letter-spacing-5: -0.005em;
-  --letter-spacing-6: -0.00625em;
-  --letter-spacing-7: -0.0075em;
-  --letter-spacing-8: -0.01em;
-  --letter-spacing-9: -0.025em;
-  --letter-spacing-10: -0.03em;
-  --letter-spacing-11: -0.035em;
-  --letter-spacing-12: -0.04em;
-  --letter-spacing-13: -0.05em;
-    }
+@utility thai {
+  --default-line-height:        1.75;
+  --default-leading-trim-start: 0.62em;
+  --default-leading-trim-end:   0.57em;
+  --font-weight-light:    280;
+  --font-weight-normal:   400;
+  --font-weight-medium:   470;
+  --font-weight-semibold: 540;
+  --font-weight-bold:     620;
+  /* Letter spacing — Thai ห้ามติดลบ วรรณยุกต์/สระจะชนกัน */
+  --letter-spacing-1:   0.012em;
+  --letter-spacing-2:   0.01em;
+  --letter-spacing-3:   0.008em;
+  --letter-spacing-4:   0.006em;
+  --letter-spacing-5:   0.004em;
+  --letter-spacing-6:   0.002em;
+  --letter-spacing-7:   0.001em;
+  --letter-spacing-8:   0em;
+  --letter-spacing-9:   0em;
+  --letter-spacing-10:  0em;
+  --letter-spacing-11:  0em;
+  --letter-spacing-12:  0em;
+  --letter-spacing-13:  0em;
+  /* Line heights — Thai เผื่อสระบน/ล่างและวรรณยุกต์ */
+  --text-xs--line-height:   calc(1.25rem / 0.75rem);
+  --text-sm--line-height:   calc(1.5rem / 0.875rem);
+  --text-base--line-height: calc(1.75rem / 1rem);
+  --text-lg--line-height:   calc(1.875rem / 1.125rem);
+  --text-xl--line-height:   calc(2rem / 1.25rem);
+  --text-2xl--line-height:  calc(2.25rem / 1.5rem);
+  --text-3xl--line-height:  calc(2.75rem / 1.875rem);
+  --text-4xl--line-height:  calc(3.25rem / 2.25rem);
+  --text-5xl--line-height:  calc(4rem / 3rem);
+  --text-6xl--line-height:  calc(5rem / 3.75rem);
+  --text-7xl--line-height:  calc(6rem / 4.5rem);
+  --text-8xl--line-height:  calc(8rem / 6rem);
+  --text-9xl--line-height:  calc(10.75rem / 8rem);
+}
 
 /* ── Responsive layout token overrides ── */
 
@@ -73,7 +210,7 @@
   --color-line-quaternary: oklch(11.5% 0.003 265);  /* #141515 */
   --color-line-tint:       oklch(13.8% 0.004 265);  /* #141516 */
 
- --accent-50: oklch(92% 0.045 40);    /* #fce5da - อ่อนสุด */
+  --accent-50: oklch(92% 0.045 40);    /* #fce5da - อ่อนสุด */
   --accent-100: oklch(85% 0.075 40);   /* #f7c9b3 */
   --accent-200: oklch(75% 0.11 40);    /* #f09e7a */
   --accent-300: oklch(68% 0.14 40);    /* #ea7a4c */
@@ -139,6 +276,8 @@
 @theme {
   --font-sans: var(--font-anuphan), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-mono);
+    --font-weight-thin:    100;
+
   --color-background-100: var(--background-100);
   --color-background-200: var(--background-200);
   --color-background-300: var(--background-300);
@@ -241,7 +380,10 @@ body, html {
     blockquote,q {
         quotes: none
     }
-
+    article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+        display: block;
+    }
+ 
     blockquote:after,blockquote:before,q:after,q:before {
         content:"";
         content: none
@@ -255,28 +397,53 @@ body, html {
         border-collapse: collapse;
         border-spacing: 0
     }
-    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 99px; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.18); border-radius: 99px; }
+  * {
+    outline-color: transparent;
+}
+
 
 }
-.spacer {
-    display: block;
-    width: 1px;
-    height: 1px;
-    min-width: 1px;
-    min-height: 1px;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    user-select: none;
-    margin-top: calc(var(--height, 0px) - 1px);
-    margin-left: calc(var(--width, 0px) - 1px);
+@supports (height: 1dvh) {
+    :root {
+        --dvh:1dvh
+    }
+}
+
+@supports (height: 1svh) {
+    :root {
+        --svh:1svh
+    }
+}
+@media (max-width: 1280px) {
+    :root {
+        @apply [--homepage-outer-padding:10px]
+    }
+}
+
+@media (max-width: 1024px) {
+    :root {
+      @apply [--homepage-outer-padding:28px]
+    }
+}
+
+@media (max-width: 640px) {
+    :root {
+      @apply [--homepage-outer-padding:16px]
+    }
+}
+
+@media (max-width: 1024px) {
+    :root {
+         @apply [--homepage-padding-inset:8px]
+    }
 }
 
 
 /* ── Base ─────────────────────────────────────────────────────────────────── */
 @layer base {
-
 
 /* #region Hero */
   .hero-grid-glow {
@@ -300,145 +467,22 @@ body, html {
     pointer-events: none;
   }
 
-  .hero-shadow::before {
-    z-index: 1;
-    height: min(42vh, 28rem);
-    background: radial-gradient(
-      ellipse 80% 100% at 50% 100%,
-      var(--background-100) 0%,
-      color-mix(in srgb, var(--background-100) 55%, transparent) 50%,
-      transparent 80%
-    );
-  }
 
-  .hero-shadow::after {
-    z-index: 2;
-    height: min(38vh, 26rem);
-    background: linear-gradient(
-      to top,
-      var(--background-100) 0%,
-      color-mix(in srgb, var(--background-100) 85%, transparent) 20%,
-      color-mix(in srgb, var(--background-100) 50%, transparent) 45%,
-      color-mix(in srgb, var(--background-100) 15%, transparent) 70%,
-      transparent 100%
-    );
-  }
 
 /* #endregion Hero */
 
 /* #region Preload */
 
-/* ── Preloader ────────────────────────────────────────────────────────────── */
-
-/* ─────────────────────────────────────────────────────────────────────────────
-   Utility grid backgrounds — reuse anywhere.
-   Override with CSS variables per instance:
-     --grid-size  (default 32px)
-     --grid-color (default rgba(255,255,255,0.04))
-   ─────────────────────────────────────────────────────────────────────────────
-   Usage:
-     <div class="bg-grid">          ← line grid
-     <div class="bg-grid-dots">     ← dot grid
-   ───────────────────────────────────────────────────────────────────────────── */
-
-.bg-grid {
-  --grid-size:  32px;
-  --grid-color: rgba(255, 255, 255, 0.04);
-  background-image:
-    linear-gradient(var(--grid-color) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
-  background-size: var(--grid-size) var(--grid-size);
-}
-
-.bg-grid-dots {
-  --grid-size:  32px;
-  --grid-color: rgba(255, 255, 255, 0.07);
-  background-image: radial-gradient(circle, var(--grid-color) 1px, transparent 1px);
-  background-size: var(--grid-size) var(--grid-size);
-}
-
-/* ── Scrollbar ────────────────────────────────────────────────────────────── */
 
 /* #endregion Preload */
 }
-/* ─────────────────────────────────────────────────────────────────────────────
-   Engineering UI utilities
-   ─────────────────────────────────────────────────────────────────────────────
-
-   Corner notch — CNC-cut feel. Use on cards, buttons, section wrappers.
-   Override --notch-size to control cut depth.
-
-   Usage:
-     <div class="notched">          ← 8px cut on all 4 corners
-     <div class="notched-sm">       ← 5px subtle cut
-     <div class="notched-lg">       ← 12px aggressive cut
-     <div class="notched notched-tl notched-br"> ← diagonal pair only (combine)
-   ───────────────────────────────────────────────────────────────────────────── */
-
-.notched {
-  --notch-size: 8px;
-  clip-path: polygon(
-    var(--notch-size) 0%,
-    calc(100% - var(--notch-size)) 0%,
-    100% var(--notch-size),
-    100% calc(100% - var(--notch-size)),
-    calc(100% - var(--notch-size)) 100%,
-    var(--notch-size) 100%,
-    0% calc(100% - var(--notch-size)),
-    0% var(--notch-size)
-  );
-}
-
-.notched-sm { --notch-size: 5px; }
-.notched-lg { --notch-size: 12px; }
-
-/* Single-corner notch pairs — top-left + bottom-right diagonal */
-.notched-diag {
-  --notch-size: 8px;
-  clip-path: polygon(
-    var(--notch-size) 0%,
-    100% 0%,
-    100% calc(100% - var(--notch-size)),
-    calc(100% - var(--notch-size)) 100%,
-    0% 100%,
-    0% var(--notch-size)
-  );
-}
-
-/* ── Monospace data label — for dimensions, stats, coordinates ── */
-.eng-label {
-  font-family: ui-monospace, "Cascadia Code", "Fira Code", monospace;
-  font-size: 0.625rem;        /* 10px */
-  letter-spacing: 0.08em;
-  color: var(--fg-4);
-  text-transform: uppercase;
-}
-
-.eng-label-accent {
-  color: var(--brand-9);
-}
-
 /* ── Specular highlight — glass/aluminum top-edge shimmer ── */
-.shimmer-top::before {
-  content: "";
-  position: absolute;
-  inset-inline: 0;
-  top: 0;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.18) 30%,
-    rgba(255, 255, 255, 0.32) 50%,
-    rgba(255, 255, 255, 0.18) 70%,
-    transparent 100%
-  );
-  pointer-events: none;
-}
 
 /* ── Marquee keyframes ────────────────────────────────────────────────────── */
 @keyframes marquee-left  { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 @keyframes marquee-right { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+@keyframes marquee-up    { from { transform: translateY(0); } to { transform: translateY(-50%); } }
+@keyframes marquee-down  { from { transform: translateY(-50%); } to { transform: translateY(0); } }
 
 /* ─────────────────────────────────────────────────────────────────────────────
    Animate System  —  CSS-driven animation via data attributes
@@ -534,190 +578,68 @@ body, html {
 /* ── Layout helpers ───────────────────────────────────────────────────────── */
 
 /* ── Form inputs ──────────────────────────────────────────────────────────── */
-.contact-input {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  outline: none;
-  width: 100%;
-  padding: 0.875rem 1rem;
-  font-size: 0.875rem;
-  font-family: var(--font-sans);
-  color: var(--fg-1);
-  transition: border-color var(--duration-s);
-}
-.contact-input::placeholder { color: var(--color-subtle); }
-.contact-input:focus { border-color: rgba(255,138,0,0.55); }
-
-/* Base */
-/* .section-header-root {
-  margin-bottom: 4rem; 
-} */
-
-/* Layout: split (default) - 2 column grid */
-.section-header-root[data-layout="split"] {
-  display: grid;
-  gap: 1.25rem 2rem; /* gap-y-5 gap-x-8 */
-  grid-template-columns: 1fr;
-}
-
-@media (min-width: 1024px) {
-  .section-header-root[data-layout="split"] {
-    grid-template-columns: 1.15fr 0.85fr;
-    align-items: start;
-  }
-}
-.section-header-root[data-layout="split"] .section-header-eyebrow {
-  grid-column: span 2;
-}
-
-/* Layout: stack - centered content */
-.section-header-root[data-layout="stack"] {
-  text-align: center;
-}
-
-.section-header-root[data-layout="stack"] .section-header-eyebrow {
-  margin-bottom: 1rem; /* mb-4 */
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* Layout: row - flex row */
-.section-header-root[data-layout="row"] {
-  margin-bottom: 3.5rem; /* mb-14 */
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem; /* gap-6 */
-}
-
-@media (min-width: 1024px) {
-  .section-header-root[data-layout="row"] {
-    flex-direction: row;
-    align-items: flex-end;
-    justify-content: space-between;
-  }
-}
-
-.section-header-root[data-layout="row"] .section-header-eyebrow {
-  margin-bottom: 0.75rem; /* mb-3 */
-}
-
-/* ── Right / Action slot ─────────────────────────────────────── */
-
-/* split: action sits in the right column, vertically centered */
-.section-header-root[data-layout="split"] .section-header-action,
-.section-header-root[data-layout="split"] .section-header-right {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  grid-column: 2;
-  grid-row: 2;
-}
-
-/* stack: action is centered below the heading block */
-.section-header-root[data-layout="stack"] .section-header-action,
-.section-header-root[data-layout="stack"] .section-header-right {
-  display: flex;
-  justify-content: center;
-  margin-top: 1.5rem;
-}
-
-/* row: action is already handled by flex justify-content: space-between on root */
-.section-header-root[data-layout="row"] .section-header-action,
-.section-header-root[data-layout="row"] .section-header-right {
-  flex-shrink: 0;
-  display: flex;
-  align-items: flex-end;
-}
-
-/* Left slot — flex column so eyebrow + heading stack naturally */
-.section-header-left {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
 
 /* ── HomeScopeSection ────────────────────────────────────────── */
-
-.scope-text {
-  font-size: clamp(2rem, 5vw, 4rem);
-  font-weight: 300;
-  line-height: 1.25;
-  letter-spacing: -0.02em;
-  margin-bottom: 3rem;
-}
-
-
-.scope-sup {
-  font-size: 0.42em;
-  font-weight: 300;
-  vertical-align: super;
-  margin-left: 0.18em;
-  letter-spacing: 0;
-  opacity: 0.55;
-}
-
-.scope-sep {
-  color: var(--fg-4);
-  font-weight: 200;
-}
-
-.scope-image-wrap {
-  position: relative;
-  width: 100%;
-  height: clamp(220px, 38vw, 520px);
-  overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.06);
-}
-
-
 /* #region utility*/
 @utility scrollbar-none {
   scrollbar-width: none;
   &::-webkit-scrollbar { display: none; }
 }
-
 @layer utilities {
-  /* ใช้ :where() เพื่อให้ specificity เป็น 0 */
   :where(.text-xs) {
-    @apply tracking-[var(--letter-spacing-1)];
+    --line-height: calc(1em * var(--text-xs--line-height));
+    letter-spacing: var(--letter-spacing-1);
   }
   :where(.text-sm) {
-    @apply tracking-[var(--letter-spacing-2)];
+    --line-height: calc(1em * var(--text-sm--line-height));
+    letter-spacing: var(--letter-spacing-2);
   }
   :where(.text-base) {
-    @apply tracking-[var(--letter-spacing-3)];
+    --line-height: calc(1em * var(--text-base--line-height));
+    letter-spacing: var(--letter-spacing-3);
   }
   :where(.text-lg) {
-    @apply tracking-[var(--letter-spacing-4)];
+    --line-height: calc(1em * var(--text-lg--line-height));
+    letter-spacing: var(--letter-spacing-4);
   }
   :where(.text-xl) {
-    @apply tracking-[var(--letter-spacing-5)];
+    --line-height: calc(1em * var(--text-xl--line-height));
+    letter-spacing: var(--letter-spacing-5);
   }
   :where(.text-2xl) {
-    @apply tracking-[var(--letter-spacing-6)];
+    --line-height: calc(1em * var(--text-2xl--line-height));
+    letter-spacing: var(--letter-spacing-6);
   }
   :where(.text-3xl) {
-    @apply tracking-[var(--letter-spacing-7)];
+    --line-height: calc(1em * var(--text-3xl--line-height));
+    letter-spacing: var(--letter-spacing-7);
   }
   :where(.text-4xl) {
-    @apply tracking-[var(--letter-spacing-8)];
+    --line-height: calc(1em * var(--text-4xl--line-height));
+    letter-spacing: var(--letter-spacing-8);
   }
   :where(.text-5xl) {
-    @apply tracking-[var(--letter-spacing-9)];
+    --line-height: calc(1em * var(--text-5xl--line-height));
+    letter-spacing: var(--letter-spacing-9);
   }
   :where(.text-6xl) {
-    @apply tracking-[var(--letter-spacing-10)];
+    --line-height: calc(1em * var(--text-6xl--line-height));
+    letter-spacing: var(--letter-spacing-10);
   }
   :where(.text-7xl) {
-    @apply tracking-[var(--letter-spacing-11)];
+    --line-height: calc(1em * var(--text-7xl--line-height));
+    letter-spacing: var(--letter-spacing-11);
   }
   :where(.text-8xl) {
-    @apply tracking-[var(--letter-spacing-12)];
+    --line-height: calc(1em * var(--text-8xl--line-height));
+    letter-spacing: var(--letter-spacing-12);
   }
   :where(.text-9xl) {
-    @apply tracking-[var(--letter-spacing-13)];
+    --line-height: calc(1em * var(--text-9xl--line-height));
+    letter-spacing: var(--letter-spacing-13);
   }
 }
+
 @utility trim-normal {
   &::before,
   &::after {
@@ -730,7 +652,8 @@ body, html {
     display: table;
     content: "";
     margin-bottom: calc(
-      var(--leading-trim-start, 0.25em) - (var(--tw-leading, 1.5em) / 2)
+      var(--leading-trim-start, var(--default-leading-trim-start)) -
+      var(--line-height, calc(1em * var(--default-line-height))) / 2
     );
   }
 }
@@ -740,7 +663,8 @@ body, html {
     display: table;
     content: "";
     margin-top: calc(
-      var(--leading-trim-end, 0.25em) - (var(--tw-leading, 1.5em) / 2)
+      var(--leading-trim-end, var(--default-leading-trim-end)) -
+      var(--line-height, calc(1em * var(--default-line-height))) / 2
     );
   }
 }
@@ -753,84 +677,19 @@ body, html {
   }
   &::before {
     margin-bottom: calc(
-      var(--leading-trim-start, 0.25em) - (var(--tw-leading, 1.5em) / 2)
+      var(--leading-trim-start, var(--default-leading-trim-start)) -
+      var(--line-height, calc(1em * var(--default-line-height))) / 2
     );
   }
   &::after {
     margin-top: calc(
-      var(--leading-trim-end, 0.25em) - (var(--tw-leading, 1.5em) / 2)
+      var(--leading-trim-end, var(--default-leading-trim-end)) -
+      var(--line-height, calc(1em * var(--default-line-height))) / 2
     );
   }
 }
 /* #endregion utility*/
-* {
-    outline-color: transparent;
-}
-/* article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
-    display: block;
-} */
-.Layout_content {
-  @apply min-h-[calc(100*var(--dvh))];
-}
-:root{
-    --header-height:72px;
-    --page-padding-inline: 24px;
-    --page-padding-block: 64px;
-    --page-padding-left: max(env(safe-area-inset-left),var(--page-padding-inline));
-    --page-padding-right: max(env(safe-area-inset-right),var(--page-padding-inline));
-    --page-padding-bottom:128px;
-    --page-padding-top:96px;
-    --page-max-width: 1024px;
-    --prose-max-width: 624px;
-    --homepage-outer-padding: 46px;
-    --homepage-max-width: calc(1344px + var(--homepage-outer-padding) * 2);
-    --homepage-padding-inset: 32px;
-    --page-inset: 32px;
-}
-.LayoutContent_root {
-  @apply w-full mx-auto ;
-  @apply pl-[var(--page-padding-left)] pr-[var(--page-padding-right)];
-  @apply max-w-[var(--page-max-width)];
-}
-.LayoutContent_homepage {
-  @apply max-w-[var(--homepage-max-width)];
-  padding: 0 var(--homepage-outer-padding)
-}
 
-@supports (height: 1dvh) {
-    :root {
-        --dvh:1dvh
-    }
-}
-
-@supports (height: 1svh) {
-    :root {
-        --svh:1svh
-    }
-}
-@media (max-width: 1280px) {
-    :root {
-        @apply [--homepage-outer-padding:10px]
-    }
-}
-
-@media (max-width: 1024px) {
-    :root {
-      @apply [--homepage-outer-padding:28px]
-    }
-}
-
-@media (max-width: 640px) {
-    :root {
-      @apply [--homepage-outer-padding:16px]
-    }
-}
-
-@media (max-width: 1024px) {
-    :root {
-         @apply [--homepage-padding-inset:8px]
-    }
-}
 
   .LayoutContent_size-1 {
     @apply max-w-[448px];
@@ -848,80 +707,40 @@ body, html {
     @apply max-w-[1136px];
   }
 
-  .Bleed_root {
-    @apply relative right-1/2 left-1/2 -mr-[50vw] -ml-[50vw] w-screen;
-  }
+.PillarHero_root {
+    position: relative;
+    isolation: isolate;
+    padding-top: 460px;
+    padding-bottom: 128px;
+    max-width: 100vw;
+    border-bottom: var(--border-hairline) solid var(--color-border-translucent-strong)
+}
 
-  .PageSection_root {
-    @apply mx-auto pt-[96px] pb-[128px];
-  }
-
-  @media (max-width: 768px) {
-    .PageSection_root {
-      @apply pt-[48px] pb-[96px];
+@media (max-width: 1280px) {
+    .PillarHero_root {
+        padding-top:552px
     }
-  }
-
-  /* max-width: 640px */
-  @media (max-width: 640px) {
-    .PageSection_root {
-      @apply pt-0 pb-0;
-    }
-
-    .PageSection_root_reverse {
-      @apply flex flex-col-reverse;
-    }
-  }
-
-
-.PageSection_header {
-  @apply grid grid-cols-2 pb-[96px];
 }
 
 @media (max-width: 1024px) {
-  .PageSection_header {
-    @apply grid-cols-1 pb-[64px] ;
-  }
-}
-
-@media (max-width: 640px) {
-  .PageSection_header {
- @apply pt-[40px] pb-[48px] ;
-  }
-}
-
-.utils_inset {
-  @apply pl-(--homepage-padding-inset) pr-(--homepage-padding-inset)
-}
-
-.utils_insetLarge {
-  @apply -ml-[2px]
-}
-
-@media (max-width: 640px) {
-    .utils_insetLarge {
-  @apply -ml-[1px]
-
+    .PillarHero_root {
+        padding-top:478px;
+        padding-bottom: 96px
     }
 }
 
-.PageSection_titleContainer {
-  @apply pr-[32px];
-}
-
-.PageSection_descriptionContainer {
-  @apply pl-(--homepage-padding-inset) pr-(--homepage-padding-inset);
-}
-
-@media (max-width: 1024px) {
-    .PageSection_descriptionContainer {
-        @apply mt-[24px]
+@media (max-width: 768px) {
+    .PillarHero_root {
+        padding-top:576px;
+        padding-bottom: 64px;
+        overflow: clip
     }
 }
 
 @media (max-width: 640px) {
-    .PageSection_descriptionContainer {
-        @apply mt-[20px]
+    .PillarHero_root {
+        padding-top:284px;
+        padding-bottom: 48px
     }
 }
 
@@ -935,96 +754,6 @@ body, html {
     }
 }
 
-.CTA_homepagePrefooter {
-  @apply flex flex-col text-center justify-center items-center w-full my-[224px];
-}
-
-@media (max-width: 768px) {
-    .CTA_homepagePrefooter {
-      @apply my-[128px];
-    }
-}
-
-@media (max-width: 640px) {
-    .CTA_homepagePrefooter {
-      @apply my-[96px];
-    }
-}
-@media (max-width: 640px) {
-    .CTA_heading {
-        font-size:38px;
-    }
-  }
-
-
-
-@media (max-width: 640px) {
-    .hide-mobile,[data-hide=mobile] {
-        display:none!important
-    }
-}
-
-@media (min-width: 641px) {
-    .show-mobile,[data-show=mobile] {
-        display:none!important
-    }
-}
-
-@media (max-width: 768px) {
-    .hide-tablet,[data-hide=tablet] {
-        display:none!important
-    }
-}
-
-@media (min-width: 769px) {
-    .show-tablet,[data-show=tablet] {
-        display:none!important
-    }
-}
-
-@media (max-width: 1024px) {
-    .hide-laptop,[data-hide=laptop] {
-        display:none!important
-    }
-}
-
-@media (min-width: 1025px) {
-    .show-laptop,[data-show=laptop] {
-        display:none!important
-    }
-}
-
-@media (max-width: 1280px) {
-    .hide-desktop,[data-hide=desktop] {
-        display:none!important
-    }
-}
-
-@media (min-width: 1281px) {
-    .show-desktop,[data-show=desktop] {
-        display:none!important
-    }
-}
-
-@media (any-hover: hover) {
-    .hide-hover,[data-hide=hover] {
-        display:none!important
-    }
-}
-
-@media not (any-hover: hover) {
-    .show-hover,[data-show=hover] {
-        display:none!important
-    }
-}
-
-.HomepageSeparator_keyline {
-  @apply  h-px w-full bg-border-overlay-strong;
-}
-
-.HomepageSeparator_shadow {
-  @apply h-px w-full bg-black;
-}
 
 
 .page_container__YSA5u {

@@ -1,8 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import { cn } from "@/lib/utils";
-import * as Dialog from "@radix-ui/react-dialog";
 import { X, SlidersHorizontal } from "lucide-react";
+import { Sheet } from "./Sheet";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -40,15 +41,7 @@ export type FilterToolbarProps = {
 
 // ── Checkbox ──────────────────────────────────────────────────────────────────
 
-function FilterCheck({
-  label,
-  checked,
-  onChange,
-}: {
-  label: string;
-  checked: boolean;
-  onChange: () => void;
-}) {
+function FilterCheck({ label, checked, onChange }: { label: string; checked: boolean; onChange: () => void }) {
   return (
     <label className="flex cursor-pointer items-center gap-3 py-1 text-sm font-light text-foreground-300 transition-colors hover:text-foreground-100">
       <span
@@ -75,11 +68,7 @@ function Chip({ label, onRemove }: { label: string; onRemove: () => void }) {
   return (
     <span className="flex items-center gap-2 border border-accent-500/30 bg-accent-500/10 px-3 py-1 text-[10px] font-light text-accent-500">
       {label}
-      <button
-        onClick={onRemove}
-        className="leading-none opacity-60 transition-opacity hover:opacity-100"
-        aria-label={`ลบ ${label}`}
-      >
+      <button onClick={onRemove} className="leading-none opacity-60 transition-opacity hover:opacity-100" aria-label={`ลบ ${label}`}>
         ×
       </button>
     </span>
@@ -102,7 +91,8 @@ export function FilterToolbar({
   chipLabel,
   className,
 }: FilterToolbarProps) {
-  // count active filters (multi + toggle, not search)
+  const [sheetOpen, setSheetOpen] = useState(false);
+
   const activeCount = groups.reduce((acc, g) => {
     const v = values[g.key];
     if (g.type === "multi") return acc + (Array.isArray(v) ? v.length : 0);
@@ -112,18 +102,13 @@ export function FilterToolbar({
 
   const hasAny = activeCount > 0 || !!search;
 
-  // collect chips
   const chips: { key: string; value: string; label: string }[] = [];
   for (const g of groups) {
     const v = values[g.key];
     if (g.type === "multi" && Array.isArray(v)) {
       for (const val of v) {
         const opt = g.options?.find((o) => o.value === val);
-        chips.push({
-          key: g.key,
-          value: val,
-          label: chipLabel ? chipLabel(g.key, val) : (opt?.label ?? val),
-        });
+        chips.push({ key: g.key, value: val, label: chipLabel ? chipLabel(g.key, val) : (opt?.label ?? val) });
       }
     }
     if (g.type === "toggle" && v === true) {
@@ -132,9 +117,8 @@ export function FilterToolbar({
   }
 
   const removeChip = (key: string, value: string, type: "multi" | "toggle") => {
-    if (type === "toggle") {
-      onChange(key, false);
-    } else {
+    if (type === "toggle") onChange(key, false);
+    else {
       const curr = (values[key] as string[]) ?? [];
       onChange(key, curr.filter((v) => v !== value));
     }
@@ -145,17 +129,13 @@ export function FilterToolbar({
       {/* ── Top bar ── */}
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          {/* result count */}
           {resultCount !== undefined && (
             <p className="text-sm font-light text-foreground-400">
               <span className="text-foreground-100">{resultCount}</span>
-              {totalCount !== undefined && (
-                <span> / {totalCount}</span>
-              )}
+              {totalCount !== undefined && <span> / {totalCount}</span>}
             </p>
           )}
 
-          {/* search */}
           {onSearch !== undefined && (
             <input
               type="text"
@@ -166,96 +146,19 @@ export function FilterToolbar({
             />
           )}
 
-          {/* filter dialog trigger */}
-          <Dialog.Root>
-            <Dialog.Trigger asChild>
-              <button className="flex items-center gap-2 border border-border-300 px-3 py-1.5 text-[10px] font-light tracking-widest text-foreground-300 uppercase transition-colors hover:border-foreground-100/50 hover:text-foreground-100">
-                <SlidersHorizontal size={12} strokeWidth={1.5} />
-                Filter
-                {activeCount > 0 && (
-                  <span className="flex h-4 w-4 items-center justify-center rounded-full bg-accent-500 text-[9px] font-medium text-foreground-100">
-                    {activeCount}
-                  </span>
-                )}
-              </button>
-            </Dialog.Trigger>
-
-            <Dialog.Portal>
-              <Dialog.Overlay className="fixed inset-0 z-50 bg-background-100/70 backdrop-blur-sm" />
-              <Dialog.Content className="fixed top-0 right-0 z-50 flex h-full w-80 max-w-[90vw] flex-col border-l border-border-200 bg-background-200 shadow-2xl focus:outline-none">
-                {/* header */}
-                <div className="flex items-center justify-between border-b border-border-200 px-6 py-4">
-                  <Dialog.Title className="text-xs font-light tracking-widest text-foreground-200 uppercase">
-                    Filter
-                  </Dialog.Title>
-                  <div className="flex items-center gap-4">
-                    {activeCount > 0 && (
-                      <button
-                        onClick={onClear}
-                        className="text-[10px] font-light tracking-widest text-accent-500 uppercase hover:text-foreground-100"
-                      >
-                        ล้างทั้งหมด
-                      </button>
-                    )}
-                    <Dialog.Close asChild>
-                      <button className="text-foreground-400 transition-colors hover:text-foreground-100">
-                        <X size={16} strokeWidth={1.5} />
-                      </button>
-                    </Dialog.Close>
-                  </div>
-                </div>
-
-                {/* body */}
-                <div className="flex-1 overflow-y-auto px-6 py-6 space-y-8">
-                  {groups.map((g) => (
-                    <div key={g.key}>
-                      <p className="mb-3 border-b border-border-200 pb-2 text-[10px] font-light tracking-widest text-foreground-400 uppercase">
-                        {g.label}
-                      </p>
-                      {g.type === "multi" && g.options && (
-                        <div className="space-y-2">
-                          {g.options.map((opt) => {
-                            const arr = (values[g.key] as string[]) ?? [];
-                            return (
-                              <FilterCheck
-                                key={opt.value}
-                                label={opt.label}
-                                checked={arr.includes(opt.value)}
-                                onChange={() => {
-                                  onChange(
-                                    g.key,
-                                    arr.includes(opt.value)
-                                      ? arr.filter((v) => v !== opt.value)
-                                      : [...arr, opt.value]
-                                  );
-                                }}
-                              />
-                            );
-                          })}
-                        </div>
-                      )}
-                      {g.type === "toggle" && (
-                        <FilterCheck
-                          label={g.label}
-                          checked={values[g.key] === true}
-                          onChange={() => onChange(g.key, !values[g.key])}
-                        />
-                      )}
-                    </div>
-                  ))}
-                </div>
-
-                {/* footer */}
-                <div className="border-t border-border-200 px-6 py-4">
-                  <Dialog.Close asChild>
-                    <button className="w-full border border-accent-500 py-2.5 text-[10px] font-light tracking-widest text-accent-500 uppercase transition-colors hover:bg-accent-500 hover:text-background-100">
-                      ดูผลลัพธ์{resultCount !== undefined ? ` (${resultCount})` : ""}
-                    </button>
-                  </Dialog.Close>
-                </div>
-              </Dialog.Content>
-            </Dialog.Portal>
-          </Dialog.Root>
+          {/* Filter trigger */}
+          <button
+            onClick={() => setSheetOpen(true)}
+            className="flex items-center gap-2 border border-border-300 px-3 py-1.5 text-[10px] font-light tracking-widest text-foreground-300 uppercase transition-colors hover:border-foreground-100/50 hover:text-foreground-100"
+          >
+            <SlidersHorizontal size={12} strokeWidth={1.5} />
+            Filter
+            {activeCount > 0 && (
+              <span className="flex h-4 w-4 items-center justify-center rounded-full bg-accent-500 text-[9px] font-medium text-foreground-100">
+                {activeCount}
+              </span>
+            )}
+          </button>
 
           {hasAny && (
             <button
@@ -267,21 +170,17 @@ export function FilterToolbar({
           )}
         </div>
 
-        {/* sort */}
+        {/* Sort */}
         {sort && (
           <div className="flex items-center gap-3">
-            <span className="text-[10px] font-light tracking-widest text-foreground-400 uppercase">
-              เรียง
-            </span>
+            <span className="text-[10px] font-light tracking-widest text-foreground-400 uppercase">เรียง</span>
             {sort.options.map((opt) => (
               <button
                 key={opt.value}
                 onClick={() => sort.onChange(opt.value)}
                 className={cn(
                   "text-[10px] font-light tracking-widest uppercase transition-colors",
-                  sort.value === opt.value
-                    ? "text-accent-500"
-                    : "text-foreground-400 hover:text-foreground-100"
+                  sort.value === opt.value ? "text-accent-500" : "text-foreground-400 hover:text-foreground-100"
                 )}
               >
                 {opt.label}
@@ -297,11 +196,7 @@ export function FilterToolbar({
           {chips.map((c) => {
             const g = groups.find((g) => g.key === c.key)!;
             return (
-              <Chip
-                key={`${c.key}-${c.value}`}
-                label={c.label}
-                onRemove={() => removeChip(c.key, c.value, g.type)}
-              />
+              <Chip key={`${c.key}-${c.value}`} label={c.label} onRemove={() => removeChip(c.key, c.value, g.type)} />
             );
           })}
           {search && (
@@ -312,6 +207,56 @@ export function FilterToolbar({
           )}
         </div>
       )}
+
+      {/* ── Filter Sheet ── */}
+      <Sheet
+        open={sheetOpen}
+        onClose={() => setSheetOpen(false)}
+        title="Filter"
+        footerSlot={
+          <div className="px-6 py-4">
+            <button
+              onClick={() => setSheetOpen(false)}
+              className="w-full border border-accent-500 py-2.5 text-[10px] font-light tracking-widest text-accent-500 uppercase transition-colors hover:bg-accent-500 hover:text-background-100"
+            >
+              ดูผลลัพธ์{resultCount !== undefined ? ` (${resultCount})` : ""}
+            </button>
+          </div>
+        }
+      >
+        <div className="space-y-8">
+          {activeCount > 0 && (
+            <button onClick={onClear} className="text-[10px] font-light tracking-widest text-accent-500 uppercase hover:text-foreground-100">
+              ล้างทั้งหมด
+            </button>
+          )}
+          {groups.map((g) => (
+            <div key={g.key}>
+              <p className="mb-3 border-b border-white/[0.08] pb-2 text-[10px] font-light tracking-widest text-foreground-400 uppercase">
+                {g.label}
+              </p>
+              {g.type === "multi" && g.options && (
+                <div className="space-y-2">
+                  {g.options.map((opt) => {
+                    const arr = (values[g.key] as string[]) ?? [];
+                    return (
+                      <FilterCheck
+                        key={opt.value}
+                        label={opt.label}
+                        checked={arr.includes(opt.value)}
+                        onChange={() => onChange(g.key, arr.includes(opt.value) ? arr.filter((v) => v !== opt.value) : [...arr, opt.value])}
+                      />
+                    );
+                  })}
+                </div>
+              )}
+              {g.type === "toggle" && (
+                <FilterCheck label={g.label} checked={values[g.key] === true} onChange={() => onChange(g.key, !values[g.key])} />
+              )}
+            </div>
+          ))}
+        </div>
+      </Sheet>
     </div>
   );
 }

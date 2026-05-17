@@ -1,16 +1,14 @@
 ﻿﻿"use client";
 
-import CtaSection from "@/components/CtaSection";
-import { BorderGrid, BorderGridCell } from "@/components/ui/BorderGrid";
-import PageHero from "@/components/PageHero";
-import ScopeOfWorks, { type ScopeCategory } from "@/components/ScopeOfWorks";
-import SectionHeader from "@/components/SectionHeader";
-import {
-  Carousel,
-  type CarouselItem as ServiceCarouselItem,
-} from '@/components/ui/Carousel';
+import CTA from '@sections/CTA';
+import { BorderGrid, BorderGridCell } from '@ui/BorderGrid';
+import ScopeOfWorks, { type ScopeCategory } from '@sections/ScopeOfWorks';
+import SectionHeader from '@layout/SectionHeader';
+import { CarouselRoot, CarouselHeader, CarouselGrid, CarouselNav } from '@ui/Carousel';
+import { MediaCard, MediaCardImage, MediaCardBody, MediaCardNumber, MediaCardTitle, MediaCardExcerpt } from '@ui/MediaCard';
 import { useI18n } from '@/i18n/useI18n';
 import { ShieldCheck, PencilRuler, Handshake } from 'lucide-react';
+import { PageSection, PageHero } from '@layout';
 
 type ExpertiseTrack = {
   n: string;
@@ -19,14 +17,37 @@ type ExpertiseTrack = {
   desc: string;
 };
 
+type ServiceItem = { n: string; title: string; desc: string; image: string };
+
 type CarouselContent = {
   eyebrow: string;
   title: string;
   description: string;
-  items: Array<Omit<ServiceCarouselItem, 'n' | 'image'>>;
+  items: Array<{ title: string; desc: string }>;
   ctaPrimary: string;
   ctaSecondary: string;
 };
+
+function ServiceCard({ item }: { item: ServiceItem }) {
+  return (
+    <MediaCard animate={false} className="min-h-[500px]">
+      <MediaCardImage
+        src={item.image}
+        alt={item.title}
+        fill
+        sizes="(min-width:1280px) 25vw, (min-width:640px) 50vw, 100vw"
+        gradientFrom="#000"
+      />
+      <MediaCardBody className="absolute inset-x-0 bottom-0 bg-transparent">
+        <MediaCardNumber>{item.n}</MediaCardNumber>
+        <MediaCardTitle className="max-w-[15rem] text-2xl font-light group-hover:text-foreground-100">
+          {item.title}
+        </MediaCardTitle>
+        <MediaCardExcerpt className="mb-0">{item.desc}</MediaCardExcerpt>
+      </MediaCardBody>
+    </MediaCard>
+  );
+}
 
 const serviceImages = {
   installation: [
@@ -54,7 +75,7 @@ const itemNumbers = ['01', '02', '03', '04'];
 function buildItems(
   items: CarouselContent['items'],
   images: string[]
-): ServiceCarouselItem[] {
+): ServiceItem[] {
   return items.map((item, index) => ({
     n: itemNumbers[index] ?? String(index + 1).padStart(2, '0'),
     title: item.title,
@@ -119,6 +140,7 @@ export default function ServicesPage() {
 
   return (
     <div>
+      {/* 1. HERO */}
       <PageHero
         eyebrow={t('hero.eyebrow')}
         title={t('hero.title')}
@@ -126,12 +148,12 @@ export default function ServicesPage() {
         minHeight="70vh"
       />
 
-      <section className="PageSection_root">
+      {/* 2. SCOPE OF WORKS — 3 service tracks */}
+      <PageSection>
         <SectionHeader
           heading={t('expertise.heading')}
           description={t('expertise.description')}
         />
-
         <BorderGrid cols={3} borderColor="rgba(255,255,255,0.08)">
           {expertiseTracks.map((track, index) => (
             <BorderGridCell
@@ -141,7 +163,7 @@ export default function ServicesPage() {
               glow="radial-gradient(ellipse 70% 55% at 80% 15%, rgba(255,138,0,0.16), transparent 64%)"
               className="px-7 py-9 sm:px-10 sm:py-12"
             >
-              <div className="mb-8 flex items-center justify-between gap-6">
+              <div className="mb-8 flex items-center justify-between gap-5">
                 <p className="text-xs font-light tracking-widest text-accent-500 uppercase">
                   {track.eyebrow}
                 </p>
@@ -158,18 +180,30 @@ export default function ServicesPage() {
             </BorderGridCell>
           ))}
         </BorderGrid>
-      </section>
+      </PageSection>
 
-      <Carousel
-        eyebrow={installation.eyebrow}
-        title={installation.title}
-        description={installation.description}
-        items={buildItems(installation.items, serviceImages.installation)}
-        ctaPrimary={{ href: '/contact', label: installation.ctaPrimary }}
-        ctaSecondary={{ href: '/portfolio', label: installation.ctaSecondary }}
-        visibleCount={3}
-      />
+      {/* 3. รายละเอียดงานแต่ละประเภท */}
+      {[
+        { content: installation, images: serviceImages.installation, cta1: { href: '/contact', label: installation.ctaPrimary }, cta2: { href: '/portfolio', label: installation.ctaSecondary } },
+        { content: manufacturing, images: serviceImages.manufacturing, cta1: { href: '/contact', label: manufacturing.ctaPrimary }, cta2: { href: '/portfolio', label: manufacturing.ctaSecondary } },
+        { content: supply, images: serviceImages.supply, cta1: { href: '/shop', label: supply.ctaPrimary }, cta2: { href: '/contact', label: supply.ctaSecondary } },
+      ].map(({ content, images, cta1, cta2 }) => {
+        const serviceItems = buildItems(content.items, images);
+        const carouselItems = serviceItems.map((s) => ({ n: s.n }));
+        return (
+          <PageSection key={content.title}>
+            <div className="px-(--homepage-padding-inset)">
+              <CarouselHeader eyebrow={content.eyebrow} title={content.title} description={content.description} />
+              <CarouselRoot items={carouselItems} visibleCount={3}>
+                <CarouselGrid renderCard={(_, __, globalIdx) => <ServiceCard item={serviceItems[globalIdx]} />} />
+                <CarouselNav ctaPrimary={cta1} ctaSecondary={cta2} showDots={false} />
+              </CarouselRoot>
+            </div>
+          </PageSection>
+        );
+      })}
 
+      {/* 4. ขอบเขตงานติดตั้งโดยละเอียด (01-04) */}
       <ScopeOfWorks
         eyebrow={scopeOfWorks.eyebrow}
         subtitle={scopeOfWorks.subtitle}
@@ -177,27 +211,8 @@ export default function ServicesPage() {
         categories={scopeOfWorks.categories}
       />
 
-      <Carousel
-        eyebrow={manufacturing.eyebrow}
-        title={manufacturing.title}
-        description={manufacturing.description}
-        items={buildItems(manufacturing.items, serviceImages.manufacturing)}
-        ctaPrimary={{ href: '/contact', label: manufacturing.ctaPrimary }}
-        ctaSecondary={{ href: '/portfolio', label: manufacturing.ctaSecondary }}
-        visibleCount={3}
-      />
-
-      <Carousel
-        eyebrow={supply.eyebrow}
-        title={supply.title}
-        description={supply.description}
-        items={buildItems(supply.items, serviceImages.supply)}
-        ctaPrimary={{ href: '/shop', label: supply.ctaPrimary }}
-        ctaSecondary={{ href: '/contact', label: supply.ctaSecondary }}
-        visibleCount={3}
-      />
-
-      <section className="PageSection_root">
+      {/* 5. ทำไมเลือกเรา */}
+      <PageSection>
         <SectionHeader
           heading={
             lang === 'th'
@@ -225,14 +240,14 @@ export default function ServicesPage() {
               <p className="text-sm leading-relaxed font-light text-foreground-300">
                 {lang === 'th' ? item.descTh : item.descEn}
               </p>
-              {/* Decorative glow line */}
-              <div className="mt-8 h-px w-full bg-gradient-to-r from-[#DB5828]/40 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+              <div className="mt-10 h-px w-full bg-gradient-to-r from-[#DB5828]/40 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
             </BorderGridCell>
           ))}
         </BorderGrid>
-      </section>
+      </PageSection>
 
-      <CtaSection
+      {/* 5. CTA */}
+      <CTA
         eyebrow={t('cta.eyebrow')}
         title={t('cta.title')}
         description={t('cta.description')}

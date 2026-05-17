@@ -1,3 +1,4 @@
+import { PageSection } from '@layout';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = { title: 'Privacy Policy' };
@@ -6,7 +7,7 @@ export default function PrivacyPage() {
   return (
     <>
       <div>
-        <div className="PageSection_root px-(--homepage-padding-inset)">
+        <PageSection className="px-(--homepage-padding-inset)">
           <p className="mb-4 text-xs font-light text-accent-500 uppercase">
             Legal
           </p>
@@ -65,7 +66,7 @@ export default function PrivacyPage() {
               อัปเดตล่าสุด: มกราคม 2026 · HAGX Co., Ltd.
             </p>
           </div>
-        </div>
+        </PageSection>
       </div>
     </>
   );

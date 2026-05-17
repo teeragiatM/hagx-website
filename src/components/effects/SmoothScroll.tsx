@@ -6,6 +6,7 @@ import Lenis from "lenis";
 
 export default function SmoothScroll({ children }: { children: React.ReactNode }) {
   const lenisRef = useRef<Lenis | null>(null);
+  const rafRef = useRef<number>(0);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -18,11 +19,26 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
 
     function raf(time: number) {
       lenis.raf(time);
-      requestAnimationFrame(raf);
+      rafRef.current = requestAnimationFrame(raf);
     }
-    requestAnimationFrame(raf);
+    rafRef.current = requestAnimationFrame(raf);
 
-    return () => lenis.destroy();
+    // Pause Lenis whenever body[data-scroll-locked] is set (modal open)
+    const observer = new MutationObserver(() => {
+      const locked = document.body.hasAttribute("data-scroll-locked");
+      if (locked) {
+        lenis.stop();
+      } else {
+        lenis.start();
+      }
+    });
+    observer.observe(document.body, { attributes: true, attributeFilter: ["data-scroll-locked"] });
+
+    return () => {
+      observer.disconnect();
+      cancelAnimationFrame(rafRef.current);
+      lenis.destroy();
+    };
   }, []);
 
   useEffect(() => {

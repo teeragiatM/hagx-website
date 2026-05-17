@@ -4,7 +4,7 @@ import { getSupabaseClient } from "@/lib/supabase";
 import { uploadImage, uploadImages } from "@/lib/storage";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
-import { Button } from "@/components/ui";
+import { Button } from "@ui";
 
 type FormState = {
   title_th: string;

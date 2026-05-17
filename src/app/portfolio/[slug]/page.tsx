@@ -1,7 +1,9 @@
-import DetailPageTemplate from "@/components/DetailPageTemplate";
+import DetailPageTemplate from "@sections/DetailPageTemplate";
+import { PortfolioEditPanel } from "@admin";
 import {
   getPortfolioItemBySlug,
   getPortfolioItems,
+  getPortfolioRawBySlug,
   getPortfolioSlugs,
 } from "@/lib/getPortfolioItems";
 import { typeOptions } from "@/lib/projects";
@@ -43,9 +45,10 @@ export default async function ProjectPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const [item, allItems] = await Promise.all([
+  const [item, allItems, rawItem] = await Promise.all([
     getPortfolioItemBySlug(slug, "th"),
     getPortfolioItems("th"),
+    getPortfolioRawBySlug(slug),
   ]);
 
   if (!item) notFound();
@@ -58,6 +61,7 @@ export default async function ProjectPage({
     .slice(0, 3);
 
   return (
+    <>
     <DetailPageTemplate
       backHref="/portfolio"
       backLabel="Projects"
@@ -99,5 +103,7 @@ export default async function ProjectPage({
         secondary: { href: "/portfolio", label: "ดูผลงานอื่น" },
       }}
     />
+    {rawItem && <PortfolioEditPanel item={rawItem} />}
+    </>
   );
 }

@@ -128,7 +128,7 @@ export function ScrollTimelineItem({
       viewport={{ once: false, amount: 0.58 }}
       transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
       className={cn(
-        'ui-scroll-timeline-item relative grid gap-6 pl-14 lg:grid-cols-2 lg:gap-12 lg:pl-0',
+        'ui-scroll-timeline-item relative grid gap-5 pl-14 lg:grid-cols-2 lg:gap-12 lg:pl-0',
         className
       )}
     >

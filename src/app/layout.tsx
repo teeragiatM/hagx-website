@@ -1,8 +1,8 @@
-import SmoothScroll from "@/components/effects/SmoothScroll";
-import SiteShell from '@/components/SiteShell';
+﻿import SmoothScroll from "@effects/SmoothScroll";
+import SiteShell from '@layout/SiteShell';
 import { AuthProvider } from '@/context/AuthContext';
 import type { Metadata } from 'next';
-import { Anuphan, Inter } from 'next/font/google';
+import { Anuphan, Geist } from 'next/font/google';
 import './globals.css';
 
 const anuphan = Anuphan({
@@ -14,11 +14,10 @@ const anuphan = Anuphan({
   adjustFontFallback: false,
 });
 
-const inter = Inter({
+const geist = Geist({
   subsets: ['latin'],
-  variable: '--font-inter',
+  variable: '--font-geist',
   display: 'swap',
-  weight: ['300', '400', '500', '600', '700'],
   preload: false,
 });
 
@@ -72,7 +71,7 @@ export default function RootLayout({
     <html
       lang="th"
       data-theme="dark"
-      className={`${anuphan.variable} ${inter.variable} scroll-smooth`}
+      className={`${anuphan.variable} ${geist.variable} scroll-smooth thai`}
       data-scroll-behavior="smooth"
       suppressHydrationWarning
     >

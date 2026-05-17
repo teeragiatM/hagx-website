@@ -1,7 +1,7 @@
 'use client';
 
-import { BorderGrid } from '@/components/ui/BorderGrid';
-import { CountUp } from '@/components/ui/engineering';
+import { BorderGrid } from './BorderGrid';
+import { CountUp } from './engineering';
 import { cn } from '@/lib/utils';
 import type { HTMLAttributes, ReactNode } from 'react';
 

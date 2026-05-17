@@ -25,19 +25,41 @@
       "@/*": [
         "./src/*"
       ],
-      "@/components/ui/*": [
-        "./src/components/ui/core/*",
-        "./src/components/ui/custom/*",
-        "./src/components/ui/*"
-      ],
       "@ui": [
         "./src/components/ui/index.ts"
       ],
-      "@ui/app": [
-        "./src/components/ui/app.ts"
+      "@ui/*": [
+        "./src/components/ui/*"
       ],
-      "@ui/custom": [
-        "./src/components/ui/custom/index.ts"
+      "@layout": [
+        "./src/components/layout/index.ts"
+      ],
+      "@layout/*": [
+        "./src/components/layout/*"
+      ],
+      "@sections": [
+        "./src/components/sections/index.ts"
+      ],
+      "@sections/*": [
+        "./src/components/sections/*"
+      ],
+      "@shared": [
+        "./src/components/shared/index.ts"
+      ],
+      "@shared/*": [
+        "./src/components/shared/*"
+      ],
+      "@effects": [
+        "./src/components/effects/index.ts"
+      ],
+      "@effects/*": [
+        "./src/components/effects/*"
+      ],
+      "@admin": [
+        "./src/components/admin/index.ts"
+      ],
+      "@admin/*": [
+        "./src/components/admin/*"
       ],
       "@components/*": [
         "./src/components/*"

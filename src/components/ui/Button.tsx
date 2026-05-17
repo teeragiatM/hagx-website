@@ -118,7 +118,6 @@ export interface ButtonProps extends React.ComponentProps<'button'> {
   radius?: ThemeRadius;
   rounded?: boolean;
   iconOnly?: boolean;
-  notched?: boolean;
 }
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
@@ -130,7 +129,6 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       rounded = false,
       asChild = false,
       iconOnly = false,
-      notched = false,
       disabled,
       style,
       children,
@@ -149,7 +147,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         aria-disabled={disabled || undefined}
         style={style}
         className={getButtonClassName({
-          className: cn(notched && 'notched-sm', className),
+          className: cn(className),
           variant,
           size,
           iconOnly,

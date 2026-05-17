@@ -20,9 +20,10 @@
   },
   "projects": {
     "eyebrow": "Latest Projects",
-    "title": "Projects That Define\nOur Craft",
+    "title": "Our Latest\nProjects",
     "view": "View Project",
-    "see_all": "View All Projects"
+    "see_all": "View All Projects",
+    "watermark": "Our Work"
   },
   "partnership": {
     "title": "Trusted\nPartnership",
@@ -32,7 +33,8 @@
     "eyebrow": "Start a Project",
     "title": "Bring Your Vision to Life —\nConnect with HAGX Today",
     "desc": "Send us your project details and our team will assess the approach, materials, and budget — at no cost.",
-    "button": "Send Your Inquiry"
+    "button_1": "Send Your Inquiry",
+    "button_2": "View Product"
   },
   "about_intro": {
     "eyebrow": "About Us",

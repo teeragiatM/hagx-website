@@ -1,20 +1,12 @@
-import ClientsPageClient from "@/components/ClientsPageClient";
+import ClientsPageClient from "./ClientsPageClient";
 import { getCustomerReviews, toTestimonialItem } from "@/lib/supabase";
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Clients",
-};
 
 export const revalidate = 60;
 
 export default async function ClientsPage() {
-  const reviews = await getCustomerReviews();
+  const rows = await getCustomerReviews();
+  const reviewsTh = rows.map((r) => toTestimonialItem(r, "th"));
+  const reviewsEn = rows.map((r) => toTestimonialItem(r, "en"));
 
-  return (
-    <ClientsPageClient
-      reviewsTh={reviews.map((r) => toTestimonialItem(r, "th"))}
-      reviewsEn={reviews.map((r) => toTestimonialItem(r, "en"))}
-    />
-  );
+  return <ClientsPageClient reviewsTh={reviewsTh} reviewsEn={reviewsEn} />;
 }

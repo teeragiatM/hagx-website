@@ -7,12 +7,12 @@ interface SpacerProps {
 
 export const Spacer = ({ h = 16, w }: SpacerProps) => (
   <div
-    className="spacer"
+    className="ui-spacer mt-[calc(var(--height,0px)-1px)] ml-[calc(var(--width,0px)-1px)] block h-px min-h-px w-px min-w-px select-none"
     aria-hidden="true"
     style={
-      { 
+      {
         '--height': h ? `${h}px` : undefined,
-        '--width': w ? `${w}px` : undefined
+        '--width': w ? `${w}px` : undefined,
       } as React.CSSProperties
     }
   />

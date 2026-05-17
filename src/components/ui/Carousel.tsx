@@ -1,48 +1,29 @@
 "use client";
 
-/**
- * Composable Carousel system
- *
- * Simple usage (recommended):
- *   <Carousel eyebrow="..." title="..." description="..." items={items} ctaPrimary={...} />
- *
- * Composable usage (custom layout):
- *   <CarouselRoot items={items} visibleCount={3}>
- *     <CarouselHeader eyebrow="..." title="..." description="..." />
- *     <CarouselGrid />                          ← renders cards from context
- *     <CarouselNav ctaPrimary={...} />
- *   </CarouselRoot>
- *
- * To change card design: edit CarouselCard only — all carousels update.
- */
-
 import * as React from "react";
-import { useMemo, useState, useContext, createContext } from "react";
-import { motion } from "framer-motion";
-import { cn } from "@/lib/utils";
-import Image from "next/image";
-import Link from "next/link";
-import SectionHeader from "@/components/SectionHeader";
-import { Button } from "@/components/ui/Button";
-import { CarouselControls } from '@/components/ui/CarouselControls';
 import {
-  MediaCard,
-  MediaCardImage,
-  MediaCardBody,
-  MediaCardNumber,
-  MediaCardTitle,
-  MediaCardExcerpt,
-} from '@/components/ui/MediaCard';
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { cn } from "@/lib/utils";
+import { ArrowLeft, ArrowRight } from "lucide-react";
+import Link from "next/link";
+import { Button } from '@ui/Button';
 import { useSwipe } from "@/hooks/useSwipe";
+import SectionHeader from '@layout/SectionHeader';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
+/** Minimal item shape — n is used for keying only. Put any extra fields you need. */
 export type CarouselItem = {
-  /** display number, e.g. "01" */
   n: string;
-  title: string;
-  desc: string;
-  image: string;
+  [key: string]: unknown;
 };
 
 export type CarouselCta = { href: string; label: string };
@@ -55,6 +36,8 @@ type CarouselContextValue = {
   safeVisibleCount: number;
   canSlide: boolean;
   maxStart: number;
+  dir: number;
+  loop: boolean;
   goPrev: () => void;
   goNext: () => void;
 };
@@ -65,17 +48,19 @@ const CarouselContext = createContext<CarouselContextValue | null>(null);
 
 function useCarousel() {
   const ctx = useContext(CarouselContext);
-  if (!ctx)
-    throw new Error("Carousel sub-component used outside <CarouselRoot>");
+  if (!ctx) throw new Error("Carousel sub-component used outside <CarouselRoot>");
   return ctx;
 }
 
 // ─── CarouselRoot ─────────────────────────────────────────────────────────────
-// Manages state; renders a plain div — no layout opinions.
 
 export type CarouselRootProps = {
   items: CarouselItem[];
   visibleCount?: number;
+  loop?: boolean;
+  autoPlay?: boolean;
+  intervalMs?: number;
+  autoPlayDirection?: "next" | "prev";
   children: React.ReactNode;
   className?: string;
 };
@@ -83,21 +68,56 @@ export type CarouselRootProps = {
 export function CarouselRoot({
   items,
   visibleCount = 4,
+  loop = false,
+  autoPlay = false,
+  intervalMs = 5000,
+  autoPlayDirection = "next",
   children,
   className,
 }: CarouselRootProps) {
   const safeVisibleCount = Math.max(1, Math.min(visibleCount, items.length));
   const maxStart = Math.max(0, items.length - safeVisibleCount);
   const canSlide = items.length > safeVisibleCount;
+
   const [startIndex, setStartIndex] = useState(0);
+  const [dir, setDir] = useState(1);
 
-  const visibleItems = useMemo(
-    () => items.slice(startIndex, startIndex + safeVisibleCount),
-    [items, safeVisibleCount, startIndex],
-  );
+  const goPrev = useCallback(() => {
+    setDir(-1);
+    setStartIndex((i) =>
+      loop ? (i - 1 + items.length) % items.length : Math.max(0, i - 1)
+    );
+  }, [loop, items.length]);
 
-  const goPrev = () => setStartIndex((i) => Math.max(0, i - 1));
-  const goNext = () => setStartIndex((i) => Math.min(maxStart, i + 1));
+  const goNext = useCallback(() => {
+    setDir(1);
+    setStartIndex((i) =>
+      loop ? (i + 1) % items.length : Math.min(maxStart, i + 1)
+    );
+  }, [loop, items.length, maxStart]);
+
+  const prevRef = useRef(goPrev);
+  const nextRef = useRef(goNext);
+  prevRef.current = goPrev;
+  nextRef.current = goNext;
+
+  useEffect(() => {
+    if (!autoPlay || items.length <= 1) return;
+    const id = window.setInterval(() => {
+      autoPlayDirection === "prev" ? prevRef.current() : nextRef.current();
+    }, intervalMs);
+    return () => window.clearInterval(id);
+  }, [autoPlay, autoPlayDirection, intervalMs, items.length]);
+
+  const visibleItems = useMemo(() => {
+    if (loop) {
+      return Array.from(
+        { length: safeVisibleCount },
+        (_, i) => items[(startIndex + i) % items.length]
+      );
+    }
+    return items.slice(startIndex, startIndex + safeVisibleCount);
+  }, [items, safeVisibleCount, startIndex, loop]);
 
   return (
     <CarouselContext.Provider
@@ -109,6 +129,8 @@ export function CarouselRoot({
         safeVisibleCount,
         canSlide,
         maxStart,
+        dir,
+        loop,
         goPrev,
         goNext,
       }}
@@ -127,61 +149,24 @@ export type CarouselHeaderProps = {
   className?: string;
 };
 
-export function CarouselHeader({
-  eyebrow,
-  title,
-  description,
-  className,
-}: CarouselHeaderProps) {
-  return (
-    <SectionHeader
-      heading={title}
-      description={description}
-      className={className}
-    />
-  );
-}
-
-// ─── CarouselCard ─────────────────────────────────────────────────────────────
-// Edit THIS component to change the visual design for all carousels.
-
-export type CarouselCardProps = {
-  item: CarouselItem;
-  className?: string;
-};
-
-export function CarouselCard({ item, className }: CarouselCardProps) {
-  return (
-    <MediaCard animate className={cn('min-h-[500px]', className)}>
-      <MediaCardImage
-        src={item.image}
-        alt={item.title}
-        fill
-        sizes="(min-width:1280px) 25vw, (min-width:640px) 50vw, 100vw"
-        gradientFrom="#000"
-      />
-      <MediaCardBody className="absolute inset-x-0 bottom-0 bg-transparent">
-        <MediaCardNumber>{item.n}</MediaCardNumber>
-        <MediaCardTitle className="max-w-[15rem] text-2xl font-light group-hover:text-foreground-100">
-          {item.title}
-        </MediaCardTitle>
-        <MediaCardExcerpt className="mb-0">{item.desc}</MediaCardExcerpt>
-      </MediaCardBody>
-    </MediaCard>
-  );
+export function CarouselHeader({ title, description, className }: CarouselHeaderProps) {
+  return <SectionHeader heading={title} description={description} className={className} />;
 }
 
 // ─── CarouselGrid ─────────────────────────────────────────────────────────────
-// Renders the visible cards in a responsive grid.
 
 export type CarouselGridProps = {
   className?: string;
-  /** Override card rendering for custom card variants */
-  renderCard?: (item: CarouselItem, index: number) => React.ReactNode;
+  animate?: boolean;
+  /**
+   * Required — (item, localIndex, globalIndex) → ReactNode
+   * globalIndex = (startIndex + localIndex) % items.length
+   */
+  renderCard: (item: CarouselItem, localIndex: number, globalIndex: number) => React.ReactNode;
 };
 
-export function CarouselGrid({ className, renderCard }: CarouselGridProps) {
-  const { visibleItems, safeVisibleCount, goPrev, goNext } = useCarousel();
+export function CarouselGrid({ className, animate = true, renderCard }: CarouselGridProps) {
+  const { visibleItems, safeVisibleCount, startIndex, items, goPrev, goNext, dir } = useCarousel();
   const swipe = useSwipe({ onSwipeLeft: goNext, onSwipeRight: goPrev });
 
   const colClass =
@@ -189,32 +174,134 @@ export function CarouselGrid({ className, renderCard }: CarouselGridProps) {
       ? "lg:grid-cols-4"
       : safeVisibleCount === 3
         ? "lg:grid-cols-3"
-        : "lg:grid-cols-2";
+        : safeVisibleCount === 2
+          ? "lg:grid-cols-2"
+          : "grid-cols-1";
+
+  const grid = (
+    <div
+      className={cn(
+        `ui-carousel-grid grid gap-4 sm:grid-cols-2 ${colClass} select-none`,
+        safeVisibleCount === 1 && "sm:grid-cols-1",
+        className
+      )}
+    >
+      {visibleItems.map((item, localIdx) => {
+        const globalIdx = (startIndex + localIdx) % items.length;
+        return (
+          <React.Fragment key={`${globalIdx}-${item.n}`}>
+            {renderCard(item, localIdx, globalIdx)}
+          </React.Fragment>
+        );
+      })}
+    </div>
+  );
+
+  if (!animate) {
+    return <div {...swipe} className="touch-pan-y">{grid}</div>;
+  }
 
   return (
-    <div
-      {...swipe}
-      className={`ui-carousel-grid grid gap-4 sm:grid-cols-2 ${colClass} ${className ?? ""} touch-pan-y select-none`}
-    >
-      {visibleItems.map((item, i) =>
-        renderCard ? (
-          renderCard(item, i)
-        ) : (
-          <CarouselCard key={item.n} item={item} />
-        ),
-      )}
+    <div {...swipe} className="touch-pan-y overflow-hidden relative">
+      {/* invisible spacer — keeps container height stable while slides are absolute */}
+      <div aria-hidden className="invisible pointer-events-none">{grid}</div>
+      <AnimatePresence mode="sync" custom={dir} initial={false}>
+        <motion.div
+          key={startIndex}
+          custom={dir}
+          variants={{
+            enter: (d: number) => ({ x: d > 0 ? "100%" : "-100%" }),
+            center: { x: 0 },
+            exit: (d: number) => ({ x: d > 0 ? "-100%" : "100%" }),
+          }}
+          initial="enter"
+          animate="center"
+          exit="exit"
+          transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+          className="absolute inset-0"
+        >
+          {grid}
+        </motion.div>
+      </AnimatePresence>
+    </div>
+  );
+}
+
+// ─── CarouselControls ─────────────────────────────────────────────────────────
+
+export type CarouselControlsDotStyle = "line" | "dot";
+
+export type CarouselControlsProps = {
+  index: number;
+  total: number;
+  onPrev: () => void;
+  onNext: () => void;
+  onDotClick?: (i: number) => void;
+  actionSlot?: React.ReactNode;
+  dotStyle?: CarouselControlsDotStyle;
+  canPrev?: boolean;
+  canNext?: boolean;
+  className?: string;
+};
+
+export function CarouselControls({
+  index,
+  total,
+  onPrev,
+  onNext,
+  onDotClick,
+  actionSlot,
+  dotStyle = "dot",
+  canPrev,
+  canNext,
+  className,
+}: CarouselControlsProps) {
+  const prevDisabled = canPrev !== undefined ? !canPrev : index <= 0;
+  const nextDisabled = canNext !== undefined ? !canNext : index >= total - 1;
+
+  return (
+    <div className={cn("ui-carousel-controls flex items-center justify-between gap-5", className)}>
+      <div className="flex flex-wrap items-center gap-4">{actionSlot}</div>
+      <div className="flex shrink-0 items-center gap-4">
+        {total > 1 && onDotClick && (
+          <div className="hidden items-center gap-2 sm:flex">
+            {Array.from({ length: total }).map((_, i) => (
+              <button
+                key={i}
+                type="button"
+                aria-label={`Go to item ${i + 1}`}
+                onClick={() => onDotClick(i)}
+                className={cn(
+                  "transition-all duration-300",
+                  dotStyle === "line"
+                    ? cn("h-[2px]", i === index ? "w-8 bg-foreground-200" : "w-5 bg-foreground-400 hover:bg-foreground-300")
+                    : cn("rounded-full", i === index ? "h-2 w-2 bg-foreground-200" : "h-1.5 w-1.5 bg-foreground-400 hover:bg-foreground-300")
+                )}
+              />
+            ))}
+          </div>
+        )}
+        <div className="flex gap-2">
+          <Button variant="secondary" size="2" iconOnly rounded onClick={onPrev} disabled={prevDisabled} aria-label="Previous">
+            <ArrowLeft className="h-4 w-4" strokeWidth={1.5} />
+          </Button>
+          <Button variant="secondary" size="2" iconOnly rounded onClick={onNext} disabled={nextDisabled} aria-label="Next">
+            <ArrowRight className="h-4 w-4" strokeWidth={1.5} />
+          </Button>
+        </div>
+      </div>
     </div>
   );
 }
 
 // ─── CarouselNav ──────────────────────────────────────────────────────────────
-// Unified nav: action slot (left) + dots + arrows (right)
 
 export type CarouselNavProps = {
   ctaPrimary?: CarouselCta;
   ctaSecondary?: CarouselCta;
-  /** Extra content for the left action slot — overrides ctaPrimary/ctaSecondary */
   actionSlot?: React.ReactNode;
+  dotStyle?: "dot" | "line";
+  showDots?: boolean;
   className?: string;
 };
 
@@ -222,18 +309,12 @@ export function CarouselNav({
   ctaPrimary,
   ctaSecondary,
   actionSlot,
+  dotStyle = "dot",
+  showDots = true,
   className,
 }: CarouselNavProps) {
-  const {
-    items,
-    startIndex,
-    setStartIndex,
-    safeVisibleCount,
-    canSlide,
-    maxStart,
-    goPrev,
-    goNext,
-  } = useCarousel();
+  const { items, startIndex, setStartIndex, canSlide, maxStart, loop, goPrev, goNext } =
+    useCarousel();
 
   const actions = actionSlot ?? (
     <>
@@ -250,64 +331,20 @@ export function CarouselNav({
     </>
   );
 
-  // dot index = first visible card's position among all items
-  const dotIndex = startIndex;
-  // total pages = max number of distinct starting positions + 1
-  const totalDots = maxStart + 1;
+  const totalDots = loop ? items.length : maxStart + 1;
 
   return (
     <CarouselControls
-      index={dotIndex}
-      total={canSlide ? totalDots : 0}
+      index={startIndex}
+      total={showDots && canSlide ? totalDots : 0}
       onPrev={goPrev}
       onNext={goNext}
-      onDotClick={(i) => setStartIndex(Math.min(i, maxStart))}
-      canPrev={startIndex > 0}
-      canNext={startIndex < maxStart}
+      onDotClick={(i) => setStartIndex(loop ? i % items.length : Math.min(i, maxStart))}
+      canPrev={loop ? true : startIndex > 0}
+      canNext={loop ? true : startIndex < maxStart}
       actionSlot={actions}
-      dotStyle="dot"
-      className={`mt-10 ${className ?? ''}`}
+      dotStyle={dotStyle}
+      className={cn("mt-10", className)}
     />
-  );
-}
-
-// ─── Carousel (convenience component) ────────────────────────────────────────
-// Drop-in replacement — same API as the old ServiceCarousel.
-
-export type CarouselProps = {
-  eyebrow?: string;
-  title: string;
-  description?: string;
-  items: CarouselItem[];
-  ctaPrimary?: CarouselCta;
-  ctaSecondary?: CarouselCta;
-  visibleCount?: number;
-  className?: string;
-};
-
-export function Carousel({
-  eyebrow,
-  title,
-  description,
-  items,
-  ctaPrimary,
-  ctaSecondary,
-  visibleCount = 4,
-  className,
-}: CarouselProps) {
-  return (
-    <CarouselRoot items={items} visibleCount={visibleCount}>
-      <section className={cn('PageSection_root', className)}>
-        <div className="px-(--homepage-padding-inset)">
-          <CarouselHeader
-            eyebrow={eyebrow}
-            title={title}
-            description={description}
-          />
-          <CarouselGrid />
-          <CarouselNav ctaPrimary={ctaPrimary} ctaSecondary={ctaSecondary} />
-        </div>
-      </section>
-    </CarouselRoot>
   );
 }

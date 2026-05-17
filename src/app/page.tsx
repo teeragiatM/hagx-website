@@ -1,4 +1,4 @@
-import HomePageClient from "@/components/HomePageClient";
+﻿import HomePageClient from "@sections/HomePageClient";
 import { getPortfolioItems } from "@/lib/getPortfolioItems";
 import { getCustomerReviews, toTestimonialItem } from "@/lib/supabase";
 import type { Metadata } from "next";

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import PortfolioClient from "@/components/PortfolioClient";
+import PortfolioClient from "@sections/PortfolioClient";
 import { getPortfolioItems } from "@/lib/getPortfolioItems";
 
 export const metadata: Metadata = {

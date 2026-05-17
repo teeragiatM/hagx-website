@@ -768,8 +768,8 @@ function PortfolioPanel() {
 
 type Tab = "articles" | "portfolio" | "reviews";
 
-export default function AdminDashboard({ email }: { email: string }) {
-  const [tab, setTab] = useState<Tab>("articles");
+export default function AdminDashboard({ email, initialTab }: { email: string; initialTab?: Tab }) {
+  const [tab, setTab] = useState<Tab>(initialTab ?? "articles");
   const [loggingOut, setLoggingOut] = useState(false);
 
   async function handleLogout() {
