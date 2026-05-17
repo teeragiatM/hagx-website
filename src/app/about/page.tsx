@@ -2,12 +2,13 @@
 
 import CTA from '@sections/CTA';
 import AboutStickySection from '@sections/AboutStickySection';
+import StrategySection from '@sections/StrategySection';
 import PageHero from '@layout/PageHero';
 import { ScrollTimeline } from '@ui/scroll-timeline';
 import SectionHeader from '@layout/SectionHeader';
 import { StatsGrid } from '@ui/stats-grid';
 import { Marquee } from '@ui/Marquee';
-import { hagxStats, hagxBrands } from '@/content/hagx';
+import { hagxStats, hagxBrands, hagxStrategyPillars } from '@/content/hagx';
 import { useI18n } from '@/i18n/useI18n';
 import Image from 'next/image';
 import { PageSection } from '@/components/layout';
@@ -99,6 +100,17 @@ export default function AboutPage() {
       />
       {/* 3. ABOUT STICKY — เราคือใคร / Vision / Values / Positioning */}
       <AboutStickySection />
+
+      {/* 2. STRATEGY — three circles */}
+      <PageSection>
+        <SectionHeader
+          heading={lang === 'th' ? 'กลยุทธ์ของเรา' : 'Our Strategy'}
+          description={lang === 'th' ? 'สามเสาหลักที่ขับเคลื่อน HAGX' : 'Three pillars that drive HAGX forward'}
+        />
+        <div className="mt-12">
+          <StrategySection pillars={hagxStrategyPillars} />
+        </div>
+      </PageSection>
 
       {/* 4. FOUNDERS & TEAM */}
       <PageSection>

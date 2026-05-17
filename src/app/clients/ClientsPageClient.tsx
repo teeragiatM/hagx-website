@@ -14,7 +14,40 @@ type StoryItem = {
   project: string;
   scope: string;
   quote: string;
+  slug?: string;
 };
+
+function ProjectCard({ item, imgSrc, isFocus }: { item: StoryItem; imgSrc: string; isFocus?: boolean }) {
+  return (
+    <a
+      href={item.slug ? `/portfolio/${item.slug}` : '/portfolio'}
+      className={`group flex h-full flex-col overflow-hidden border bg-[#0a0908] transition-all duration-300 ${
+        isFocus ? 'border-accent-500/40' : 'border-white/[0.06]'
+      }`}
+    >
+      <div className="relative h-48 overflow-hidden">
+        <img
+          src={imgSrc}
+          alt={item.project}
+          className="h-full w-full object-cover opacity-50 transition-transform duration-700 group-hover:scale-[1.04] group-hover:opacity-70"
+        />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0a0908] via-[#0a0908]/40 to-transparent" />
+        <p className="absolute top-4 left-4 text-[10px] font-light tracking-widest text-accent-500 uppercase">
+          {item.scope}
+        </p>
+      </div>
+      <div className="flex flex-1 flex-col p-6">
+        <h3 className="text-base font-medium text-foreground-100">{item.client}</h3>
+        <p className="mt-1 text-sm font-light text-foreground-300">{item.project}</p>
+        <div className="mt-4 h-px w-full bg-white/[0.06]" />
+        <p className="mt-4 line-clamp-3 flex-1 text-xs font-light leading-6 text-foreground-400">"{item.quote}"</p>
+        <p className="mt-5 text-[10px] font-light tracking-widest text-foreground-400 uppercase transition-colors group-hover:text-accent-500">
+          ดูโปรเจกต์ →
+        </p>
+      </div>
+    </a>
+  );
+}
 
 const INDUSTRY_GROUPS: { id: string; labelEn: string; labelTh: string; ids: string[] }[] = [
   { id: 'residential', labelEn: 'Residential Development', labelTh: 'อสังหาริมทรัพย์', ids: ['mqdc', 'sansiri', 'origin', 'ap'] },
@@ -125,42 +158,44 @@ export default function ClientsPageClient({ reviewsTh, reviewsEn }: Props) {
         </div>
       </PageSection>
 
-      {/* 3. FEATURED COLLABORATIONS */}
-      <PageSection>
-        <SectionHeader
-          heading={lang === 'th' ? 'ผลงานความร่วมมือ' : 'Featured Collaborations'}
-          description={lang === 'th'
-            ? 'โครงการคัดสรรที่สะท้อนความไว้วางใจจากองค์กรชั้นนำ'
-            : 'Selected engagements reflecting trust from industry-leading organisations.'}
-        />
-        <div className="mt-10 grid gap-px bg-white/[0.05] sm:grid-cols-2 lg:grid-cols-3">
-          {stories.map((story, i) => {
-            const clientId = clients.find(
-              (c) => c.label?.toLowerCase() === story.client.toLowerCase().split(' ')[0].toLowerCase()
-            )?.id as string | undefined;
-            const imgSrc = projectImages[clientId ?? ''] ?? projectImages.mqdc;
-            return (
-              <div key={i} className="group relative overflow-hidden bg-[#0a0908]">
-                <div className="relative h-52 overflow-hidden">
-                  <img
-                    src={imgSrc}
-                    alt={story.project}
-                    className="h-full w-full object-cover opacity-50 transition-transform duration-700 group-hover:scale-[1.04] group-hover:opacity-65"
+      {/* 3. FEATURED COLLABORATIONS — carousel */}
+      {stories.length > 0 && (
+        <PageSection>
+          <SectionHeader
+            heading={lang === 'th' ? 'ผลงานความร่วมมือ' : 'Featured Collaborations'}
+            description={lang === 'th'
+              ? 'โครงการคัดสรรที่สะท้อนความไว้วางใจจากองค์กรชั้นนำ'
+              : 'Selected engagements reflecting trust from industry-leading organisations.'}
+          />
+          <div className="mt-10">
+            {(() => {
+              const items = stories.map((_, i) => ({ n: String(i) }));
+              const visibleCount = Math.min(3, stories.length);
+              const centerIdx = Math.floor(visibleCount / 2);
+              return (
+                <CarouselRoot items={items} visibleCount={visibleCount} loop autoPlay intervalMs={5000}>
+                  <CarouselGrid
+                    renderCard={(_, localIdx, globalIdx) => {
+                      const story = stories[globalIdx];
+                      const clientId = clients.find(
+                        (c) => c.label?.toLowerCase() === story.client.toLowerCase().split(' ')[0].toLowerCase()
+                      )?.id as string | undefined;
+                      const imgSrc = projectImages[clientId ?? ''] ?? projectImages.mqdc;
+                      return (
+                        <ProjectCard
+                          item={story}
+                          imgSrc={imgSrc}
+                          isFocus={localIdx === centerIdx}
+                        />
+                      );
+                    }}
                   />
-                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0a0908] via-[#0a0908]/40 to-transparent" />
-                </div>
-                <div className="p-6 sm:p-8">
-                  <p className="text-[10px] font-light tracking-widest text-accent-500 uppercase">{story.scope}</p>
-                  <h3 className="mt-2 text-lg font-medium text-foreground-100">{story.client}</h3>
-                  <p className="mt-1 text-sm font-light text-foreground-300">{story.project}</p>
-                  <div className="mt-6 h-px w-full bg-white/[0.06]" />
-                  <p className="mt-4 line-clamp-3 text-xs font-light leading-6 text-foreground-400">"{story.quote}"</p>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </PageSection>
+                </CarouselRoot>
+              );
+            })()}
+          </div>
+        </PageSection>
+      )}
 
       {/* 4. INDUSTRIES WE SERVE */}
       <PageSection>

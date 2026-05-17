@@ -171,7 +171,7 @@ export default function PortfolioEditPanel({ item }: Props) {
                   </div>
 
                   <Field label="Scope of Work">
-                    <textarea className={textareaCls} value={fields.scope} onChange={(e) => set("scope", e.target.value)} />
+                    <textarea className={textareaCls} value={fields.scope as string ?? ""} onChange={(e) => set("scope", e.target.value)} />
                   </Field>
 
                   <Field label="สถานะ">

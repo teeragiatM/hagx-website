@@ -284,7 +284,7 @@ function ThailandMap({
           <Geographies geography={WORLD_GEO_URL}>
             {({ geographies }) =>
               geographies.map((geo) => {
-                const isThai = geo.properties.name === 'Thailand';
+                const isThai = geo.properties.name === "Thailand";
                 if (isThai) return null;
                 return (
                   <Geography
@@ -294,12 +294,12 @@ function ThailandMap({
                     stroke="rgba(255,255,255,0.14)"
                     strokeWidth={0.4}
                     style={{
-                      default: { outline: 'none' },
+                      default: { outline: "none" },
                       hover: {
-                        outline: 'none',
-                        fill: 'rgba(255,255,255,0.05)',
+                        outline: "none",
+                        fill: "rgba(255,255,255,0.05)",
                       },
-                      pressed: { outline: 'none' },
+                      pressed: { outline: "none" },
                     }}
                   />
                 );
