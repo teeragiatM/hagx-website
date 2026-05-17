@@ -600,7 +600,7 @@ export default function PortfolioClient({
       }
       return true;
     });
-    list.sort((a, b) => sort === "oldest" ? a.year - b.year : b.year - a.year);
+    list.sort((a, b) => sort === "oldest" ? Number(a.year) - Number(b.year) : Number(b.year) - Number(a.year));
     return list;
   }, [currentItems, activeType, selectedTypes, selectedCategories, selectedLocations, sort, search]);
 
